@@ -1,8 +1,9 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/ui/form-input";
 import { Label } from "@/components/ui/label";
+import { Briefcase, DollarSign, Building2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -23,29 +24,37 @@ export function StepEmployment() {
   const employmentStatus = watch("employmentStatus");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Employment Status */}
       <div className="space-y-2">
         <Label className="text-sm font-medium">Employment Status</Label>
-        <Select
-          onValueChange={(value) =>
-            setValue(
-              "employmentStatus",
-              value as LeadFormValues["employmentStatus"]
-            )
-          }
+        <div
+          className={`flex h-11 items-center overflow-hidden rounded-full border border-border bg-background pl-3 transition-all focus-within:ring-2 focus-within:ring-primary/30 ${
+            errors.employmentStatus ? "border-destructive focus-within:ring-destructive/30" : ""
+          }`}
         >
-          <SelectTrigger className="h-11">
-            <SelectValue placeholder="Select employment status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="employed">Employed</SelectItem>
-            <SelectItem value="self-employed">Self-Employed</SelectItem>
-            <SelectItem value="unemployed">Unemployed</SelectItem>
-          </SelectContent>
-        </Select>
+          <Briefcase className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
+          <Select
+            onValueChange={(value) =>
+              setValue(
+                "employmentStatus",
+                value as LeadFormValues["employmentStatus"],
+                { shouldDirty: true }
+              )
+            }
+          >
+            <SelectTrigger className="h-full w-full border-0 bg-transparent px-2 shadow-none focus:ring-0">
+              <SelectValue placeholder="Select employment status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="employed">Employed</SelectItem>
+              <SelectItem value="self-employed">Self-Employed</SelectItem>
+              <SelectItem value="unemployed">Unemployed</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         {errors.employmentStatus && (
-          <p className="text-sm text-destructive">
+          <p className="mt-1.5 text-xs text-destructive">
             {errors.employmentStatus.message}
           </p>
         )}
@@ -56,23 +65,14 @@ export function StepEmployment() {
         <Label htmlFor="monthlyIncome" className="text-sm font-medium">
           Monthly Income (SGD)
         </Label>
-        <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-            $
-          </span>
-          <Input
-            id="monthlyIncome"
-            type="number"
-            placeholder="5000"
-            className="h-11 pl-7"
-            {...register("monthlyIncome", { valueAsNumber: true })}
-          />
-        </div>
-        {errors.monthlyIncome && (
-          <p className="text-sm text-destructive">
-            {errors.monthlyIncome.message}
-          </p>
-        )}
+        <FormInput
+          id="monthlyIncome"
+          type="number"
+          placeholder="5000"
+          icon={<DollarSign className="h-4 w-4" />}
+          error={errors.monthlyIncome?.message}
+          {...register("monthlyIncome", { valueAsNumber: true })}
+        />
       </div>
 
       {/* Company (conditional) */}
@@ -83,10 +83,10 @@ export function StepEmployment() {
             Company Name{" "}
             <span className="text-muted-foreground">(optional)</span>
           </Label>
-          <Input
+          <FormInput
             id="company"
             placeholder="e.g. DBS Bank"
-            className="h-11"
+            icon={<Building2 className="h-4 w-4" />}
             {...register("company")}
           />
         </div>

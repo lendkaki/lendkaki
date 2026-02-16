@@ -145,13 +145,16 @@ export function LeadForm() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="mb-8 text-center sm:mb-10"
+          className="mb-8 flex flex-col items-center text-center sm:mb-10"
         >
+          <span className="mb-3 inline-flex rounded-full bg-primary/20 px-4 py-1.5 text-xs font-medium text-white">
+            Loan Application
+          </span>
           <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
             Get Your Best Rates
           </h2>
-          <p className="mt-3 text-base text-white/70 sm:mt-4 sm:text-lg">
-            Complete this quick form to receive personalized loan offers.
+          <p className="mt-3 max-w-lg text-base text-white/70 sm:mt-4 sm:text-lg">
+            Complete this quick form to receive personalized loan offers from Singapore's leading lenders.
           </p>
         </motion.div>
 
