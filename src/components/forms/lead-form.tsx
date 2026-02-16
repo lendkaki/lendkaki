@@ -110,12 +110,12 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="py-20 sm:py-28">
+      <section id="apply" className="hero-gradient py-24 sm:py-32">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="rounded-2xl border border-border bg-card p-8 text-center shadow-lg sm:p-12"
+            className="rounded-2xl border border-white/10 bg-card p-8 text-center shadow-2xl sm:p-12"
           >
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
               <CheckCircle2 className="h-8 w-8 text-primary" />
@@ -138,7 +138,7 @@ export function LeadForm() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="apply" className="py-20 sm:py-28" ref={sectionRef}>
+    <section id="apply" className="hero-gradient py-24 sm:py-32" ref={sectionRef}>
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -147,10 +147,10 @@ export function LeadForm() {
           transition={{ duration: 0.5 }}
           className="mb-10 text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Get Your Best Rates
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mt-4 text-lg text-white/70">
             Complete this quick form to receive personalized loan offers.
           </p>
         </motion.div>
@@ -160,7 +160,7 @@ export function LeadForm() {
           initial={{ opacity: 0, y: 20, scale: 0.97 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="rounded-2xl border border-border bg-card p-6 shadow-lg sm:p-8"
+          className="rounded-2xl border border-white/10 bg-card p-6 shadow-2xl sm:p-8"
         >
           {/* Singpass Button */}
           <div className="mb-8">
@@ -300,7 +300,7 @@ export function LeadForm() {
         </motion.div>
 
         {/* Privacy note */}
-        <p className="mt-4 text-center text-xs text-muted-foreground">
+        <p className="mt-4 text-center text-xs text-white/50">
           Your data is encrypted and secure. We never share your information
           without your consent. By submitting, you agree to our Terms of Service
           and Privacy Policy.

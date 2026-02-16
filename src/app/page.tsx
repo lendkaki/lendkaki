@@ -1,17 +1,19 @@
 import { Hero } from "@/components/sections/hero";
-import { TrustIndicators } from "@/components/sections/trust-indicators";
+import { PartnersScroller } from "@/components/sections/partners";
 import { HowItWorks } from "@/components/sections/how-it-works";
+import { Advantages } from "@/components/sections/advantages";
+import { Testimonials } from "@/components/sections/testimonials";
 import { LeadForm } from "@/components/forms/lead-form";
-import { LoanMarketplace } from "@/components/sections/loan-marketplace";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <TrustIndicators />
+      <PartnersScroller />
       <HowItWorks />
+      <Advantages />
+      <Testimonials />
       <LeadForm />
-      <LoanMarketplace />
     </>
   );
 }
