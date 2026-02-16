@@ -4,6 +4,7 @@ import { HowItWorks } from "@/components/sections/how-it-works";
 import { Advantages } from "@/components/sections/advantages";
 import { Testimonials } from "@/components/sections/testimonials";
 import { LeadForm } from "@/components/forms/lead-form";
+import { Faq } from "@/components/sections/faq";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Advantages />
       <Testimonials />
       <LeadForm />
+      <Faq />
     </>
   );
 }
