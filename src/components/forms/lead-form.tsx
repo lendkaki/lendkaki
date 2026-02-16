@@ -179,10 +179,10 @@ export function LeadForm() {
 
           {/* Progress Steps */}
           <div className="mb-8">
-            <div className="flex items-center justify-between">
+            <div className="mx-auto flex max-w-md items-center justify-center">
               {steps.map((step, index) => (
                 <div key={step.id} className="flex flex-1 items-center">
-                  <div className="flex flex-col items-center">
+                  <div className="flex w-full flex-col items-center">
                     <motion.div
                       animate={
                         index === currentStep
@@ -205,7 +205,7 @@ export function LeadForm() {
                         step.id
                       )}
                     </motion.div>
-                    <span className="mt-2 hidden text-xs font-medium sm:block">
+                    <span className="mt-2 hidden text-center text-xs font-medium sm:block">
                       {step.title}
                     </span>
                   </div>
