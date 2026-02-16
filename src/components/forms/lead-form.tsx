@@ -110,7 +110,7 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="hero-gradient py-16 sm:py-24 lg:py-32">
+      <section id="apply" className="hero-gradient pb-16 pt-8 sm:pb-24 sm:pt-12 lg:pb-32 lg:pt-16">
         <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -138,7 +138,7 @@ export function LeadForm() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="apply" className="hero-gradient py-16 sm:py-24 lg:py-32" ref={sectionRef}>
+    <section id="apply" className="hero-gradient pb-16 pt-8 sm:pb-24 sm:pt-12 lg:pb-32 lg:pt-16" ref={sectionRef}>
       <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -147,9 +147,6 @@ export function LeadForm() {
           transition={{ duration: 0.5 }}
           className="mb-8 flex flex-col items-center text-center sm:mb-10"
         >
-          <span className="mb-3 inline-flex rounded-full bg-primary/20 px-4 py-1.5 text-xs font-medium text-white">
-            Loan Application
-          </span>
           <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
             Get Your Best Rates
           </h2>

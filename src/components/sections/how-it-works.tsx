@@ -35,7 +35,7 @@ export function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative bg-gradient-to-b from-white via-background to-background pb-24 pt-12 sm:pb-32 sm:pt-16"
+      className="relative bg-gradient-to-b from-white via-background to-background pb-16 pt-12 sm:pb-24 sm:pt-16"
       ref={ref}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

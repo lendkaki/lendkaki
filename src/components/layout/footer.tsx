@@ -175,28 +175,28 @@ export function Footer() {
               className="text-center sm:text-left"
             >
               <p className="text-lg font-medium text-white">Contact Us</p>
-              <ul className="mt-8 space-y-4 text-sm">
+              <ul className="mt-8 flex flex-col items-center space-y-4 text-sm sm:items-start">
                 {data.contact.map(({ icon: Icon, text, href, isAddress }) => (
-                  <li key={text}>
+                  <li key={text} className="w-full sm:w-auto">
                     {href ? (
                       <a
-                        className="flex items-center justify-center gap-1.5 sm:justify-start"
+                        className="inline-flex items-center gap-1.5"
                         href={href}
                       >
                         <Icon className="size-5 shrink-0 text-primary shadow-sm" />
-                        <span className="flex-1 text-white/60 transition hover:text-white">
+                        <span className="text-white/60 transition hover:text-white">
                           {text}
                         </span>
                       </a>
                     ) : (
-                      <div className="flex items-center justify-center gap-1.5 sm:justify-start">
+                      <div className="inline-flex items-center gap-1.5">
                         <Icon className="size-5 shrink-0 text-primary shadow-sm" />
                         {isAddress ? (
-                          <address className="-mt-0.5 flex-1 not-italic text-white/60 transition">
+                          <address className="-mt-0.5 not-italic text-white/60 transition">
                             {text}
                           </address>
                         ) : (
-                          <span className="flex-1 text-white/60 transition">
+                          <span className="text-white/60 transition">
                             {text}
                           </span>
                         )}
