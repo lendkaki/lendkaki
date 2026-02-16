@@ -27,12 +27,8 @@ export function PartnersScroller() {
       />
 
       <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-5 text-center text-xl font-medium tracking-tight md:text-3xl">
-          <span className="text-muted-foreground">Trusted by experts.</span>
-          <br />
-          <span className="font-semibold text-foreground">
-            Used by Singapore&apos;s leading banks.
-          </span>
+        <h2 className="mb-8 text-center text-base font-medium tracking-tight text-muted-foreground md:text-lg">
+          Our trusted partners
         </h2>
 
         <div className="mx-auto my-5 h-px max-w-sm bg-border [mask-image:linear-gradient(to_right,transparent,black,transparent)]" />
