@@ -1,10 +1,11 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetFooter } from "@/components/ui/sheet";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { MenuToggle } from "@/components/ui/menu-toggle";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -14,8 +15,8 @@ const navLinks = [
 ];
 
 export function Navbar() {
+  const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -26,13 +27,13 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
         isScrolled
-          ? "border-b border-border/50 bg-white/80 backdrop-blur-xl"
+          ? "border-b border-border/50 bg-white/80 backdrop-blur-lg"
           : "bg-transparent"
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div
@@ -61,107 +62,84 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                buttonVariants({ variant: "ghost" }),
                 isScrolled
-                  ? "text-muted-foreground hover:text-foreground"
-                  : "text-white/80 hover:text-white"
+                  ? "text-muted-foreground hover:bg-slate-900 hover:text-white"
+                  : "text-white/80 hover:bg-white/10 hover:text-white"
               )}
             >
               {link.label}
             </a>
           ))}
-        </div>
-
-        {/* Desktop Actions */}
-        <div className="hidden items-center md:flex">
           <Button
             asChild
-            size="sm"
             variant={isScrolled ? "default" : "outline"}
             className={cn(
+              isScrolled && "hover:bg-slate-900",
               !isScrolled &&
-                "border-white bg-white text-primary hover:bg-white/90"
+                "border-white bg-white text-primary hover:bg-slate-900 hover:text-white hover:border-slate-900"
             )}
           >
             <a href="#apply">Get My Best Rates</a>
           </Button>
         </div>
 
-        {/* Mobile menu button */}
-        <div className="flex items-center md:hidden">
+        {/* Mobile Menu */}
+        <Sheet open={open} onOpenChange={setOpen}>
           <Button
-            variant="ghost"
             size="icon"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            variant="ghost"
             className={cn(
-              "h-9 w-9",
-              !isScrolled && "text-white hover:bg-white/10 hover:text-white"
+              "lg:hidden",
+              isScrolled
+                ? "hover:bg-slate-900 hover:text-white"
+                : "text-white hover:bg-white/10 hover:text-white"
             )}
+            onClick={() => setOpen(!open)}
           >
-            {isMobileMenuOpen ? (
-              <X className="h-4 w-4" />
-            ) : (
-              <Menu className="h-4 w-4" />
-            )}
+            <MenuToggle
+              strokeWidth={2.5}
+              open={open}
+              onOpenChange={setOpen}
+              className="size-6"
+            />
           </Button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-b border-border/50 bg-white/95 backdrop-blur-xl md:hidden"
+          <SheetContent
+            className="bg-white/95 supports-[backdrop-filter]:bg-white/80 gap-0 backdrop-blur-lg"
+            showClose={false}
+            side="left"
           >
-            <motion.div
-              initial={{ y: -10 }}
-              animate={{ y: 0 }}
-              exit={{ y: -10 }}
-              transition={{ duration: 0.2, delay: 0.05 }}
-              className="flex flex-col gap-1 px-4 py-3"
-            >
-              {navLinks.map((link, i) => (
-                <motion.a
+            <div className="grid gap-y-2 overflow-y-auto px-4 pt-12 pb-5">
+              {navLinks.map((link) => (
+                <a
                   key={link.href}
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2, delay: 0.05 + i * 0.05 }}
-                  className="rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    buttonVariants({
+                      variant: "ghost",
+                      className: "justify-start hover:bg-slate-900 hover:text-white",
+                    })
+                  )}
                 >
                   {link.label}
-                </motion.a>
+                </a>
               ))}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, delay: 0.2 }}
-                className="pt-2"
-              >
-                <Button asChild size="sm" className="w-full">
-                  <a
-                    href="#apply"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Get My Best Rates
-                  </a>
-                </Button>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+            <SheetFooter>
+              <Button asChild className="w-full hover:bg-slate-900" onClick={() => setOpen(false)}>
+                <a href="#apply">Get My Best Rates</a>
+              </Button>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+      </nav>
     </header>
   );
 }
