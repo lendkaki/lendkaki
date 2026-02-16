@@ -150,7 +150,7 @@ export function Hero() {
   return (
     <section className="hero-gradient relative overflow-hidden pt-16">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-12 pb-16 pt-20 sm:pb-24 sm:pt-28 lg:grid-cols-[1.2fr_1fr] lg:gap-16 lg:pt-32">
+        <div className="grid items-center gap-12 pb-24 pt-20 sm:pb-32 sm:pt-28 lg:grid-cols-[1.2fr_1fr] lg:gap-16 lg:pb-40 lg:pt-32">
           {/* Left: Text content */}
           <div>
             {/* Headline */}
