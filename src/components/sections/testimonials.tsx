@@ -69,8 +69,8 @@ const thirdColumn = testimonials.slice(6, 9);
 
 export function Testimonials() {
   return (
-    <section className="bg-background py-24 sm:py-32 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
+    <section className="relative bg-gradient-to-b from-muted/30 via-white to-white pb-24 pt-12 sm:pb-32 sm:pt-16">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
