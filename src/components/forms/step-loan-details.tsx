@@ -1,5 +1,7 @@
 "use client";
+"use no memo";
 
+import { useState, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -16,12 +18,32 @@ import type { LeadFormValues } from "@/lib/schemas";
 export function StepLoanDetails() {
   const {
     setValue,
-    watch,
+    getValues,
     formState: { errors },
   } = useFormContext<LeadFormValues>();
 
-  const loanAmount = watch("loanAmount") || 20000;
-  const tenure = watch("tenure") || 24;
+  const [loanAmount, setLoanAmount] = useState(
+    () => getValues("loanAmount") || 20000
+  );
+  const [tenure, setTenure] = useState(() => getValues("tenure") || 24);
+
+  const handleLoanAmountChange = useCallback(
+    (value: number[]) => {
+      const amount = value[0];
+      setLoanAmount(amount);
+      setValue("loanAmount", amount, { shouldDirty: true });
+    },
+    [setValue]
+  );
+
+  const handleTenureChange = useCallback(
+    (value: number[]) => {
+      const months = value[0];
+      setTenure(months);
+      setValue("tenure", months, { shouldDirty: true });
+    },
+    [setValue]
+  );
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -38,7 +60,7 @@ export function StepLoanDetails() {
           max={300000}
           step={1000}
           value={[loanAmount]}
-          onValueChange={(value) => setValue("loanAmount", value[0])}
+          onValueChange={handleLoanAmountChange}
           className="py-2"
         />
         <div className="flex justify-between text-xs text-muted-foreground">
@@ -46,7 +68,9 @@ export function StepLoanDetails() {
           <span>$300,000</span>
         </div>
         {errors.loanAmount && (
-          <p className="text-sm text-destructive">{errors.loanAmount.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.loanAmount.message}
+          </p>
         )}
       </div>
 
@@ -55,7 +79,9 @@ export function StepLoanDetails() {
         <Label className="text-sm font-medium">Purpose of Loan</Label>
         <Select
           onValueChange={(value) =>
-            setValue("loanPurpose", value as LeadFormValues["loanPurpose"])
+            setValue("loanPurpose", value as LeadFormValues["loanPurpose"], {
+              shouldDirty: true,
+            })
           }
         >
           <SelectTrigger className="h-11">
@@ -89,7 +115,7 @@ export function StepLoanDetails() {
           max={72}
           step={3}
           value={[tenure]}
-          onValueChange={(value) => setValue("tenure", value[0])}
+          onValueChange={handleTenureChange}
           className="py-2"
         />
         <div className="flex justify-between text-xs text-muted-foreground">
