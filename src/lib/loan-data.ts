@@ -1,0 +1,161 @@
+import type { Loan } from "@/types";
+
+export const loanProducts: Loan[] = [
+  {
+    id: "1",
+    lender: "DBS Bank",
+    category: "personal",
+    interestRate: 3.88,
+    maxInterestRate: 6.88,
+    minAmount: 5000,
+    maxAmount: 200000,
+    minTenure: 12,
+    maxTenure: 60,
+    features: ["No early repayment fee", "Same-day approval", "Flexible tenure"],
+    isPromoted: true,
+  },
+  {
+    id: "2",
+    lender: "OCBC Bank",
+    category: "personal",
+    interestRate: 3.79,
+    maxInterestRate: 7.0,
+    minAmount: 5000,
+    maxAmount: 150000,
+    minTenure: 12,
+    maxTenure: 60,
+    features: ["Cash rebate up to $200", "Quick disbursement", "No collateral"],
+  },
+  {
+    id: "3",
+    lender: "UOB Bank",
+    category: "personal",
+    interestRate: 4.18,
+    maxInterestRate: 8.0,
+    minAmount: 5000,
+    maxAmount: 200000,
+    minTenure: 12,
+    maxTenure: 48,
+    features: ["$0 processing fee", "Up to 6x monthly salary", "Instant approval"],
+  },
+  {
+    id: "4",
+    lender: "Standard Chartered",
+    category: "personal",
+    interestRate: 3.48,
+    maxInterestRate: 6.5,
+    minAmount: 5000,
+    maxAmount: 250000,
+    minTenure: 12,
+    maxTenure: 60,
+    features: ["Lowest flat rate", "No guarantor needed", "Online application"],
+    isPromoted: true,
+  },
+  {
+    id: "5",
+    lender: "Funding Societies",
+    category: "business",
+    interestRate: 5.0,
+    maxInterestRate: 12.0,
+    minAmount: 10000,
+    maxAmount: 300000,
+    minTenure: 3,
+    maxTenure: 36,
+    features: ["Fast approval", "Flexible repayment", "No collateral required"],
+  },
+  {
+    id: "6",
+    lender: "HSBC Singapore",
+    category: "business",
+    interestRate: 4.5,
+    maxInterestRate: 9.0,
+    minAmount: 20000,
+    maxAmount: 300000,
+    minTenure: 12,
+    maxTenure: 60,
+    features: ["Dedicated RM", "Working capital line", "Quick drawdown"],
+  },
+  {
+    id: "7",
+    lender: "Accredit Pte Ltd",
+    category: "bridging",
+    interestRate: 2.5,
+    maxInterestRate: 4.0,
+    minAmount: 5000,
+    maxAmount: 100000,
+    minTenure: 3,
+    maxTenure: 12,
+    features: ["Same-day disbursement", "MAS licensed", "Minimal paperwork"],
+  },
+  {
+    id: "8",
+    lender: "Crawfort Pte Ltd",
+    category: "bridging",
+    interestRate: 2.0,
+    maxInterestRate: 4.0,
+    minAmount: 1000,
+    maxAmount: 80000,
+    minTenure: 3,
+    maxTenure: 12,
+    features: ["Licensed moneylender", "Fast processing", "Flexible repayment"],
+  },
+  {
+    id: "9",
+    lender: "POSB Bank",
+    category: "debt-consolidation",
+    interestRate: 4.8,
+    maxInterestRate: 9.0,
+    minAmount: 10000,
+    maxAmount: 200000,
+    minTenure: 12,
+    maxTenure: 72,
+    features: ["Consolidate all debts", "Lower monthly payments", "Single repayment"],
+  },
+  {
+    id: "10",
+    lender: "Citibank",
+    category: "debt-consolidation",
+    interestRate: 3.65,
+    maxInterestRate: 7.5,
+    minAmount: 10000,
+    maxAmount: 200000,
+    minTenure: 12,
+    maxTenure: 60,
+    features: ["Competitive rates", "Streamline finances", "No penalties"],
+    isPromoted: true,
+  },
+];
+
+export const loanCategories = [
+  { value: "all", label: "All Loans" },
+  { value: "personal", label: "Personal" },
+  { value: "business", label: "Business" },
+  { value: "bridging", label: "Bridging" },
+  { value: "debt-consolidation", label: "Debt Consolidation" },
+] as const;
+
+export const loanPurposeOptions = [
+  { value: "personal", label: "Personal Expenses" },
+  { value: "business", label: "Business Funding" },
+  { value: "bridging", label: "Bridging Loan" },
+  { value: "debt-consolidation", label: "Debt Consolidation" },
+  { value: "medical", label: "Medical Expenses" },
+  { value: "renovation", label: "Home Renovation" },
+  { value: "wedding", label: "Wedding" },
+  { value: "education", label: "Education" },
+  { value: "travel", label: "Travel" },
+  { value: "emergency", label: "Emergency Cash" },
+] as const;
+
+export function calculateMonthlyInstallment(
+  principal: number,
+  annualRate: number,
+  tenureMonths: number
+): number {
+  const monthlyRate = annualRate / 100 / 12;
+  if (monthlyRate === 0) return principal / tenureMonths;
+  const payment =
+    (principal * monthlyRate * Math.pow(1 + monthlyRate, tenureMonths)) /
+    (Math.pow(1 + monthlyRate, tenureMonths) - 1);
+  return Math.round(payment * 100) / 100;
+}
