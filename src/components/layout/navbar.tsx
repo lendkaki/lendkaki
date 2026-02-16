@@ -39,10 +39,27 @@ export function Navbar() {
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">LK</span>
+          <div
+            className={cn(
+              "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
+              isScrolled ? "bg-primary" : "bg-white"
+            )}
+          >
+            <span
+              className={cn(
+                "text-sm font-bold transition-colors",
+                isScrolled ? "text-primary-foreground" : "text-primary"
+              )}
+            >
+              LK
+            </span>
           </div>
-          <span className="text-lg font-bold tracking-tight text-foreground">
+          <span
+            className={cn(
+              "text-lg font-bold tracking-tight transition-colors",
+              isScrolled ? "text-foreground" : "text-white"
+            )}
+          >
             LendKaki
           </span>
         </Link>
@@ -53,7 +70,12 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className={cn(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                isScrolled
+                  ? "text-muted-foreground hover:text-foreground"
+                  : "text-white/80 hover:text-white"
+              )}
             >
               {link.label}
             </a>
@@ -67,7 +89,10 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="h-9 w-9"
+              className={cn(
+                "h-9 w-9",
+                !isScrolled && "text-white hover:bg-white/10 hover:text-white"
+              )}
             >
               {theme === "dark" ? (
                 <Sun className="h-4 w-4" />
@@ -77,7 +102,15 @@ export function Navbar() {
               <span className="sr-only">Toggle theme</span>
             </Button>
           )}
-          <Button asChild size="sm">
+          <Button
+            asChild
+            size="sm"
+            variant={isScrolled ? "default" : "outline"}
+            className={cn(
+              !isScrolled &&
+                "border-white bg-white text-primary hover:bg-white/90"
+            )}
+          >
             <a href="#apply">Get My Best Rates</a>
           </Button>
         </div>
@@ -89,7 +122,10 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="h-9 w-9"
+              className={cn(
+                "h-9 w-9",
+                !isScrolled && "text-white hover:bg-white/10 hover:text-white"
+              )}
             >
               {theme === "dark" ? (
                 <Sun className="h-4 w-4" />
@@ -102,7 +138,10 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="h-9 w-9"
+            className={cn(
+              "h-9 w-9",
+              !isScrolled && "text-white hover:bg-white/10 hover:text-white"
+            )}
           >
             {isMobileMenuOpen ? (
               <X className="h-4 w-4" />
