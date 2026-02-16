@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -15,13 +14,10 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -83,25 +79,7 @@ export function Navbar() {
         </div>
 
         {/* Desktop Actions */}
-        <div className="hidden items-center gap-3 md:flex">
-          {mounted && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className={cn(
-                "h-9 w-9",
-                !isScrolled && "text-white hover:bg-white/10 hover:text-white"
-              )}
-            >
-              {theme === "dark" ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-          )}
+        <div className="hidden items-center md:flex">
           <Button
             asChild
             size="sm"
@@ -116,24 +94,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile menu button */}
-        <div className="flex items-center gap-2 md:hidden">
-          {mounted && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className={cn(
-                "h-9 w-9",
-                !isScrolled && "text-white hover:bg-white/10 hover:text-white"
-              )}
-            >
-              {theme === "dark" ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </Button>
-          )}
+        <div className="flex items-center md:hidden">
           <Button
             variant="ghost"
             size="icon"
@@ -160,7 +121,7 @@ export function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-b border-border bg-background/95 backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-b border-border/50 bg-white/95 backdrop-blur-xl md:hidden"
           >
             <motion.div
               initial={{ y: -10 }}
