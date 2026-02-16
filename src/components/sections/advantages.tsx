@@ -38,7 +38,7 @@ export function Advantages() {
   return (
     <section
       ref={ref}
-      className="relative bg-gradient-to-b from-background via-muted/20 to-muted/30 pb-24 pt-12 sm:pb-32 sm:pt-16"
+      className="relative bg-gradient-to-b from-background via-muted/20 to-white pb-24 pt-12 sm:pb-32 sm:pt-16"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
