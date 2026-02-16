@@ -61,7 +61,7 @@ export function Footer() {
   return (
     <footer
       ref={ref}
-      className="mt-16 w-full place-self-end rounded-t-xl bg-secondary dark:bg-secondary/20"
+      className="mt-16 w-full place-self-end rounded-t-xl bg-slate-900 text-white dark:bg-slate-950"
     >
       <div className="mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8 lg:pt-24">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -71,16 +71,16 @@ export function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex justify-center gap-2 text-primary sm:justify-start">
+            <div className="flex justify-center gap-2 sm:justify-start">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <span className="text-sm font-bold text-primary-foreground">
                   LK
                 </span>
               </div>
-              <span className="text-2xl font-semibold">{data.company.name}</span>
+              <span className="text-2xl font-semibold text-white">{data.company.name}</span>
             </div>
 
-            <p className="mt-6 max-w-md text-center leading-relaxed text-foreground/50 sm:max-w-xs sm:text-left">
+            <p className="mt-6 max-w-md text-center leading-relaxed text-white/60 sm:max-w-xs sm:text-left">
               {data.company.description}
             </p>
 
@@ -89,7 +89,7 @@ export function Footer() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="text-primary transition hover:text-primary/80"
+                    className="text-white/70 transition hover:text-white"
                   >
                     <span className="sr-only">{label}</span>
                     <Icon className="size-6" />
@@ -108,12 +108,12 @@ export function Footer() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-center sm:text-left"
             >
-              <p className="text-lg font-medium">Loan Types</p>
+              <p className="text-lg font-medium text-white">Loan Types</p>
               <ul className="mt-8 space-y-4 text-sm">
                 {data.loanTypes.map(({ text, href }) => (
                   <li key={text}>
                     <a
-                      className="text-secondary-foreground/70 transition hover:text-foreground"
+                      className="text-white/60 transition hover:text-white"
                       href={href}
                     >
                       {text}
@@ -130,12 +130,12 @@ export function Footer() {
               transition={{ duration: 0.5, delay: 0.18 }}
               className="text-center sm:text-left"
             >
-              <p className="text-lg font-medium">Company</p>
+              <p className="text-lg font-medium text-white">Company</p>
               <ul className="mt-8 space-y-4 text-sm">
                 {data.company_links.map(({ text, href }) => (
                   <li key={text}>
                     <a
-                      className="text-secondary-foreground/70 transition hover:text-foreground"
+                      className="text-white/60 transition hover:text-white"
                       href={href}
                     >
                       {text}
@@ -152,12 +152,12 @@ export function Footer() {
               transition={{ duration: 0.5, delay: 0.26 }}
               className="text-center sm:text-left"
             >
-              <p className="text-lg font-medium">Resources</p>
+              <p className="text-lg font-medium text-white">Resources</p>
               <ul className="mt-8 space-y-4 text-sm">
                 {data.resources.map(({ text, href }) => (
                   <li key={text}>
                     <a
-                      className="text-secondary-foreground/70 transition hover:text-foreground"
+                      className="text-white/60 transition hover:text-white"
                       href={href}
                     >
                       {text}
@@ -174,7 +174,7 @@ export function Footer() {
               transition={{ duration: 0.5, delay: 0.34 }}
               className="text-center sm:text-left"
             >
-              <p className="text-lg font-medium">Contact Us</p>
+              <p className="text-lg font-medium text-white">Contact Us</p>
               <ul className="mt-8 space-y-4 text-sm">
                 {data.contact.map(({ icon: Icon, text, href, isAddress }) => (
                   <li key={text}>
@@ -184,7 +184,7 @@ export function Footer() {
                         href={href}
                       >
                         <Icon className="size-5 shrink-0 text-primary shadow-sm" />
-                        <span className="flex-1 text-secondary-foreground/70 transition hover:text-foreground">
+                        <span className="flex-1 text-white/60 transition hover:text-white">
                           {text}
                         </span>
                       </a>
@@ -192,11 +192,11 @@ export function Footer() {
                       <div className="flex items-center justify-center gap-1.5 sm:justify-start">
                         <Icon className="size-5 shrink-0 text-primary shadow-sm" />
                         {isAddress ? (
-                          <address className="-mt-0.5 flex-1 not-italic text-secondary-foreground/70 transition">
+                          <address className="-mt-0.5 flex-1 not-italic text-white/60 transition">
                             {text}
                           </address>
                         ) : (
-                          <span className="flex-1 text-secondary-foreground/70 transition">
+                          <span className="flex-1 text-white/60 transition">
                             {text}
                           </span>
                         )}
@@ -209,19 +209,19 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border/50 pt-6">
+        <div className="mt-12 border-t border-white/10 pt-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-center sm:flex sm:justify-between sm:text-left"
           >
-            <p className="text-secondary-foreground/70 order-first text-sm transition sm:mt-0">
+            <p className="order-first text-sm text-white/50 transition sm:mt-0">
               &copy; {new Date().getFullYear()} LendKaki. All rights reserved.
             </p>
 
             <p className="mt-4 text-sm sm:mt-0">
-              <span className="block text-secondary-foreground/70 sm:inline">
+              <span className="block text-white/50 sm:inline">
                 Licensed loan comparison platform
               </span>
             </p>
@@ -231,7 +231,7 @@ export function Footer() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-6 text-center text-xs leading-relaxed text-secondary-foreground/60"
+            className="mt-6 text-center text-xs leading-relaxed text-white/40"
           >
             LendKaki is a loan comparison platform. We are not a lender. All loan
             products are offered by licensed banks and financial institutions
