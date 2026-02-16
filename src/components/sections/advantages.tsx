@@ -36,7 +36,10 @@ export function Advantages() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="bg-muted/30 py-24 sm:py-32">
+    <section
+      ref={ref}
+      className="relative bg-gradient-to-b from-background via-muted/20 to-muted/30 pb-24 pt-12 sm:pb-32 sm:pt-16"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
