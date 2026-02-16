@@ -24,12 +24,12 @@ export function StepLoanDetails() {
   const tenure = watch("tenure") || 24;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Loan Amount Slider */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:justify-between">
           <Label className="text-sm font-medium">Loan Amount</Label>
-          <span className="font-mono text-2xl font-bold text-primary">
+          <span className="font-mono text-3xl font-bold text-primary sm:text-2xl">
             ${loanAmount.toLocaleString("en-SG")}
           </span>
         </div>
@@ -78,9 +78,9 @@ export function StepLoanDetails() {
 
       {/* Tenure Slider */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:justify-between">
           <Label className="text-sm font-medium">Repayment Tenure</Label>
-          <span className="font-mono text-lg font-semibold text-foreground">
+          <span className="font-mono text-xl font-semibold text-foreground sm:text-lg">
             {tenure} months
           </span>
         </div>

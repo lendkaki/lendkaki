@@ -110,20 +110,20 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="hero-gradient py-24 sm:py-32">
-        <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+      <section id="apply" className="hero-gradient py-16 sm:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="rounded-2xl border border-white/10 bg-card p-8 text-center shadow-2xl sm:p-12"
+            className="mx-auto w-full rounded-2xl border border-white/10 bg-card p-8 text-center shadow-2xl sm:p-12 lg:p-14"
           >
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
               <CheckCircle2 className="h-8 w-8 text-primary" />
             </div>
-            <h3 className="text-2xl font-bold text-foreground">
+            <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
               Application Submitted!
             </h3>
-            <p className="mt-3 text-muted-foreground">
+            <p className="mt-3 text-base text-muted-foreground sm:mt-4 sm:text-lg">
               We&apos;re matching you with the best loan offers from our network
               of 50+ licensed lenders. You&apos;ll receive your personalized
               rates via email within minutes.
@@ -138,19 +138,19 @@ export function LeadForm() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="apply" className="hero-gradient py-24 sm:py-32" ref={sectionRef}>
-      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+    <section id="apply" className="hero-gradient py-16 sm:py-24 lg:py-32" ref={sectionRef}>
+      <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="mb-10 text-center"
+          className="mb-8 text-center sm:mb-10"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
             Get Your Best Rates
           </h2>
-          <p className="mt-4 text-lg text-white/70">
+          <p className="mt-3 text-base text-white/70 sm:mt-4 sm:text-lg">
             Complete this quick form to receive personalized loan offers.
           </p>
         </motion.div>
@@ -160,7 +160,7 @@ export function LeadForm() {
           initial={{ opacity: 0, y: 20, scale: 0.97 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="rounded-2xl border border-white/10 bg-card p-6 shadow-2xl sm:p-8"
+          className="mx-auto w-full rounded-2xl border border-white/10 bg-card p-6 shadow-2xl sm:p-8 lg:p-10"
         >
           {/* Singpass Button */}
           <div className="mb-8">
@@ -300,7 +300,7 @@ export function LeadForm() {
         </motion.div>
 
         {/* Privacy note */}
-        <p className="mt-4 text-center text-xs text-white/50">
+        <p className="mt-6 text-center text-xs leading-relaxed text-white/50 sm:text-sm">
           Your data is encrypted and secure. We never share your information
           without your consent. By submitting, you agree to our Terms of Service
           and Privacy Policy.
