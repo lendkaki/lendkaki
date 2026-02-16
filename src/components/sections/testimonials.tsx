@@ -1,115 +1,109 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import {
+  TestimonialsColumn,
+  type Testimonial,
+} from "@/components/ui/testimonials-columns-1";
+import { motion } from "motion/react";
 
-const testimonials = [
+const testimonials: Testimonial[] = [
   {
+    text: "I was dreading applying to multiple banks. LendKaki matched me with 5 offers in under a minute — I saved over $2,000 in interest compared to my bank's rate.",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
     name: "Tan Wei Ming",
-    context: "Personal Loan",
-    quote:
-      "I was dreading the idea of applying to multiple banks. LendKaki matched me with 5 offers in under a minute — I saved over $2,000 in interest compared to my bank's rate.",
-    rating: 5,
+    role: "Personal Loan",
   },
   {
+    text: "Finally consolidated all my credit card debts into one manageable loan. The whole process was transparent — no surprise fees, no hard credit checks.",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
     name: "Priya Nair",
-    context: "Debt Consolidation",
-    quote:
-      "Finally consolidated all my credit card debts into one manageable loan. The whole process was transparent — no surprise fees, no hard credit checks. Exactly what they promised.",
-    rating: 5,
+    role: "Debt Consolidation",
   },
   {
+    text: "As an SME owner, getting a business loan used to take weeks. Through LendKaki I got approved within 24 hours and funds were in my account the next day.",
+    image: "https://randomuser.me/api/portraits/men/75.jpg",
     name: "Ahmad Rizal",
-    context: "Business Loan",
-    quote:
-      "As an SME owner, getting a business loan used to take weeks. Through LendKaki I got approved within 24 hours and funds were in my account the next day. Game changer.",
-    rating: 5,
+    role: "Business Loan",
   },
   {
+    text: "We needed funds for our wedding quickly. The multi-step form was super easy — took less than 2 minutes. Got a great rate from a lender I wouldn't have found on my own.",
+    image: "https://randomuser.me/api/portraits/women/68.jpg",
     name: "Rachel Lim",
-    context: "Wedding Loan",
-    quote:
-      "We needed funds for our wedding quickly. The multi-step form was super easy — took less than 2 minutes. Got a great rate from a lender I wouldn't have found on my own.",
-    rating: 5,
+    role: "Wedding Loan",
+  },
+  {
+    text: "The comparison tool is brilliant. I could see all my options side by side with real numbers. Ended up saving $150/month on my personal loan repayment.",
+    image: "https://randomuser.me/api/portraits/men/22.jpg",
+    name: "David Ong",
+    role: "Personal Loan",
+  },
+  {
+    text: "I was skeptical at first, but the process was genuinely free. No hidden charges, no spam calls. Just real offers from licensed lenders. Very impressed.",
+    image: "https://randomuser.me/api/portraits/women/26.jpg",
+    name: "Nurul Aisyah",
+    role: "Personal Loan",
+  },
+  {
+    text: "Needed a bridging loan urgently for my property purchase. LendKaki connected me with a lender who disbursed the funds the same day. Lifesaver.",
+    image: "https://randomuser.me/api/portraits/men/46.jpg",
+    name: "Kenneth Teo",
+    role: "Bridging Loan",
+  },
+  {
+    text: "Coming from overseas, I didn't know where to start with Singapore banks. LendKaki simplified everything and found me options that accept foreigners.",
+    image: "https://randomuser.me/api/portraits/women/52.jpg",
+    name: "Sarah Chen",
+    role: "Foreigner Loan",
+  },
+  {
+    text: "After my renovation went over budget, I needed extra funds fast. Applied on LendKaki at night, had three offers by morning. Incredible turnaround.",
+    image: "https://randomuser.me/api/portraits/men/64.jpg",
+    name: "Ravi Chandran",
+    role: "Renovation Loan",
   },
 ];
 
-function StarRating({ count }: { count: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <Star
-          key={i}
-          className="h-4 w-4 fill-amber-400 text-amber-400"
-        />
-      ))}
-    </div>
-  );
-}
+const firstColumn = testimonials.slice(0, 3);
+const secondColumn = testimonials.slice(3, 6);
+const thirdColumn = testimonials.slice(6, 9);
 
 export function Testimonials() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section ref={ref} className="py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+    <section className="bg-background py-24 sm:py-32 relative">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="mx-auto max-w-2xl text-center"
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center justify-center max-w-[540px] mx-auto"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            What Borrowers Say
+          <div className="flex justify-center">
+            <div className="border border-border py-1 px-4 rounded-lg text-sm text-muted-foreground">
+              Testimonials
+            </div>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mt-5 text-center">
+            What our borrowers say
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="text-center mt-4 text-lg text-muted-foreground">
             Real experiences from Singaporeans who found better rates with us.
           </p>
         </motion.div>
 
-        {/* Testimonial Cards */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {testimonials.map((item, index) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, y: 25 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
-              className="relative flex flex-col rounded-2xl border border-border bg-card p-7"
-            >
-              {/* Decorative quote */}
-              <Quote className="absolute right-5 top-5 h-8 w-8 text-muted/60" />
-
-              {/* Stars */}
-              <StarRating count={item.rating} />
-
-              {/* Quote */}
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
-                &ldquo;{item.quote}&rdquo;
-              </p>
-
-              {/* Author */}
-              <div className="mt-6 flex items-center gap-3 border-t border-border pt-5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                  {item.name
-                    .split(" ")
-                    .map((w) => w[0])
-                    .join("")}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">
-                    {item.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {item.context}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div className="flex justify-center gap-6 mt-14 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
+          <TestimonialsColumn testimonials={firstColumn} duration={15} />
+          <TestimonialsColumn
+            testimonials={secondColumn}
+            className="hidden md:block"
+            duration={19}
+          />
+          <TestimonialsColumn
+            testimonials={thirdColumn}
+            className="hidden lg:block"
+            duration={17}
+          />
         </div>
       </div>
     </section>
