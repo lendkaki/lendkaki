@@ -33,7 +33,11 @@ export function HowItWorks() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="how-it-works" className="py-24 sm:py-32" ref={ref}>
+    <section
+      id="how-it-works"
+      className="relative bg-gradient-to-b from-white via-background to-background pb-24 pt-12 sm:pb-32 sm:pt-16"
+      ref={ref}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
