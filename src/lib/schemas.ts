@@ -5,21 +5,6 @@ export const stepLoanDetailsSchema = z.object({
     .number({ error: "Loan amount is required" })
     .min(1000, "Minimum loan amount is $1,000")
     .max(300000, "Maximum loan amount is $300,000"),
-  loanPurpose: z.enum(
-    [
-      "personal",
-      "business",
-      "bridging",
-      "debt-consolidation",
-      "medical",
-      "renovation",
-      "wedding",
-      "education",
-      "travel",
-      "emergency",
-    ],
-    { error: "Please select a loan purpose" }
-  ),
   tenure: z
     .number({ error: "Tenure is required" })
     .min(3, "Minimum tenure is 3 months")
@@ -39,6 +24,21 @@ export const stepPersonalSchema = z.object({
   nationality: z.enum(["citizen_pr", "foreigner"], {
     error: "Please select your nationality",
   }),
+  loanPurpose: z.enum(
+    [
+      "personal",
+      "business",
+      "bridging",
+      "debt-consolidation",
+      "medical",
+      "renovation",
+      "wedding",
+      "education",
+      "travel",
+      "emergency",
+    ],
+    { error: "Please select a loan purpose" }
+  ),
 });
 
 export const stepEmploymentSchema = z.object({
