@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Fingerprint } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const rotatingWords = [
   "personal needs",
@@ -205,32 +205,6 @@ export function Hero() {
               >
                 See How It Works
               </motion.a>
-            </motion.div>
-
-            {/* Announcement banner */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.55 }}
-              className="mt-8 inline-flex max-w-md items-start gap-3 rounded-xl border border-white/15 bg-white/10 px-5 py-4 backdrop-blur-sm"
-            >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/20">
-                <Fingerprint className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-white">
-                  Singpass integration coming soon.
-                </p>
-                <p className="mt-0.5 text-xs text-white/60">
-                  Auto-fill your details instantly.{" "}
-                  <a
-                    href="#apply"
-                    className="font-medium text-white/80 underline underline-offset-2 transition-colors hover:text-white"
-                  >
-                    Learn more &rarr;
-                  </a>
-                </p>
-              </div>
             </motion.div>
           </div>
 
