@@ -35,7 +35,10 @@ export function Navbar() {
       >
         <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex items-center gap-2"
+          >
             <div
               className={cn(
                 "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
@@ -59,7 +62,7 @@ export function Navbar() {
             >
               LendKaki
             </span>
-          </Link>
+          </button>
 
           {/* Desktop Nav */}
           <div className="hidden items-center gap-2 lg:flex">
@@ -81,9 +84,9 @@ export function Navbar() {
               asChild
               variant={isScrolled ? "default" : "outline"}
               className={cn(
-                isScrolled && "hover:bg-slate-900",
+                isScrolled && "hover:bg-slate-900 hover:text-white",
                 !isScrolled &&
-                  "border-slate-900 bg-slate-900 text-white hover:bg-slate-800 hover:border-slate-800"
+                  "border-slate-900 bg-slate-900 text-white hover:bg-white hover:border-white hover:text-slate-900"
               )}
             >
               <a href="#apply">Get My Best Rates</a>
@@ -107,7 +110,7 @@ export function Navbar() {
                 ? "text-slate-900 hover:bg-slate-200"
                 : isScrolled
                   ? "hover:bg-slate-900 hover:text-white"
-                  : "text-slate-900 hover:bg-white/10 hover:text-slate-800"
+                  : "text-slate-900 hover:bg-slate-900 hover:text-primary"
             )}
             onClick={() => setOpen(!open)}
           >

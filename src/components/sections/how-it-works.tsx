@@ -35,7 +35,7 @@ export function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative bg-gradient-to-b from-white via-background to-background pb-16 pt-12 sm:pb-24 sm:pt-16"
+      className="relative bg-slate-900 pb-16 pt-12 sm:pb-24 sm:pt-16"
       ref={ref}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -46,10 +46,10 @@ export function HowItWorks() {
           transition={{ duration: 0.5 }}
           className="mx-auto max-w-2xl text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             How It Works
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mt-4 text-lg text-slate-400">
             Get matched with the best loan offers in three simple steps.
           </p>
         </motion.div>
@@ -62,10 +62,10 @@ export function HowItWorks() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 + index * 0.15 }}
-              className="group relative rounded-2xl border border-border bg-card p-8 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+              className="group relative rounded-2xl border border-slate-700/50 bg-slate-800/50 p-8 transition-all hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
             >
               {/* Step number */}
-              <span className="absolute -top-3 right-6 rounded-full bg-primary px-3 py-1 font-mono text-xs font-bold text-primary-foreground">
+              <span className="absolute -top-3 right-6 rounded-full bg-primary px-3 py-1 font-mono text-xs font-bold text-slate-900">
                 {step.step}
               </span>
 
@@ -73,16 +73,16 @@ export function HowItWorks() {
               <motion.div
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
+                className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary transition-colors group-hover:bg-primary group-hover:text-slate-900"
               >
                 <step.icon className="h-6 w-6" />
               </motion.div>
 
               {/* Content */}
-              <h3 className="text-xl font-semibold text-foreground">
+              <h3 className="text-xl font-semibold text-white">
                 {step.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
                 {step.description}
               </p>
             </motion.div>

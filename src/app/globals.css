@@ -126,6 +126,14 @@
   body {
     @apply bg-background text-foreground;
   }
+  button,
+  a[href],
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  label[for] {
+    @apply cursor-pointer;
+  }
 }
 
 /* Dot grid background */
@@ -235,4 +243,41 @@
 @keyframes marquee-scroll-reverse {
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0); }
+}
+
+/* Circulating border animation */
+.circulating-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.circulating-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    oklch(0.855 0.097 210.245) 25%,
+    oklch(0.9 0.11 210.3) 50%,
+    oklch(0.855 0.097 210.245) 75%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  animation: rotate-border 3s linear infinite;
+  z-index: -1;
+}
+
+.circulating-border::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: inherit;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+@keyframes rotate-border {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

@@ -93,10 +93,10 @@ export function Advantages() {
   };
 
   return (
-    <section className="bg-gradient-to-b from-background via-muted/20 to-white pb-24 pt-12 sm:pb-32 sm:pt-16">
+    <section className="bg-gradient-to-b from-background via-muted/20 to-white pb-12 pt-12 sm:pb-16 sm:pt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-4 text-center">
-          <Badge variant="outline">Why LendKaki</Badge>
+          <Badge variant="outline" className="circulating-border border-primary bg-white font-medium px-4 py-1.5 rounded-lg">Why LendKaki</Badge>
           <h2 className="max-w-2xl text-3xl font-semibold text-foreground sm:text-4xl">
             The LendKaki Advantage
           </h2>
@@ -111,7 +111,7 @@ export function Advantages() {
                 <TabsTrigger
                   key={tab.value}
                   value={tab.value}
-                  className="flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-muted-foreground sm:gap-2 sm:px-4 sm:py-3 sm:text-sm data-[state=active]:bg-muted data-[state=active]:text-primary"
+                  className="flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-semibold bg-white text-foreground hover:bg-slate-50 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm data-[state=active]:bg-slate-900 data-[state=active]:text-primary"
                 >
                   {tab.icon} <span className="whitespace-nowrap">{tab.label}</span>
                 </TabsTrigger>

@@ -117,11 +117,11 @@ const FaqItem = React.forwardRef<
       <Button
         variant="ghost"
         onClick={() => setIsOpen(!isOpen)}
-        className="h-auto w-full justify-between px-6 py-4 hover:bg-transparent"
+        className="h-auto w-full justify-between gap-3 px-4 py-3.5 hover:bg-transparent sm:px-6 sm:py-4"
       >
         <h3
           className={cn(
-            "text-left text-base font-medium transition-colors duration-200",
+            "flex-1 text-left text-sm font-medium transition-colors duration-200 sm:text-base",
             "text-foreground/70",
             isOpen && "text-foreground"
           )}
@@ -158,7 +158,7 @@ const FaqItem = React.forwardRef<
               transition: { duration: 0.2, ease: "easeIn" },
             }}
           >
-            <div className="px-6 pb-4 pt-2">
+            <div className="px-4 pb-3.5 pt-2 sm:px-6 sm:pb-4">
               <motion.p
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

@@ -110,7 +110,7 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="hero-gradient pb-16 pt-8 sm:pb-24 sm:pt-12 lg:pb-32 lg:pt-16">
+      <section id="apply" className="hero-gradient pb-16 pt-24 sm:pb-24 sm:pt-32 lg:pb-32 lg:pt-40">
         <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -138,7 +138,7 @@ export function LeadForm() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="apply" className="hero-gradient pb-16 pt-8 sm:pb-24 sm:pt-12 lg:pb-32 lg:pt-16" ref={sectionRef}>
+    <section id="apply" className="hero-gradient pb-16 pt-24 sm:pb-24 sm:pt-32 lg:pb-32 lg:pt-40" ref={sectionRef}>
       <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div

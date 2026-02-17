@@ -69,7 +69,7 @@ const thirdColumn = testimonials.slice(6, 9);
 
 export function Testimonials() {
   return (
-    <section className="relative bg-white pb-24 pt-12 sm:pb-32 sm:pt-16">
+    <section className="relative bg-white pb-24 pt-8 sm:pb-32 sm:pt-12">
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -79,7 +79,7 @@ export function Testimonials() {
           className="flex flex-col items-center justify-center max-w-[540px] mx-auto"
         >
           <div className="flex justify-center">
-            <div className="border border-border py-1 px-4 rounded-lg text-sm text-muted-foreground">
+            <div className="circulating-border border border-primary py-1 px-4 rounded-lg text-sm text-foreground bg-white font-medium">
               Testimonials
             </div>
           </div>

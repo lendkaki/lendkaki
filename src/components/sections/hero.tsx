@@ -2,13 +2,13 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
 
 const rotatingWords = [
   "personal needs",
   "business growth",
   "debt freedom",
-  "home renovation",
+  "renovation",
   "your wedding",
 ];
 
@@ -25,7 +25,7 @@ function RotatingText() {
   }, [advance]);
 
   return (
-    <span className="relative inline-flex h-[1.15em] items-end overflow-hidden">
+    <span className="relative inline-flex h-[1.15em] items-end overflow-hidden whitespace-nowrap">
       <AnimatePresence mode="wait">
         <motion.span
           key={rotatingWords[index]}
@@ -158,15 +158,27 @@ export function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
+              className="text-3xl font-bold leading-[1.2] tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
             >
               The{" "}
-              <span className="hero-highlight relative inline-block rounded-lg bg-white/20 px-3 py-0.5 backdrop-blur-sm">
+              <span className="hero-highlight relative inline-flex items-center gap-1.5 -rotate-2 rounded-lg bg-[#E5FF00] px-3 py-0.5 text-slate-900 sm:gap-2 sm:px-4 sm:py-1">
+                <motion.span
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, -10, 10, -10, 0]
+                  }}
+                  transition={{ 
+                    duration: 0.5, 
+                    repeat: Infinity, 
+                    repeatDelay: 2
+                  }}
+                  className="inline-flex"
+                >
+                  <Zap className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 xl:h-14 xl:w-14 fill-yellow-400 text-yellow-600" />
+                </motion.span>
                 fastest
-              </span>
-              <br />
-              loan platform for
-              <br />
+              </span>{" "}
+              loan platform for{" "}
               <RotatingText />
             </motion.h1>
 
