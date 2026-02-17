@@ -16,7 +16,7 @@ const logos = [
 
 export function PartnersScroller() {
   return (
-    <section className="relative bg-white py-16 sm:py-20">
+    <section className="relative bg-white py-8 sm:py-10">
       <div
         aria-hidden="true"
         className={cn(

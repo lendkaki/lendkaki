@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Zap } from "lucide-react";
+import Image from "next/image";
 
 const rotatingWords = [
   "personal needs",
@@ -42,105 +43,83 @@ function RotatingText() {
   );
 }
 
-function HeroCards() {
+function SingpassBadge() {
   return (
-    <div className="relative mx-auto h-[340px] w-full max-w-md sm:h-[400px] lg:max-w-none">
-      {/* Card 3 (back) */}
-      <motion.div
-        initial={{ opacity: 0, y: 40, rotate: 6 }}
-        animate={{ opacity: 0.5, y: 0, rotate: 6 }}
-        transition={{ duration: 0.7, delay: 0.6 }}
-        className="absolute right-0 top-8 h-52 w-64 rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur-sm sm:right-4 sm:h-60 sm:w-72"
-      >
-        <div className="h-3 w-20 rounded-full bg-white/20" />
-        <div className="mt-4 h-3 w-14 rounded-full bg-white/15" />
-        <div className="mt-6 font-mono text-3xl font-bold text-foreground/40">
-          5.0%
-        </div>
-      </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
+      className="flex items-center gap-2"
+    >
+      <span className="text-xs font-medium text-slate-500 sm:text-sm">
+        Apply securely with
+      </span>
+      <div className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 shadow-sm backdrop-blur-sm">
+        <span className="text-xs font-bold tracking-tight text-[#C4353A] sm:text-sm">
+          Singpass
+        </span>
+        <span className="text-slate-300">|</span>
+        <span className="text-xs font-bold tracking-tight text-[#6038D1] sm:text-sm">
+          Myinfo
+        </span>
+      </div>
+    </motion.div>
+  );
+}
 
-      {/* Card 2 (middle) */}
+function HeroMascot() {
+  return (
+    <div className="relative mx-auto flex items-end justify-center">
       <motion.div
-        initial={{ opacity: 0, y: 40, rotate: 2 }}
-        animate={{ opacity: 0.75, y: 0, rotate: 2 }}
-        transition={{ duration: 0.7, delay: 0.4 }}
-        className="absolute right-6 top-14 h-52 w-64 rounded-2xl border border-white/15 bg-white/15 p-5 backdrop-blur-sm sm:right-10 sm:h-60 sm:w-72"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="relative"
       >
-        <div className="h-3 w-24 rounded-full bg-white/25" />
-        <div className="mt-4 h-3 w-16 rounded-full bg-white/20" />
-        <div className="mt-6 font-mono text-3xl font-bold text-foreground/50">
-          4.18%
+        <div
+          className="relative h-auto w-[280px] sm:w-[320px] lg:w-[400px] xl:w-[460px]"
+          style={{
+            WebkitMaskImage: "radial-gradient(ellipse 80% 85% at 50% 50%, black 55%, transparent 95%)",
+            maskImage: "radial-gradient(ellipse 80% 85% at 50% 50%, black 55%, transparent 95%)",
+          }}
+        >
+          <Image
+            src="/mascot-otter.png"
+            alt="LendKaki otter mascot"
+            width={480}
+            height={480}
+            className="h-auto w-full"
+            priority
+          />
         </div>
-      </motion.div>
 
-      {/* Card 1 (front) */}
-      <motion.div
-        initial={{ opacity: 0, y: 40, rotate: -2 }}
-        animate={{ opacity: 1, y: 0, rotate: -2 }}
-        transition={{ duration: 0.7, delay: 0.2 }}
-        className="absolute right-12 top-20 h-52 w-64 rounded-2xl border border-white/20 bg-white/20 p-6 shadow-2xl shadow-slate-900/10 backdrop-blur-md sm:right-16 sm:h-60 sm:w-72"
-      >
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-white/30" />
-          <div>
-            <div className="h-3 w-20 rounded-full bg-white/40" />
-            <div className="mt-1.5 h-2 w-14 rounded-full bg-white/25" />
+        {/* Floating rate badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, x: -20 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 1, type: "spring", stiffness: 200 }}
+          className="absolute -left-2 top-8 z-10 rounded-xl border border-white/40 bg-white/70 px-3 py-2 shadow-lg backdrop-blur-md sm:-left-6 sm:top-12 sm:px-4 sm:py-3"
+        >
+          <div className="text-[10px] font-medium text-slate-600 sm:text-xs">
+            Lowest rate found
           </div>
-        </div>
-        <div className="mt-5">
-          <div className="text-xs font-medium text-foreground/70">
-            Interest Rate (p.a.)
+          <div className="font-mono text-lg font-bold text-slate-900 sm:text-2xl">
+            2.0% <span className="text-[10px] font-normal text-slate-500 sm:text-sm">p.a.</span>
           </div>
-          <div className="mt-1 font-mono text-4xl font-bold text-foreground">
-            3.48%
-          </div>
-        </div>
-        <div className="mt-4 flex gap-2">
-          <div className="rounded-full bg-white/20 px-3 py-1 text-xs text-foreground/80">
-            No fees
-          </div>
-          <div className="rounded-full bg-white/20 px-3 py-1 text-xs text-foreground/80">
-            Same-day
-          </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* Floating rate badge */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          duration: 0.5,
-          delay: 1,
-          type: "spring",
-          stiffness: 200,
-        }}
-        className="absolute left-0 top-4 z-10 rounded-xl border border-white/20 bg-white/20 px-4 py-3 backdrop-blur-md sm:left-4"
-      >
-        <div className="text-xs font-medium text-foreground/70">
-          Lowest rate found
-        </div>
-        <div className="font-mono text-2xl font-bold text-foreground">
-          2.0% <span className="text-sm font-normal text-foreground/70">p.a.</span>
-        </div>
-      </motion.div>
-
-      {/* Floating approval badge */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          duration: 0.5,
-          delay: 1.3,
-          type: "spring",
-          stiffness: 200,
-        }}
-        className="absolute bottom-6 left-4 z-10 rounded-xl border border-white/20 bg-white/20 px-4 py-3 backdrop-blur-md sm:left-8"
-      >
-        <div className="text-xs font-medium text-foreground/70">Avg. approval</div>
-        <div className="font-mono text-2xl font-bold text-foreground">
-          &lt;24h
-        </div>
+        {/* Floating approval badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, x: 20 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 1.3, type: "spring", stiffness: 200 }}
+          className="absolute -right-2 bottom-16 z-10 rounded-xl border border-white/40 bg-white/70 px-3 py-2 shadow-lg backdrop-blur-md sm:-right-6 sm:bottom-24 sm:px-4 sm:py-3"
+        >
+          <div className="text-[10px] font-medium text-slate-600 sm:text-xs">Avg. approval</div>
+          <div className="font-mono text-lg font-bold text-slate-900 sm:text-2xl">
+            &lt;24h
+          </div>
+        </motion.div>
       </motion.div>
     </div>
   );
@@ -150,9 +129,9 @@ export function Hero() {
   return (
     <section className="hero-gradient relative overflow-hidden pt-16">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-12 pb-24 pt-20 sm:pb-32 sm:pt-28 lg:grid-cols-[1.2fr_1fr] lg:gap-16 lg:pb-40 lg:pt-32">
+        <div className="grid items-center gap-6 pb-4 pt-16 sm:gap-8 sm:pb-6 sm:pt-24 lg:grid-cols-[1.2fr_1fr] lg:gap-12 lg:pb-8 lg:pt-28">
           {/* Left: Text content */}
-          <div>
+          <div className="text-center lg:text-left">
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -187,7 +166,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-6 max-w-lg text-base leading-relaxed text-foreground/70 sm:text-lg"
+              className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-foreground/70 sm:mt-6 sm:text-lg lg:mx-0"
             >
               Compare 50+ licensed lenders. One application.
               No credit score impact.
@@ -198,13 +177,13 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.35 }}
-              className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4"
+              className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4 lg:justify-start"
             >
               <motion.a
                 href="#apply"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-slate-900 px-7 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition-colors hover:bg-slate-800"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-7 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition-colors hover:bg-slate-800 sm:w-auto"
               >
                 Get My Best Rates
                 <ArrowRight className="h-4 w-4" />
@@ -213,27 +192,39 @@ export function Hero() {
                 href="#how-it-works"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex h-12 items-center justify-center rounded-lg border border-foreground/30 px-7 text-sm font-semibold text-foreground transition-colors hover:bg-white/10"
+                className="inline-flex h-12 w-full items-center justify-center rounded-lg border border-foreground/30 px-7 text-sm font-semibold text-foreground transition-colors hover:bg-white/10 sm:w-auto"
               >
                 See How It Works
               </motion.a>
             </motion.div>
           </div>
 
-          {/* Right: Visual element */}
+          {/* Right: Mascot — desktop only in grid */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="hidden lg:block"
+            className="hidden lg:flex lg:flex-col lg:items-center lg:gap-6"
           >
-            <HeroCards />
+            <HeroMascot />
+            <SingpassBadge />
           </motion.div>
         </div>
+
+        {/* Mobile: Mascot + Singpass badge */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-col items-center gap-4 pb-16 sm:gap-6 sm:pb-20 lg:hidden"
+        >
+          <HeroMascot />
+          <SingpassBadge />
+        </motion.div>
       </div>
 
       {/* Bottom fade to white */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white/80 to-transparent" />
     </section>
   );
 }

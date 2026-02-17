@@ -30,7 +30,7 @@ function Feature({
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <div ref={ref} className="w-full py-16 sm:py-20 lg:py-28">
+    <div ref={ref} className="w-full py-8 sm:py-10 lg:py-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 60 }}

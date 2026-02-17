@@ -105,19 +105,17 @@ export function Advantages() {
           </p>
         </div>
         <Tabs defaultValue={advantageTabs[0].value} className="mt-8">
-          <div className="w-full overflow-x-auto">
-            <TabsList className="mx-auto flex w-full items-center justify-start gap-2 bg-transparent sm:justify-center sm:gap-4 md:gap-10">
-              {advantageTabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  className="flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-semibold bg-white text-foreground hover:bg-slate-50 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm data-[state=active]:bg-slate-900 data-[state=active]:text-primary"
-                >
-                  {tab.icon} <span className="whitespace-nowrap">{tab.label}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
+          <TabsList className="mx-auto grid w-full grid-cols-2 gap-2 bg-transparent sm:flex sm:items-center sm:justify-center sm:gap-4 md:gap-10">
+            {advantageTabs.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold bg-white text-foreground hover:bg-slate-50 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-primary"
+              >
+                {tab.icon} <span className="whitespace-nowrap">{tab.label}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
           <div className="mx-auto mt-6 max-w-screen-xl rounded-2xl bg-white p-6 shadow-lg sm:mt-8 sm:p-8 lg:p-16">
             {advantageTabs.map((tab) => (
               <TabsContent
