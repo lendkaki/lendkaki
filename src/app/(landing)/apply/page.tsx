@@ -284,14 +284,18 @@ function LandingPageInner() {
       {/* ============================================================ */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-2">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-2 transition-opacity hover:opacity-80"
+            aria-label="Scroll to top"
+          >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900">
               <span className="text-sm font-bold text-white">LK</span>
             </div>
             <span className="text-lg font-bold tracking-tight text-foreground">
               LendKaki
             </span>
-          </div>
+          </button>
           <div className="flex items-center gap-2 text-xs text-muted-foreground sm:text-sm">
             <Shield className="h-4 w-4 text-primary" />
             <span>256-bit SSL Encrypted</span>
