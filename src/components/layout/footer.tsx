@@ -217,7 +217,7 @@ export function Footer() {
             className="text-center sm:flex sm:justify-between sm:text-left"
           >
             <p className="order-first text-sm text-white/50 transition sm:mt-0">
-              &copy; {new Date().getFullYear()} LendKaki. All rights reserved.
+              &copy; 2026 LendKaki. All rights reserved.
             </p>
 
             <p className="mt-4 text-sm sm:mt-0">

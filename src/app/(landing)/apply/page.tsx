@@ -759,7 +759,7 @@ function LandingPageInner() {
             Terms of Service and Privacy Policy.
           </p>
           <p className="mt-3 text-center text-[10px] text-slate-500">
-            &copy; {new Date().getFullYear()} LendKaki. All rights reserved.
+            &copy; 2026 LendKaki. All rights reserved.
           </p>
         </div>
       </footer>
