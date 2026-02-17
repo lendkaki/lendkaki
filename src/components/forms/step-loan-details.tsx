@@ -43,21 +43,21 @@ export function StepLoanDetails() {
       <div className="space-y-4">
         <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:justify-between">
           <Label className="text-sm font-medium">Loan Amount</Label>
-          <span className="font-mono text-3xl font-bold text-primary sm:text-2xl">
-            ${loanAmount.toLocaleString("en-SG")}
+          <span className="font-mono text-xl font-semibold text-slate-900 sm:text-lg">
+            ${loanAmount.toLocaleString("en-SG")}{loanAmount >= 100000 ? "+" : ""}
           </span>
         </div>
         <Slider
           min={1000}
-          max={300000}
+          max={100000}
           step={1000}
           value={[loanAmount]}
           onValueChange={handleLoanAmountChange}
           className="py-2"
         />
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>$1,000</span>
-          <span>$300,000</span>
+          <span>$1k</span>
+          <span>&gt;$100k</span>
         </div>
         {errors.loanAmount && (
           <p className="text-sm text-destructive">
@@ -71,20 +71,20 @@ export function StepLoanDetails() {
         <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:justify-between">
           <Label className="text-sm font-medium">Repayment Tenure</Label>
           <span className="font-mono text-xl font-semibold text-foreground sm:text-lg">
-            {tenure} months
+            {tenure} months{tenure >= 24 ? "+" : ""}
           </span>
         </div>
         <Slider
-          min={3}
-          max={72}
-          step={3}
+          min={1}
+          max={24}
+          step={1}
           value={[tenure]}
           onValueChange={handleTenureChange}
           className="py-2"
         />
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>3 months</span>
-          <span>72 months</span>
+          <span>1 month</span>
+          <span>&gt;24 months</span>
         </div>
         {errors.tenure && (
           <p className="text-sm text-destructive">{errors.tenure.message}</p>

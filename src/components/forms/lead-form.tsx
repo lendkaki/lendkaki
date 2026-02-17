@@ -110,20 +110,20 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="hero-gradient pb-16 pt-24 sm:pb-24 sm:pt-32 lg:pb-32 lg:pt-40">
-        <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
+      <section id="apply" className="bg-background py-16 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mx-auto w-full rounded-2xl border border-white/10 bg-card p-8 text-center shadow-2xl sm:p-12 lg:p-14"
+            className="bg-slate-900 rounded-2xl p-8 text-center shadow-xl sm:p-12 lg:p-14"
           >
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
               <CheckCircle2 className="h-8 w-8 text-primary" />
             </div>
-            <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
+            <h3 className="text-2xl font-bold text-white sm:text-3xl">
               Application Submitted!
             </h3>
-            <p className="mt-3 text-base text-muted-foreground sm:mt-4 sm:text-lg">
+            <p className="mt-3 text-base text-slate-400 sm:mt-4 sm:text-lg">
               We&apos;re matching you with the best loan offers from our network
               of 50+ licensed lenders. You&apos;ll receive your personalized
               rates via email within minutes.
@@ -138,173 +138,177 @@ export function LeadForm() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="apply" className="hero-gradient pb-16 pt-24 sm:pb-24 sm:pt-32 lg:pb-32 lg:pt-40" ref={sectionRef}>
-      <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+    <section id="apply" className="bg-background py-16 sm:py-20 lg:py-28" ref={sectionRef}>
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 60 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="mb-8 flex flex-col items-center text-center sm:mb-10"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="bg-slate-900 rounded-2xl p-6 shadow-xl sm:p-10 lg:p-14"
         >
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
-            Get Your Best Rates
-          </h2>
-          <p className="mt-3 max-w-lg text-base text-slate-900/70 sm:mt-4 sm:text-lg">
-            Complete this quick form to receive personalized loan offers from Singapore's leading lenders.
-          </p>
-        </motion.div>
-
-        {/* Form Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.97 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="mx-auto w-full rounded-2xl border border-white/10 bg-card p-6 shadow-2xl sm:p-8 lg:p-10"
-        >
-          {/* Singpass Button */}
-          <div className="mb-8">
-            <SingpassButton />
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-card px-4 text-xs text-muted-foreground">
-                  or fill in manually
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Progress Steps */}
-          <div className="mb-8">
-            <div className="mx-auto flex max-w-md items-center justify-center">
-              {steps.map((step, index) => (
-                <div key={step.id} className="flex flex-1 items-center">
-                  <div className="flex w-full flex-col items-center">
-                    <motion.div
-                      animate={
-                        index === currentStep
-                          ? { scale: [1, 1.15, 1] }
-                          : { scale: 1 }
-                      }
-                      transition={{
-                        duration: 0.4,
-                        ease: [0.34, 1.56, 0.64, 1],
-                      }}
-                      className={`flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors ${
-                        index <= currentStep
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border bg-background text-muted-foreground"
-                      }`}
-                    >
-                      {index < currentStep ? (
-                        <CheckCircle2 className="h-4 w-4" />
-                      ) : (
-                        step.id
-                      )}
-                    </motion.div>
-                    <span className="mt-2 hidden text-center text-xs font-medium sm:block">
-                      {step.title}
-                    </span>
-                  </div>
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`mx-2 h-0.5 flex-1 rounded transition-colors ${
-                        index < currentStep ? "bg-primary" : "bg-border"
-                      }`}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Step Title */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground">
-              {steps[currentStep].title}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {steps[currentStep].description}
+          {/* Section Header */}
+          <div className="mb-8 flex flex-col items-center text-center sm:mb-10">
+            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+              Get Your Best Rates
+            </h2>
+            <p className="mt-3 max-w-lg text-base text-slate-400 sm:mt-4 sm:text-lg">
+              Complete this quick form to receive personalized loan offers from Singapore&apos;s leading lenders.
             </p>
           </div>
 
-          {/* Form Steps */}
-          <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={currentStep}
-                  custom={direction}
-                  variants={stepVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                >
-                  {currentStep === 0 && <StepLoanDetails />}
-                  {currentStep === 1 && <StepPersonal />}
-                  {currentStep === 2 && <StepEmployment />}
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Error */}
-              {methods.formState.errors.root && (
-                <p className="mt-4 text-sm text-destructive">
-                  {methods.formState.errors.root.message}
-                </p>
-              )}
-
-              {/* Navigation */}
-              <div className="mt-8 flex items-center justify-between">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={goToPrev}
-                  disabled={currentStep === 0}
-                  className="gap-2"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back
-                </Button>
-
-                {currentStep < steps.length - 1 ? (
-                  <Button type="button" onClick={goToNext} className="gap-2">
-                    Next
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="gap-2"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Submitting...
-                      </>
-                    ) : (
-                      <>
-                        Submit Application
-                        <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
-                )}
+          {/* Form Card */}
+          <div className="mx-auto w-full max-w-2xl rounded-xl bg-white p-6 shadow-lg sm:p-8 lg:p-10">
+            {/* Singpass Button */}
+            <div className="mb-8">
+              <SingpassButton />
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-white px-4 text-xs text-slate-500">
+                    or fill in manually
+                  </span>
+                </div>
               </div>
-            </form>
-          </FormProvider>
-        </motion.div>
+            </div>
 
-        {/* Privacy note */}
-        <p className="mt-6 text-center text-xs leading-relaxed text-slate-900/50 sm:text-sm">
-          Your data is encrypted and secure. We never share your information
-          without your consent. By submitting, you agree to our Terms of Service
-          and Privacy Policy.
-        </p>
+            {/* Progress Steps */}
+            <div className="mb-8">
+              <div className="mx-auto flex max-w-md items-center justify-center">
+                {steps.map((step, index) => (
+                  <div key={step.id} className="flex flex-1 items-center">
+                    <div className="flex w-full flex-col items-center">
+                      <motion.div
+                        animate={
+                          index === currentStep
+                            ? { scale: [1, 1.15, 1] }
+                            : { scale: 1 }
+                        }
+                        transition={{
+                          duration: 0.4,
+                          ease: [0.34, 1.56, 0.64, 1],
+                        }}
+                        className={`flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors ${
+                          index <= currentStep
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-slate-200 bg-slate-50 text-slate-400"
+                        }`}
+                      >
+                        {index < currentStep ? (
+                          <CheckCircle2 className="h-4 w-4" />
+                        ) : (
+                          step.id
+                        )}
+                      </motion.div>
+                      <span className="mt-2 hidden text-center text-xs font-medium text-slate-600 sm:block">
+                        {step.title}
+                      </span>
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div
+                        className={`mx-2 h-0.5 flex-1 rounded transition-colors ${
+                          index < currentStep ? "bg-primary" : "bg-slate-200"
+                        }`}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Step Title */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-slate-900">
+                {steps[currentStep].title}
+              </h3>
+              <p className="text-sm text-slate-500">
+                {steps[currentStep].description}
+              </p>
+            </div>
+
+            {/* Form Steps */}
+            <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={currentStep}
+                    custom={direction}
+                    variants={stepVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    {currentStep === 0 && <StepLoanDetails />}
+                    {currentStep === 1 && <StepPersonal />}
+                    {currentStep === 2 && <StepEmployment />}
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Error */}
+                {methods.formState.errors.root && (
+                  <p className="mt-4 text-sm text-destructive">
+                    {methods.formState.errors.root.message}
+                  </p>
+                )}
+
+                {/* Navigation */}
+                <div className={`mt-8 flex items-center ${currentStep === 0 ? "justify-end" : "justify-between"}`}>
+                  {currentStep > 0 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={goToPrev}
+                      className="gap-2"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                      Back
+                    </Button>
+                  )}
+
+                  {currentStep < steps.length - 1 ? (
+                    <Button
+                      type="button"
+                      onClick={goToNext}
+                      size="lg"
+                      className="gap-2 bg-slate-900 px-8 text-white shadow-lg hover:bg-slate-800"
+                    >
+                      Next
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      size="lg"
+                      className="gap-2 bg-slate-900 px-8 text-white shadow-lg hover:bg-slate-800"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          Submit Application
+                          <ArrowRight className="h-4 w-4" />
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              </form>
+            </FormProvider>
+          </div>
+
+          {/* Privacy note */}
+          <p className="mt-6 text-center text-xs leading-relaxed text-white/60 sm:text-sm">
+            Your data is encrypted and secure. We never share your information
+            without your consent. By submitting, you agree to our Terms of Service
+            and Privacy Policy.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

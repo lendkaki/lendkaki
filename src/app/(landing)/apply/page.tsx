@@ -16,6 +16,7 @@ import {
   BadgeCheck,
   Star,
   ChevronDown,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SingpassButton } from "@/components/forms/singpass-button";
@@ -38,25 +39,27 @@ import Image from "next/image";
 
 const headlineVariants: Record<
   string,
-  { headline: string; subheadline: string }
+  { before: string; highlight?: string; after?: string; subheadline: string }
 > = {
   default: {
-    headline: "Compare Singapore's Best Loan Rates in 60 Seconds",
+    before: "Compare Singapore's Best Loan Rates in",
+    highlight: "60 Seconds",
     subheadline:
       "One quick form. 50+ licensed lenders. Personalized offers — no credit score impact.",
   },
   fast: {
-    headline: "Get Approved for a Loan in Under 24 Hours",
+    before: "Get Approved for a Loan in Under",
+    highlight: "24 Hours",
     subheadline:
       "Skip the bank queues. Apply once, get matched with 50+ lenders instantly.",
   },
   free: {
-    headline: "Free Loan Comparison — Zero Credit Score Impact",
+    before: "Free Loan Comparison — Zero Credit Score Impact",
     subheadline:
       "Compare rates from 50+ licensed lenders without affecting your credit. 100% free.",
   },
   save: {
-    headline: "Save Thousands on Your Next Loan",
+    before: "Save Thousands on Your Next Loan",
     subheadline:
       "Our borrowers save an average of $2,000 in interest. Find your best rate now.",
   },
@@ -184,7 +187,7 @@ const trustBadges = [
 function LandingPageInner() {
   const searchParams = useSearchParams();
   const variant = searchParams.get("v") || "default";
-  const { headline, subheadline } =
+  const { before, highlight, after, subheadline } =
     headlineVariants[variant] || headlineVariants.default;
 
   /* UTM params */
@@ -327,7 +330,30 @@ function LandingPageInner() {
                 transition={{ duration: 0.5 }}
                 className="text-3xl font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
               >
-                {headline}
+                {before}
+                {highlight && (
+                  <>
+                    {" "}
+                    <span className="relative inline-flex items-center gap-1.5 -rotate-2 rounded-lg bg-[#E5FF00] px-3 py-0.5 text-slate-900 sm:gap-2 sm:px-4 sm:py-1">
+                      <motion.span
+                        animate={{
+                          scale: [1, 1.2, 1],
+                          rotate: [0, -10, 10, -10, 0],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          repeatDelay: 2,
+                        }}
+                        className="inline-flex"
+                      >
+                        <Zap className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 fill-yellow-400 text-yellow-600" />
+                      </motion.span>
+                      {highlight}
+                    </span>
+                  </>
+                )}
+                {after && <> {after}</>}
               </motion.h1>
 
               <motion.p
@@ -525,17 +551,18 @@ function LandingPageInner() {
                       )}
 
                       {/* Navigation */}
-                      <div className="mt-6 flex items-center justify-between">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          onClick={goToPrev}
-                          disabled={currentStep === 0}
-                          className="gap-2"
-                        >
-                          <ArrowLeft className="h-4 w-4" />
-                          Back
-                        </Button>
+                      <div className={`mt-6 flex items-center ${currentStep === 0 ? "justify-end" : "justify-between"}`}>
+                        {currentStep > 0 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={goToPrev}
+                            className="gap-2"
+                          >
+                            <ArrowLeft className="h-4 w-4" />
+                            Back
+                          </Button>
+                        )}
 
                         {currentStep < steps.length - 1 ? (
                           <Button
