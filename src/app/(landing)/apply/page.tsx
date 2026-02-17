@@ -258,11 +258,18 @@ function LandingPageInner() {
 
   /* Sticky CTA visibility */
   const [showStickyCta, setShowStickyCta] = useState(false);
+  const footerRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const handleScroll = () => {
-      if (!formRef.current) return;
-      const rect = formRef.current.getBoundingClientRect();
-      setShowStickyCta(rect.bottom < 0);
+      if (!formRef.current || !footerRef.current) return;
+      const formRect = formRef.current.getBoundingClientRect();
+      const footerRect = footerRef.current.getBoundingClientRect();
+      
+      // Show CTA when form is scrolled past AND footer is not visible yet
+      const formScrolledPast = formRect.bottom < 0;
+      const footerVisible = footerRect.top < window.innerHeight;
+      
+      setShowStickyCta(formScrolledPast && !footerVisible);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -741,7 +748,7 @@ function LandingPageInner() {
       {/* ============================================================ */}
       {/*  LEGAL FOOTER                                                 */}
       {/* ============================================================ */}
-      <footer className="border-t border-border bg-slate-900 px-4 py-6 sm:px-6">
+      <footer ref={footerRef} className="border-t border-border bg-slate-900 px-4 py-6 sm:px-6">
         <div className="mx-auto max-w-4xl">
           <p className="text-center text-[10px] leading-relaxed text-slate-400 sm:text-xs">
             LendKaki is a loan comparison platform. We are not a lender. All
