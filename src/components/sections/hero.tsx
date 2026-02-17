@@ -33,7 +33,7 @@ function RotatingText() {
           animate={{ y: "0%", opacity: 1 }}
           exit={{ y: "-100%", opacity: 0 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-block text-white/90"
+          className="inline-block text-foreground"
         >
           {rotatingWords[index]}
         </motion.span>
@@ -54,7 +54,7 @@ function HeroCards() {
       >
         <div className="h-3 w-20 rounded-full bg-white/20" />
         <div className="mt-4 h-3 w-14 rounded-full bg-white/15" />
-        <div className="mt-6 font-mono text-3xl font-bold text-white/30">
+        <div className="mt-6 font-mono text-3xl font-bold text-foreground/40">
           5.0%
         </div>
       </motion.div>
@@ -68,7 +68,7 @@ function HeroCards() {
       >
         <div className="h-3 w-24 rounded-full bg-white/25" />
         <div className="mt-4 h-3 w-16 rounded-full bg-white/20" />
-        <div className="mt-6 font-mono text-3xl font-bold text-white/40">
+        <div className="mt-6 font-mono text-3xl font-bold text-foreground/50">
           4.18%
         </div>
       </motion.div>
@@ -78,7 +78,7 @@ function HeroCards() {
         initial={{ opacity: 0, y: 40, rotate: -2 }}
         animate={{ opacity: 1, y: 0, rotate: -2 }}
         transition={{ duration: 0.7, delay: 0.2 }}
-        className="absolute right-12 top-20 h-52 w-64 rounded-2xl border border-white/20 bg-white/20 p-6 shadow-2xl shadow-black/10 backdrop-blur-md sm:right-16 sm:h-60 sm:w-72"
+        className="absolute right-12 top-20 h-52 w-64 rounded-2xl border border-white/20 bg-white/20 p-6 shadow-2xl shadow-slate-900/10 backdrop-blur-md sm:right-16 sm:h-60 sm:w-72"
       >
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-white/30" />
@@ -88,18 +88,18 @@ function HeroCards() {
           </div>
         </div>
         <div className="mt-5">
-          <div className="text-xs font-medium text-white/60">
+          <div className="text-xs font-medium text-foreground/70">
             Interest Rate (p.a.)
           </div>
-          <div className="mt-1 font-mono text-4xl font-bold text-white">
+          <div className="mt-1 font-mono text-4xl font-bold text-foreground">
             3.48%
           </div>
         </div>
         <div className="mt-4 flex gap-2">
-          <div className="rounded-full bg-white/20 px-3 py-1 text-xs text-white/70">
+          <div className="rounded-full bg-white/20 px-3 py-1 text-xs text-foreground/80">
             No fees
           </div>
-          <div className="rounded-full bg-white/20 px-3 py-1 text-xs text-white/70">
+          <div className="rounded-full bg-white/20 px-3 py-1 text-xs text-foreground/80">
             Same-day
           </div>
         </div>
@@ -117,11 +117,11 @@ function HeroCards() {
         }}
         className="absolute left-0 top-4 z-10 rounded-xl border border-white/20 bg-white/20 px-4 py-3 backdrop-blur-md sm:left-4"
       >
-        <div className="text-xs font-medium text-white/70">
+        <div className="text-xs font-medium text-foreground/70">
           Lowest rate found
         </div>
-        <div className="font-mono text-2xl font-bold text-white">
-          2.0% <span className="text-sm font-normal text-white/60">p.a.</span>
+        <div className="font-mono text-2xl font-bold text-foreground">
+          2.0% <span className="text-sm font-normal text-foreground/70">p.a.</span>
         </div>
       </motion.div>
 
@@ -137,8 +137,8 @@ function HeroCards() {
         }}
         className="absolute bottom-6 left-4 z-10 rounded-xl border border-white/20 bg-white/20 px-4 py-3 backdrop-blur-md sm:left-8"
       >
-        <div className="text-xs font-medium text-white/70">Avg. approval</div>
-        <div className="font-mono text-2xl font-bold text-white">
+        <div className="text-xs font-medium text-foreground/70">Avg. approval</div>
+        <div className="font-mono text-2xl font-bold text-foreground">
           &lt;24h
         </div>
       </motion.div>
@@ -158,7 +158,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+              className="text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
             >
               The{" "}
               <span className="hero-highlight relative inline-block rounded-lg bg-white/20 px-3 py-0.5 backdrop-blur-sm">
@@ -175,7 +175,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-6 max-w-lg text-base leading-relaxed text-white/70 sm:text-lg"
+              className="mt-6 max-w-lg text-base leading-relaxed text-foreground/70 sm:text-lg"
             >
               Compare 50+ licensed lenders. One application.
               No credit score impact.
@@ -192,7 +192,7 @@ export function Hero() {
                 href="#apply"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-white px-7 text-sm font-semibold text-primary shadow-lg shadow-black/10 transition-colors hover:bg-white/90"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-slate-900 px-7 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition-colors hover:bg-slate-800"
               >
                 Get My Best Rates
                 <ArrowRight className="h-4 w-4" />
@@ -201,7 +201,7 @@ export function Hero() {
                 href="#how-it-works"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex h-12 items-center justify-center rounded-lg border border-white/30 px-7 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                className="inline-flex h-12 items-center justify-center rounded-lg border border-foreground/30 px-7 text-sm font-semibold text-foreground transition-colors hover:bg-white/10"
               >
                 See How It Works
               </motion.a>

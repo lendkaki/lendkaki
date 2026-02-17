@@ -3,9 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Sheet, SheetContent, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetFooter, SheetTitle } from "@/components/ui/sheet";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { MenuToggle } from "@/components/ui/menu-toggle";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -25,121 +24,149 @@ export function Navbar() {
   }, []);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
-        isScrolled
-          ? "border-b border-border/50 bg-white/80 backdrop-blur-lg"
-          : "bg-transparent"
-      )}
-    >
-      <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div
-            className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
-              isScrolled ? "bg-primary" : "bg-white"
-            )}
-          >
+    <>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
+          isScrolled
+            ? "border-b border-border/50 bg-white/80 backdrop-blur-lg"
+            : "bg-transparent"
+        )}
+      >
+        <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <div
+              className={cn(
+                "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
+                isScrolled ? "bg-primary" : "bg-slate-900"
+              )}
+            >
+              <span
+                className={cn(
+                  "text-sm font-bold transition-colors",
+                  isScrolled ? "text-primary-foreground" : "text-white"
+                )}
+              >
+                LK
+              </span>
+            </div>
             <span
               className={cn(
-                "text-sm font-bold transition-colors",
-                isScrolled ? "text-primary-foreground" : "text-primary"
+                "text-lg font-bold tracking-tight transition-colors",
+                isScrolled ? "text-foreground" : "text-slate-900"
               )}
             >
-              LK
+              LendKaki
             </span>
-          </div>
-          <span
-            className={cn(
-              "text-lg font-bold tracking-tight transition-colors",
-              isScrolled ? "text-foreground" : "text-white"
-            )}
-          >
-            LendKaki
-          </span>
-        </Link>
+          </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden items-center gap-2 lg:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
+          {/* Desktop Nav */}
+          <div className="hidden items-center gap-2 lg:flex">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  buttonVariants({ variant: "ghost" }),
+                  isScrolled
+                    ? "text-muted-foreground hover:bg-slate-900 hover:text-white"
+                    : "text-slate-900/80 hover:bg-white/10 hover:text-slate-900"
+                )}
+              >
+                {link.label}
+              </a>
+            ))}
+            <Button
+              asChild
+              variant={isScrolled ? "default" : "outline"}
               className={cn(
-                buttonVariants({ variant: "ghost" }),
-                isScrolled
-                  ? "text-muted-foreground hover:bg-slate-900 hover:text-white"
-                  : "text-white/80 hover:bg-white/10 hover:text-white"
+                isScrolled && "hover:bg-slate-900",
+                !isScrolled &&
+                  "border-slate-900 bg-slate-900 text-white hover:bg-slate-800 hover:border-slate-800"
               )}
             >
-              {link.label}
-            </a>
-          ))}
-          <Button
-            asChild
-            variant={isScrolled ? "default" : "outline"}
-            className={cn(
-              isScrolled && "hover:bg-slate-900",
-              !isScrolled &&
-                "border-white bg-white text-primary hover:bg-slate-900 hover:text-white hover:border-slate-900"
-            )}
-          >
-            <a href="#apply">Get My Best Rates</a>
-          </Button>
-        </div>
+              <a href="#apply">Get My Best Rates</a>
+            </Button>
+          </div>
 
-        {/* Mobile Menu */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <Button
-            size="icon"
-            variant="ghost"
+          {/* Spacer so the header layout doesn't shift (invisible, matches toggle size) */}
+          <div className="size-9 lg:hidden" />
+        </nav>
+      </header>
+
+      {/* Mobile toggle — rendered OUTSIDE header so it escapes the z-50 stacking context */}
+      <div className="pointer-events-none fixed top-0 left-0 right-0 z-[60] lg:hidden">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-end px-4 sm:px-6 lg:px-8">
+          <button
+            type="button"
+            aria-label="Toggle menu"
             className={cn(
-              "lg:hidden",
-              isScrolled
-                ? "hover:bg-slate-900 hover:text-white"
-                : "text-white hover:bg-white/10 hover:text-white"
+              "pointer-events-auto flex items-center justify-center size-9 rounded-md transition-colors",
+              open
+                ? "text-slate-900 hover:bg-slate-200"
+                : isScrolled
+                  ? "hover:bg-slate-900 hover:text-white"
+                  : "text-slate-900 hover:bg-white/10 hover:text-slate-800"
             )}
             onClick={() => setOpen(!open)}
           >
-            <MenuToggle
+            <svg
               strokeWidth={2.5}
-              open={open}
-              onOpenChange={setOpen}
-              className="size-6"
-            />
-          </Button>
-          <SheetContent
-            className="bg-white/95 supports-[backdrop-filter]:bg-white/80 gap-0 backdrop-blur-lg"
-            showClose={false}
-            side="left"
-          >
-            <div className="grid gap-y-2 overflow-y-auto px-4 pt-12 pb-5">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    buttonVariants({
-                      variant: "ghost",
-                      className: "justify-start hover:bg-slate-900 hover:text-white",
-                    })
-                  )}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-            <SheetFooter>
-              <Button asChild className="w-full hover:bg-slate-900" onClick={() => setOpen(false)}>
-                <a href="#apply">Get My Best Rates</a>
-              </Button>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
-      </nav>
-    </header>
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 32 32"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={cn('size-6 transition-transform duration-600 ease-out', open && '-rotate-45')}
+            >
+              <path
+                className={cn(
+                  'transition-all duration-600 ease-out',
+                  open ? '[stroke-dasharray:20_300] [stroke-dashoffset:-32.42px]' : '[stroke-dasharray:12_63]',
+                )}
+                d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+              />
+              <path d="M7 16 27 16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Sheet */}
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent
+          className="bg-white/95 supports-[backdrop-filter]:bg-white/80 gap-0 backdrop-blur-lg"
+          showClose={false}
+          side="left"
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onInteractOutside={(e) => e.preventDefault()}
+        >
+          <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <div className="grid gap-y-2 overflow-y-auto px-4 pt-12 pb-5">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className={cn(
+                  buttonVariants({
+                    variant: "ghost",
+                    className: "justify-start hover:bg-slate-900 hover:text-white",
+                  })
+                )}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <SheetFooter>
+            <Button asChild className="w-full hover:bg-slate-900" onClick={() => setOpen(false)}>
+              <a href="#apply">Get My Best Rates</a>
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }

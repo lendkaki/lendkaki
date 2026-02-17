@@ -147,10 +147,10 @@ export function LeadForm() {
           transition={{ duration: 0.5 }}
           className="mb-8 flex flex-col items-center text-center sm:mb-10"
         >
-          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
             Get Your Best Rates
           </h2>
-          <p className="mt-3 max-w-lg text-base text-white/70 sm:mt-4 sm:text-lg">
+          <p className="mt-3 max-w-lg text-base text-slate-900/70 sm:mt-4 sm:text-lg">
             Complete this quick form to receive personalized loan offers from Singapore's leading lenders.
           </p>
         </motion.div>
@@ -300,7 +300,7 @@ export function LeadForm() {
         </motion.div>
 
         {/* Privacy note */}
-        <p className="mt-6 text-center text-xs leading-relaxed text-white/50 sm:text-sm">
+        <p className="mt-6 text-center text-xs leading-relaxed text-slate-900/50 sm:text-sm">
           Your data is encrypted and secure. We never share your information
           without your consent. By submitting, you agree to our Terms of Service
           and Privacy Policy.
