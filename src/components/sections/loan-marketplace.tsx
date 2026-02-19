@@ -42,7 +42,7 @@ export function LoanMarketplace() {
       : loanProducts.filter((loan) => loan.category === activeCategory);
 
   return (
-    <section id="loans" className="bg-muted/20 py-20 scroll-mt-20 sm:py-28" ref={ref}>
+    <section id="loans" className="bg-muted/20 py-20 scroll-mt-14 sm:py-28" ref={ref}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div

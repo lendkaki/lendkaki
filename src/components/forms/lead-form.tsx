@@ -62,7 +62,7 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="relative overflow-hidden scroll-mt-20 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-20 lg:py-28">
+      <section id="apply" className="relative overflow-hidden scroll-mt-14 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-20 lg:py-28">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -90,7 +90,7 @@ export function LeadForm() {
     <section
       id="apply"
       ref={sectionRef}
-      className="relative overflow-hidden scroll-mt-20 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-20 lg:py-28"
+      className="relative overflow-hidden scroll-mt-14 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-20 lg:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
