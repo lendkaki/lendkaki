@@ -26,8 +26,8 @@ export function HowItWorks() {
               "Choose the best offer for you. Funds can be disbursed as fast as the same day, directly to your account.",
           },
         ]}
-        imageUrl="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2000&auto=format&fit=crop"
-        imageAlt="Financial planning and loan comparison"
+        imageUrl="/lendkaki how it works.webp"
+        imageAlt="LendKaki — how it works"
       />
     </section>
   );
