@@ -76,14 +76,14 @@ function HeroMascot() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative"
+        className="relative w-[280px] sm:w-[320px] lg:w-[400px] xl:w-[460px]"
       >
         <Image
           src="/mascot-otter.webp"
           alt="LendKaki otter mascot"
           width={480}
           height={480}
-          className="h-auto w-[280px] drop-shadow-xl sm:w-[320px] lg:w-[400px] xl:w-[460px]"
+          className="h-auto w-full drop-shadow-xl"
           priority
         />
 
@@ -92,9 +92,10 @@ function HeroMascot() {
           initial={{ opacity: 0, scale: 0.8, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1, type: "spring", stiffness: 200 }}
-          className="absolute -left-16 z-10 rounded-xl px-3 py-2 sm:-left-20 sm:px-4 sm:py-3"
+          className="absolute z-10 rounded-xl px-3 py-2 sm:px-4 sm:py-3"
           style={{
             bottom: "78%",
+            left: "-15%",
             background: "oklch(0.2 0.06 240)",
             border: "1.5px solid #E5FF00",
             boxShadow: "0 0 12px 2px #E5FF0066, 0 4px 16px rgba(0,0,0,0.3)",
@@ -113,9 +114,10 @@ function HeroMascot() {
           initial={{ opacity: 0, scale: 0.8, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.3, type: "spring", stiffness: 200 }}
-          className="absolute -right-4 z-10 rounded-xl px-3 py-2 sm:-right-6 sm:px-4 sm:py-3"
+          className="absolute z-10 rounded-xl px-3 py-2 sm:px-4 sm:py-3"
           style={{
             bottom: "78%",
+            right: "-5%",
             background: "oklch(0.2 0.06 240)",
             border: "1.5px solid #E5FF00",
             boxShadow: "0 0 12px 2px #E5FF0066, 0 4px 16px rgba(0,0,0,0.3)",
