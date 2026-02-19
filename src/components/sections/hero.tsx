@@ -27,6 +27,8 @@ function RotatingText() {
 
   return (
     <span className="relative inline-flex h-[1.15em] items-end overflow-hidden whitespace-nowrap">
+      {/* Invisible spacer sized to the longest word — prevents layout shift */}
+      <span className="invisible" aria-hidden="true">business growth</span>
       <AnimatePresence mode="wait">
         <motion.span
           key={rotatingWords[index]}
@@ -34,7 +36,7 @@ function RotatingText() {
           animate={{ y: "0%", opacity: 1 }}
           exit={{ y: "-100%", opacity: 0 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-block text-foreground"
+          className="absolute inset-0 flex items-end justify-center text-foreground lg:justify-start"
         >
           {rotatingWords[index]}
         </motion.span>
@@ -76,29 +78,21 @@ function HeroMascot() {
         transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="relative"
       >
-        <div
-          className="relative h-auto w-[280px] sm:w-[320px] lg:w-[400px] xl:w-[460px]"
-          style={{
-            WebkitMaskImage: "radial-gradient(ellipse 80% 85% at 50% 50%, black 55%, transparent 95%)",
-            maskImage: "radial-gradient(ellipse 80% 85% at 50% 50%, black 55%, transparent 95%)",
-          }}
-        >
-          <Image
-            src="/mascot-otter.png"
-            alt="LendKaki otter mascot"
-            width={480}
-            height={480}
-            className="h-auto w-full"
-            priority
-          />
-        </div>
+        <Image
+          src="/mascot-otter.webp"
+          alt="LendKaki otter mascot"
+          width={480}
+          height={480}
+          className="h-auto w-[280px] drop-shadow-xl sm:w-[320px] lg:w-[400px] xl:w-[460px]"
+          priority
+        />
 
-        {/* Floating rate badge */}
+        {/* Floating rate badge — top-left near raised hand */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, x: -20 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1, type: "spring", stiffness: 200 }}
-          className="absolute -left-2 top-8 z-10 rounded-xl border border-white/40 bg-white/70 px-3 py-2 shadow-lg backdrop-blur-md sm:-left-6 sm:top-12 sm:px-4 sm:py-3"
+          className="absolute -left-8 -top-2 z-10 rounded-xl border border-white/40 bg-white/80 px-3 py-2 shadow-lg backdrop-blur-md sm:-left-14 sm:-top-4 sm:px-4 sm:py-3"
         >
           <div className="text-[10px] font-medium text-slate-600 sm:text-xs">
             Lowest rate found
@@ -108,12 +102,12 @@ function HeroMascot() {
           </div>
         </motion.div>
 
-        {/* Floating approval badge */}
+        {/* Floating approval badge — top-right near raised hand */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, x: 20 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.3, type: "spring", stiffness: 200 }}
-          className="absolute -right-2 bottom-16 z-10 rounded-xl border border-white/40 bg-white/70 px-3 py-2 shadow-lg backdrop-blur-md sm:-right-6 sm:bottom-24 sm:px-4 sm:py-3"
+          className="absolute -right-8 -top-2 z-10 rounded-xl border border-white/40 bg-white/80 px-3 py-2 shadow-lg backdrop-blur-md sm:-right-14 sm:-top-4 sm:px-4 sm:py-3"
         >
           <div className="text-[10px] font-medium text-slate-600 sm:text-xs">Avg. approval</div>
           <div className="font-mono text-lg font-bold text-slate-900 sm:text-2xl">
