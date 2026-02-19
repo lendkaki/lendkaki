@@ -1,93 +1,47 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { ArrowRight, CheckCircle2, Loader2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SingpassButton } from "@/components/forms/singpass-button";
-import { StepLoanDetails } from "@/components/forms/step-loan-details";
-import { StepPersonal } from "@/components/forms/step-personal";
-import { StepEmployment } from "@/components/forms/step-employment";
+import { Label } from "@/components/ui/label";
 import {
-  leadFormSchema,
-  stepLoanDetailsSchema,
-  stepPersonalSchema,
-  stepEmploymentSchema,
-  type LeadFormValues,
-} from "@/lib/schemas";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { loanPurposeOptions } from "@/lib/loan-data";
+import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 
-const steps = [
-  {
-    id: 1,
-    title: "Loan Details",
-    description: "How much do you need?",
-    schema: stepLoanDetailsSchema,
-  },
-  {
-    id: 2,
-    title: "Personal Info",
-    description: "Tell us about yourself",
-    schema: stepPersonalSchema,
-  },
-  {
-    id: 3,
-    title: "Employment",
-    description: "Your work details",
-    schema: stepEmploymentSchema,
-  },
+const valueProps = [
+  "Fast, Easy Application Process",
+  "Secure Match with Trusted Lenders",
+  "No Hidden Fees, Full Transparency",
+  "Dedicated Customer Support",
 ];
 
-const stepVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 100 : -100,
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? 100 : -100,
-    opacity: 0,
-  }),
-};
-
 export function LeadForm() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  const methods = useForm<LeadFormValues>({
-    resolver: zodResolver(leadFormSchema),
-    defaultValues: {
-      loanAmount: 20000,
-      tenure: 24,
-    },
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    setError,
+  } = useForm<QuickLeadValues>({
+    resolver: zodResolver(quickLeadSchema),
     mode: "onTouched",
   });
 
-  const goToNext = async () => {
-    const currentSchema = steps[currentStep].schema;
-    const fieldsToValidate = Object.keys(
-      currentSchema.shape
-    ) as (keyof LeadFormValues)[];
-
-    const isValid = await methods.trigger(fieldsToValidate);
-    if (!isValid) return;
-
-    setDirection(1);
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
-  };
-
-  const goToPrev = () => {
-    setDirection(-1);
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
-  const onSubmit = async (data: LeadFormValues) => {
+  const onSubmit = async (data: QuickLeadValues) => {
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/leads", {
@@ -95,12 +49,10 @@ export function LeadForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
       if (!response.ok) throw new Error("Submission failed");
-
       setIsSuccess(true);
     } catch {
-      methods.setError("root", {
+      setError("root", {
         message: "Something went wrong. Please try again.",
       });
     } finally {
@@ -110,20 +62,20 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="bg-background py-16 sm:py-20 lg:py-28">
+      <section id="apply" className="relative overflow-hidden scroll-mt-20 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-20 lg:py-28">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-slate-900 rounded-2xl p-8 text-center shadow-xl sm:p-12 lg:p-14"
+            className="rounded-2xl border border-border bg-white p-8 text-center shadow-xl sm:p-12"
           >
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
               <CheckCircle2 className="h-8 w-8 text-primary" />
             </div>
-            <h3 className="text-2xl font-bold text-white sm:text-3xl">
+            <h3 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Application Submitted!
             </h3>
-            <p className="mt-3 text-base text-slate-400 sm:mt-4 sm:text-lg">
+            <p className="mt-3 text-base text-slate-600 sm:mt-4 sm:text-lg">
               We&apos;re matching you with the best loan offers from our network
               of 50+ licensed lenders. You&apos;ll receive your personalized
               rates via email within minutes.
@@ -134,180 +86,256 @@ export function LeadForm() {
     );
   }
 
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
   return (
-    <section id="apply" className="bg-background py-16 sm:py-20 lg:py-28" ref={sectionRef}>
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <section
+      id="apply"
+      ref={sectionRef}
+      className="relative overflow-hidden scroll-mt-20 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-20 lg:py-28"
+    >
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-slate-900 rounded-2xl p-6 shadow-xl sm:p-10 lg:p-14"
+          className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
         >
-          {/* Section Header */}
-          <div className="mb-8 flex flex-col items-center text-center sm:mb-10">
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
-              Get Your Best Rates
-            </h2>
-            <p className="mt-3 max-w-lg text-base text-slate-400 sm:mt-4 sm:text-lg">
-              Complete this quick form to receive personalized loan offers from Singapore&apos;s leading lenders.
-            </p>
-          </div>
+          {/* Left: Marketing content */}
+          <div className="text-center lg:text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mb-6 inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5"
+            >
+              <span className="text-lg font-bold text-white">50+</span>
+              <span className="text-sm font-medium text-white/80">
+                Trusted Lenders to Choose From
+              </span>
+            </motion.div>
 
-          {/* Form Card */}
-          <div className="mx-auto w-full max-w-2xl rounded-xl bg-white p-6 shadow-lg sm:p-8 lg:p-10">
-            {/* Singpass Button */}
-            <div className="mb-8">
-              <SingpassButton />
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200" />
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-white px-4 text-xs text-slate-500">
-                    or fill in manually
-                  </span>
-                </div>
-              </div>
-            </div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+            >
+              Explore Your Personal Loan Options Now
+            </motion.h2>
 
-            {/* Progress Steps */}
-            <div className="mb-8">
-              <div className="mx-auto flex max-w-md items-center justify-center">
-                {steps.map((step, index) => (
-                  <div key={step.id} className="flex flex-1 items-center">
-                    <div className="flex w-full flex-col items-center">
-                      <motion.div
-                        animate={
-                          index === currentStep
-                            ? { scale: [1, 1.15, 1] }
-                            : { scale: 1 }
-                        }
-                        transition={{
-                          duration: 0.4,
-                          ease: [0.34, 1.56, 0.64, 1],
-                        }}
-                        className={`flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors ${
-                          index <= currentStep
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : "border-slate-200 bg-slate-50 text-slate-400"
-                        }`}
-                      >
-                        {index < currentStep ? (
-                          <CheckCircle2 className="h-4 w-4" />
-                        ) : (
-                          step.id
-                        )}
-                      </motion.div>
-                      <span className="mt-2 hidden text-center text-xs font-medium text-slate-600 sm:block">
-                        {step.title}
-                      </span>
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div
-                        className={`mx-2 h-0.5 flex-1 rounded transition-colors ${
-                          index < currentStep ? "bg-primary" : "bg-slate-200"
-                        }`}
-                      />
-                    )}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="mt-8 space-y-4 sm:mt-10"
+            >
+              {valueProps.map((item, i) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-3 justify-center lg:justify-start"
+                >
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/20">
+                    <Check className="h-4 w-4 text-primary" />
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Step Title */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-slate-900">
-                {steps[currentStep].title}
-              </h3>
-              <p className="text-sm text-slate-500">
-                {steps[currentStep].description}
-              </p>
-            </div>
-
-            {/* Form Steps */}
-            <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.div
-                    key={currentStep}
-                    custom={direction}
-                    variants={stepVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    {currentStep === 0 && <StepLoanDetails />}
-                    {currentStep === 1 && <StepPersonal />}
-                    {currentStep === 2 && <StepEmployment />}
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Error */}
-                {methods.formState.errors.root && (
-                  <p className="mt-4 text-sm text-destructive">
-                    {methods.formState.errors.root.message}
-                  </p>
-                )}
-
-                {/* Navigation */}
-                <div className={`mt-8 flex items-center ${currentStep === 0 ? "justify-end" : "justify-between"}`}>
-                  {currentStep > 0 && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={goToPrev}
-                      className="gap-2"
-                    >
-                      <ArrowLeft className="h-4 w-4" />
-                      Back
-                    </Button>
-                  )}
-
-                  {currentStep < steps.length - 1 ? (
-                    <Button
-                      type="button"
-                      onClick={goToNext}
-                      size="lg"
-                      className="gap-2 bg-slate-900 px-8 text-white shadow-lg hover:bg-slate-800"
-                    >
-                      Next
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      size="lg"
-                      className="gap-2 bg-slate-900 px-8 text-white shadow-lg hover:bg-slate-800"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Submitting...
-                        </>
-                      ) : (
-                        <>
-                          Submit Application
-                          <ArrowRight className="h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
-                  )}
-                </div>
-              </form>
-            </FormProvider>
+                  <span className="text-base font-medium text-slate-800">
+                    {item}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
 
-          {/* Privacy note */}
-          <p className="mt-6 text-center text-xs leading-relaxed text-white/60 sm:text-sm">
-            Your data is encrypted and secure. We never share your information
-            without your consent. By submitting, you agree to our Terms of Service
-            and Privacy Policy.
-          </p>
+          {/* Right: Form card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="rounded-2xl border border-border bg-white p-6 shadow-xl sm:p-8"
+            >
+              <div className="space-y-5">
+                {/* Name */}
+                <div>
+                  <Label htmlFor="fullName" className="mb-1.5 block text-sm font-medium text-slate-700">
+                    Name
+                  </Label>
+                  <input
+                    id="fullName"
+                    placeholder="Enter your name here"
+                    className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    {...register("fullName")}
+                  />
+                  {errors.fullName && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.fullName.message}</p>
+                  )}
+                </div>
+
+                {/* Mobile Number */}
+                <div>
+                  <Label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-slate-700">
+                    Mobile Number
+                  </Label>
+                  <input
+                    id="phone"
+                    placeholder="Enter your mobile number here"
+                    className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    {...register("phone")}
+                  />
+                  {errors.phone && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.phone.message}</p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <Label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
+                    Email Address
+                  </Label>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email address here"
+                    className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    {...register("email")}
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.email.message}</p>
+                  )}
+                </div>
+
+                {/* Desired Loan Amount */}
+                <div>
+                  <Label htmlFor="loanAmount" className="mb-1.5 block text-sm font-medium text-slate-700">
+                    Desired Loan Amount
+                  </Label>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-500">
+                      $
+                    </span>
+                    <input
+                      id="loanAmount"
+                      type="number"
+                      placeholder="Enter desired loan amount"
+                      className="h-11 w-full rounded-lg border border-slate-300 bg-white pl-7 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      {...register("loanAmount", { valueAsNumber: true })}
+                    />
+                  </div>
+                  {errors.loanAmount && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.loanAmount.message}</p>
+                  )}
+                </div>
+
+                {/* Purpose of Loan */}
+                <div>
+                  <Label className="mb-1.5 block text-sm font-medium text-slate-700">
+                    Purpose of Loan
+                  </Label>
+                  <Select
+                    onValueChange={(value) =>
+                      setValue("loanPurpose", value as QuickLeadValues["loanPurpose"], {
+                        shouldValidate: true,
+                      })
+                    }
+                  >
+                    <SelectTrigger className="h-11 w-full rounded-lg border-slate-300 bg-white text-sm text-slate-700 shadow-none focus:border-primary focus:ring-2 focus:ring-primary/20 data-[placeholder]:text-slate-400">
+                      <SelectValue placeholder="Select purpose of loan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {loanPurposeOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.loanPurpose && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.loanPurpose.message}</p>
+                  )}
+                </div>
+
+                {/* Nationality — radio buttons */}
+                <div>
+                  <div className="flex items-center gap-6">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        value="citizen_pr"
+                        className="h-4 w-4 border-slate-300 text-primary accent-primary"
+                        {...register("nationality")}
+                      />
+                      <span className="text-sm text-slate-600">Singapore/PR</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        value="foreigner"
+                        className="h-4 w-4 border-slate-300 text-primary accent-primary"
+                        {...register("nationality")}
+                      />
+                      <span className="text-sm text-slate-600">Foreigner</span>
+                    </label>
+                  </div>
+                  {errors.nationality && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.nationality.message}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-6 h-12 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-teal-500 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    Get Your Loan Options
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+
+              {errors.root && (
+                <p className="mt-3 text-center text-sm text-red-500">
+                  {errors.root.message}
+                </p>
+              )}
+
+              {/* Terms checkbox */}
+              <div className="mt-4">
+                <label className="flex items-start gap-2.5">
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-primary"
+                    {...register("agreedToTerms")}
+                  />
+                  <span className="text-xs leading-relaxed text-slate-500">
+                    By proceeding the application, I agree to LendKaki&apos;s{" "}
+                    <a href="#" className="font-medium text-primary hover:underline">
+                      Terms of Use
+                    </a>{" "}
+                    and{" "}
+                    <a href="#" className="font-medium text-primary hover:underline">
+                      Privacy Policy
+                    </a>
+                    , and consent to receive marketing emails.
+                  </span>
+                </label>
+                {errors.agreedToTerms && (
+                  <p className="mt-1 text-xs font-medium text-red-500">{errors.agreedToTerms.message}</p>
+                )}
+              </div>
+            </form>
+          </motion.div>
         </motion.div>
       </div>
     </section>

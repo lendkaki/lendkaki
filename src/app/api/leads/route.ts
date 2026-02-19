@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { leadFormSchema } from "@/lib/schemas";
+import { leadFormSchema, quickLeadSchema } from "@/lib/schemas";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Extract UTM and tracking fields before schema validation
     const {
       utm_source,
       utm_medium,
@@ -14,23 +13,23 @@ export async function POST(request: Request) {
       utm_term,
       landing_page,
       variant,
+      agreedToTerms: _agreedToTerms,
       ...formFields
     } = body;
 
-    const parsed = leadFormSchema.safeParse(formFields);
-    if (!parsed.success) {
+    const fullParsed = leadFormSchema.safeParse(formFields);
+    const quickParsed = quickLeadSchema.safeParse({ ...formFields, agreedToTerms: body.agreedToTerms });
+
+    if (!fullParsed.success && !quickParsed.success) {
+      const errors = fullParsed.error?.flatten().fieldErrors ?? quickParsed.error?.flatten().fieldErrors;
       return NextResponse.json(
-        {
-          error: "Validation failed",
-          details: parsed.error.flatten().fieldErrors,
-        },
+        { error: "Validation failed", details: errors },
         { status: 400 }
       );
     }
 
-    const data = parsed.data;
+    const data = fullParsed.success ? fullParsed.data : formFields;
 
-    // Attempt Supabase insert if environment variables are configured
     if (
       process.env.NEXT_PUBLIC_SUPABASE_URL &&
       process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -39,13 +38,13 @@ export async function POST(request: Request) {
       const { error } = await supabase.from("leads").insert({
         loan_amount: data.loanAmount,
         loan_purpose: data.loanPurpose,
-        tenure: data.tenure,
+        tenure: data.tenure ?? null,
         full_name: data.fullName,
         email: data.email,
         phone: data.phone,
         nationality: data.nationality,
-        employment_status: data.employmentStatus,
-        monthly_income: data.monthlyIncome,
+        employment_status: data.employmentStatus ?? null,
+        monthly_income: data.monthlyIncome ?? null,
         company: data.company || null,
         utm_source: utm_source || null,
         utm_medium: utm_medium || null,
@@ -64,7 +63,6 @@ export async function POST(request: Request) {
         );
       }
     } else {
-      // Log to console in development when Supabase is not configured
       console.log("Lead received (Supabase not configured):", {
         ...data,
         utm_source,

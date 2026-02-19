@@ -56,3 +56,42 @@ export const leadFormSchema = stepLoanDetailsSchema
   .merge(stepEmploymentSchema);
 
 export type LeadFormValues = z.infer<typeof leadFormSchema>;
+
+export const quickLeadSchema = z.object({
+  fullName: z
+    .string({ error: "Please fill out this field." })
+    .min(2, "Name must be at least 2 characters"),
+  phone: z
+    .string({ error: "Please fill out this field." })
+    .regex(/^[689]\d{7}$/, "Please enter a valid Singapore phone number"),
+  email: z
+    .string({ error: "Please fill out this field." })
+    .email("Please enter a valid email address"),
+  loanAmount: z
+    .number({ error: "Please fill out this field." })
+    .min(1000, "Minimum loan amount is $1,000")
+    .max(300000, "Maximum loan amount is $300,000"),
+  loanPurpose: z.enum(
+    [
+      "personal",
+      "business",
+      "bridging",
+      "debt-consolidation",
+      "medical",
+      "renovation",
+      "wedding",
+      "education",
+      "travel",
+      "emergency",
+    ],
+    { error: "Please fill out this field." }
+  ),
+  nationality: z.enum(["citizen_pr", "foreigner"], {
+    error: "Please fill out this field.",
+  }),
+  agreedToTerms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the terms to proceed.",
+  }),
+});
+
+export type QuickLeadValues = z.infer<typeof quickLeadSchema>;
