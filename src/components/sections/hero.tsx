@@ -71,7 +71,7 @@ function SingpassBadge() {
 
 function HeroMascot() {
   return (
-    <div className="relative mx-auto flex items-end justify-center">
+    <div className="relative mx-auto flex items-end justify-center pt-12 sm:pt-14">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -87,30 +87,42 @@ function HeroMascot() {
           priority
         />
 
-        {/* Floating rate badge — top-left near raised hand */}
+        {/* Floating rate badge — bottom edge aligns with left finger tip (~22% down image) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1, type: "spring", stiffness: 200 }}
-          className="absolute -left-8 -top-2 z-10 rounded-xl border border-white/40 bg-white/80 px-3 py-2 shadow-lg backdrop-blur-md sm:-left-14 sm:-top-4 sm:px-4 sm:py-3"
+          className="absolute -left-16 z-10 rounded-xl px-3 py-2 sm:-left-20 sm:px-4 sm:py-3"
+          style={{
+            bottom: "78%",
+            background: "oklch(0.2 0.06 240)",
+            border: "1.5px solid #E5FF00",
+            boxShadow: "0 0 12px 2px #E5FF0066, 0 4px 16px rgba(0,0,0,0.3)",
+          }}
         >
-          <div className="text-[10px] font-medium text-slate-600 sm:text-xs">
+          <div className="text-[10px] font-medium text-[#E5FF00]/70 sm:text-xs">
             Lowest rate found
           </div>
-          <div className="font-mono text-lg font-bold text-slate-900 sm:text-2xl">
-            2.0% <span className="text-[10px] font-normal text-slate-500 sm:text-sm">p.a.</span>
+          <div className="font-mono text-lg font-bold text-[#E5FF00] sm:text-2xl">
+            2.0% <span className="text-[10px] font-normal text-[#E5FF00]/60 sm:text-sm">p.a.</span>
           </div>
         </motion.div>
 
-        {/* Floating approval badge — top-right near raised hand */}
+        {/* Floating approval badge — bottom edge aligns with right finger tip (~22% down image) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.3, type: "spring", stiffness: 200 }}
-          className="absolute -right-8 -top-2 z-10 rounded-xl border border-white/40 bg-white/80 px-3 py-2 shadow-lg backdrop-blur-md sm:-right-14 sm:-top-4 sm:px-4 sm:py-3"
+          className="absolute -right-4 z-10 rounded-xl px-3 py-2 sm:-right-6 sm:px-4 sm:py-3"
+          style={{
+            bottom: "78%",
+            background: "oklch(0.2 0.06 240)",
+            border: "1.5px solid #E5FF00",
+            boxShadow: "0 0 12px 2px #E5FF0066, 0 4px 16px rgba(0,0,0,0.3)",
+          }}
         >
-          <div className="text-[10px] font-medium text-slate-600 sm:text-xs">Avg. approval</div>
-          <div className="font-mono text-lg font-bold text-slate-900 sm:text-2xl">
+          <div className="text-[10px] font-medium text-[#E5FF00]/70 sm:text-xs">Avg. approval</div>
+          <div className="font-mono text-lg font-bold text-[#E5FF00] sm:text-2xl">
             &lt;24h
           </div>
         </motion.div>
@@ -210,7 +222,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col items-center gap-4 pb-16 sm:gap-6 sm:pb-20 lg:hidden"
+          className="flex flex-col items-center gap-0 pb-16 sm:pb-20 lg:hidden"
         >
           <HeroMascot />
           <SingpassBadge />

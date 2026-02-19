@@ -4,7 +4,7 @@ import { Feature } from "@/components/ui/feature";
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="relative bg-background">
+    <section id="how-it-works" className="relative bg-background scroll-mt-20">
       <Feature
         badge="How It Works"
         title="Get matched with the best loan offers"
