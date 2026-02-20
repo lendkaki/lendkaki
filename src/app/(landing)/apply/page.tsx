@@ -87,19 +87,19 @@ const testimonials = [
     text: "I was dreading applying to multiple banks. LendKaki matched me with 5 offers in under a minute — I saved over $2,000 in interest compared to my bank's rate.",
     name: "Tan Wei Ming",
     role: "Personal Loan",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
+    image: "/testimonials/tan wei ming.webp",
   },
   {
     text: "As an SME owner, getting a business loan used to take weeks. Through LendKaki I got approved within 24 hours and funds were in my account the next day.",
     name: "Ahmad Rizal",
     role: "Business Loan",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
+    image: "/testimonials/ahmad rizal.webp",
   },
   {
     text: "Needed a bridging loan urgently for my property purchase. LendKaki connected me with a lender who disbursed the funds the same day. Lifesaver.",
     name: "Kenneth Teo",
     role: "Bridging Loan",
-    image: "https://randomuser.me/api/portraits/men/46.jpg",
+    image: "/testimonials/kenneth teo.webp",
   },
 ];
 
@@ -344,11 +344,15 @@ function LandingPageInner() {
                 className="mt-8 hidden items-center gap-3 lg:flex"
               >
                 <div className="flex -space-x-2">
-                  {[32, 44, 75].map((id) => (
+                  {[
+                    { src: "/testimonials/tan wei ming.webp", alt: "Tan Wei Ming" },
+                    { src: "/testimonials/priya nair.webp", alt: "Priya Nair" },
+                    { src: "/testimonials/ahmad rizal.webp", alt: "Ahmad Rizal" },
+                  ].map((avatar) => (
                     <img
-                      key={id}
-                      src={`https://randomuser.me/api/portraits/${id === 44 ? "women" : "men"}/${id}.jpg`}
-                      alt="Borrower"
+                      key={avatar.alt}
+                      src={avatar.src}
+                      alt={avatar.alt}
                       width={32}
                       height={32}
                       className="h-8 w-8 rounded-full border-2 border-white object-cover"
