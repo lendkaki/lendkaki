@@ -635,32 +635,6 @@ function LandingPageInner() {
       </section>
 
       {/* ============================================================ */}
-      {/*  PARTNER LOGOS                                                */}
-      {/* ============================================================ */}
-      <section className="bg-white py-8 sm:py-10">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <p className="mb-6 text-center text-sm font-medium text-muted-foreground">
-            Trusted by Singapore&apos;s top banks and lenders
-          </p>
-          <div className="grid grid-cols-4 items-center gap-4 sm:gap-6 lg:grid-cols-8">
-            {partnerLogos.map((logo) => (
-              <div
-                key={logo.alt}
-                className="flex items-center justify-center grayscale opacity-60 transition-all hover:grayscale-0 hover:opacity-100"
-              >
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={80}
-                  height={40}
-                  className="h-8 w-auto object-contain sm:h-10"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ============================================================ */}
       {/*  SOCIAL PROOF - TESTIMONIALS                                  */}
       {/* ============================================================ */}

@@ -1,5 +1,5 @@
 import { Hero } from "@/components/sections/hero";
-import { PartnersScroller } from "@/components/sections/partners";
+import { TrustStrip } from "@/components/sections/trust-strip";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { Advantages } from "@/components/sections/advantages";
 import { Testimonials } from "@/components/sections/testimonials";
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <PartnersScroller />
+      <TrustStrip />
       <HowItWorks />
       <Advantages />
       <Testimonials />
