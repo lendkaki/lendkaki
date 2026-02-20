@@ -3,13 +3,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building2, ShieldCheck, Zap, BadgeDollarSign } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 interface TabContent {
   badge: string;
   title: string;
   description: string;
-  buttonText: string;
   imageSrc: string;
   imageAlt: string;
 }
@@ -31,9 +29,8 @@ const advantageTabs: Tab[] = [
       title: "Get approved in minutes, not days.",
       description:
         "75% of our applicants receive approval within 24 hours. Some lenders can disburse funds the same day you apply. No more waiting weeks for a loan decision.",
-      buttonText: "Apply Now",
       imageSrc:
-        "/lendkaki - same day approval.webp",
+        "/images/lendkaki - same day approval.webp",
       imageAlt: "Fast loan approval dashboard",
     },
   },
@@ -46,10 +43,8 @@ const advantageTabs: Tab[] = [
       title: "Access Singapore's largest lending network.",
       description:
         "We partner with 50+ MAS-regulated banks and MinLaw-licensed moneylenders. Compare rates from OCBC, DBS, UOB, and specialized lenders all in one place.",
-      buttonText: "See Partners",
-      imageSrc:
-        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
-      imageAlt: "Singapore financial district",
+      imageSrc: "/images/lendkaki - multiple lenders one platform.webp",
+      imageAlt: "LendKaki — multiple lenders, one platform",
     },
   },
   {
@@ -61,10 +56,8 @@ const advantageTabs: Tab[] = [
       title: "Check rates without affecting your score.",
       description:
         "We use soft credit checks only, so your credit score stays protected. Compare as many offers as you want with zero impact on your credit report.",
-      buttonText: "Learn More",
-      imageSrc:
-        "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-      imageAlt: "Credit score protection",
+      imageSrc: "/images/lendkaki - zero credit impact.webp",
+      imageAlt: "LendKaki — zero credit impact",
     },
   },
   {
@@ -76,22 +69,13 @@ const advantageTabs: Tab[] = [
       title: "Our service is completely free.",
       description:
         "Zero charges for borrowers. We earn from lenders, not from you. No application fees, no comparison fees, no hidden costs. Ever.",
-      buttonText: "Get Started",
-      imageSrc:
-        "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop",
-      imageAlt: "Free service guarantee",
+      imageSrc: "/images/lendkaki - zero fees.webp",
+      imageAlt: "LendKaki — zero fees, 100% free",
     },
   },
 ];
 
 export function Advantages() {
-  const scrollToApply = () => {
-    const applySection = document.getElementById("apply");
-    if (applySection) {
-      applySection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <section className="bg-gradient-to-b from-background via-muted/20 to-white pb-12 pt-12 sm:pb-16 sm:pt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,7 +89,7 @@ export function Advantages() {
           </p>
         </div>
         <Tabs defaultValue={advantageTabs[0].value} className="mt-8">
-          <TabsList className="mx-auto h-auto grid w-full grid-cols-2 gap-2 bg-transparent sm:flex sm:items-center sm:justify-center sm:gap-4 md:gap-10">
+          <TabsList className="mx-auto grid w-full grid-cols-2 gap-2 bg-transparent sm:flex sm:items-center sm:justify-center sm:gap-4 md:gap-10">
             {advantageTabs.map((tab) => (
               <TabsTrigger
                 key={tab.value}
@@ -116,7 +100,7 @@ export function Advantages() {
               </TabsTrigger>
             ))}
           </TabsList>
-          <div className="mx-auto mt-6 max-w-screen-xl rounded-2xl bg-white p-6 shadow-lg sm:mt-8 sm:p-8 lg:p-16">
+          <div className="mx-auto mt-6 max-w-screen-xl rounded-2xl bg-gradient-to-br from-primary/25 via-primary/15 to-primary/5 p-6 shadow-lg ring-1 ring-primary/20 sm:mt-8 sm:p-8 lg:p-16">
             {advantageTabs.map((tab) => (
               <TabsContent
                 key={tab.value}
@@ -133,13 +117,6 @@ export function Advantages() {
                   <p className="text-sm text-muted-foreground sm:text-base lg:text-lg">
                     {tab.content.description}
                   </p>
-                  <Button
-                    className="mt-2 w-full gap-2 sm:mt-2.5 sm:w-fit"
-                    size="lg"
-                    onClick={scrollToApply}
-                  >
-                    {tab.content.buttonText}
-                  </Button>
                 </div>
                 <img
                   src={tab.content.imageSrc}

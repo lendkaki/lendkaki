@@ -288,3 +288,22 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px 2px oklch(0.855 0.097 210.245 / 0.25),
+      0 0 20px 4px oklch(0.855 0.097 210.245 / 0.12),
+      0 4px 24px 0 rgba(0,0,0,0.06);
+  }
+  50% {
+    box-shadow:
+      0 0 18px 6px oklch(0.855 0.097 210.245 / 0.55),
+      0 0 40px 12px oklch(0.855 0.097 210.245 / 0.25),
+      0 4px 24px 0 rgba(0,0,0,0.08);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2.8s ease-in-out infinite;
+}

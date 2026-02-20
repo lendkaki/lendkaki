@@ -26,7 +26,7 @@ export function HowItWorks() {
               "Choose the best offer for you. Funds can be disbursed as fast as the same day, directly to your account.",
           },
         ]}
-        imageUrl="/lendkaki how it works.webp"
+        imageUrl="/images/lendkaki how it works.webp"
         imageAlt="LendKaki — how it works"
       />
     </section>
