@@ -2,11 +2,10 @@
 
 import { useState, useRef, useCallback, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
-  ArrowLeft,
   ArrowRight,
   CheckCircle2,
   Loader2,
@@ -19,17 +18,16 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SingpassButton } from "@/components/forms/singpass-button";
-import { StepLoanDetails } from "@/components/forms/step-loan-details";
-import { StepPersonal } from "@/components/forms/step-personal";
-import { StepEmployment } from "@/components/forms/step-employment";
+import { Label } from "@/components/ui/label";
 import {
-  leadFormSchema,
-  stepLoanDetailsSchema,
-  stepPersonalSchema,
-  stepEmploymentSchema,
-  type LeadFormValues,
-} from "@/lib/schemas";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { loanPurposeOptions } from "@/lib/loan-data";
+import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -63,43 +61,6 @@ const headlineVariants: Record<
     subheadline:
       "Our borrowers save an average of $2,000 in interest. Find your best rate now.",
   },
-};
-
-/* ------------------------------------------------------------------ */
-/*  Form step definitions                                              */
-/* ------------------------------------------------------------------ */
-
-const steps = [
-  {
-    id: 1,
-    title: "Loan Details",
-    description: "How much do you need?",
-    schema: stepLoanDetailsSchema,
-  },
-  {
-    id: 2,
-    title: "Personal Info",
-    description: "Tell us about yourself",
-    schema: stepPersonalSchema,
-  },
-  {
-    id: 3,
-    title: "Employment",
-    description: "Your work details",
-    schema: stepEmploymentSchema,
-  },
-];
-
-const stepVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 100 : -100,
-    opacity: 0,
-  }),
-  center: { x: 0, opacity: 1 },
-  exit: (direction: number) => ({
-    x: direction < 0 ? 100 : -100,
-    opacity: 0,
-  }),
 };
 
 /* ------------------------------------------------------------------ */
@@ -198,14 +159,17 @@ function LandingPageInner() {
   const utmTerm = searchParams.get("utm_term") || "";
 
   /* Form state */
-  const [currentStep, setCurrentStep] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const methods = useForm<LeadFormValues>({
-    resolver: zodResolver(leadFormSchema),
-    defaultValues: { loanAmount: 20000, tenure: 24 },
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    setError,
+  } = useForm<QuickLeadValues>({
+    resolver: zodResolver(quickLeadSchema),
     mode: "onTouched",
   });
 
@@ -215,23 +179,7 @@ function LandingPageInner() {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-  const goToNext = async () => {
-    const currentSchema = steps[currentStep].schema;
-    const fieldsToValidate = Object.keys(
-      currentSchema.shape
-    ) as (keyof LeadFormValues)[];
-    const isValid = await methods.trigger(fieldsToValidate);
-    if (!isValid) return;
-    setDirection(1);
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
-  };
-
-  const goToPrev = () => {
-    setDirection(-1);
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
-  const onSubmit = async (data: LeadFormValues) => {
+  const onSubmit = async (data: QuickLeadValues) => {
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/leads", {
@@ -251,7 +199,7 @@ function LandingPageInner() {
       if (!response.ok) throw new Error("Submission failed");
       setIsSuccess(true);
     } catch {
-      methods.setError("root", {
+      setError("root", {
         message: "Something went wrong. Please try again.",
       });
     } finally {
@@ -443,165 +391,188 @@ function LandingPageInner() {
                   </p>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-7">
-                  {/* Form header */}
-                  <div className="mb-5 text-center">
-                    <h2 className="text-lg font-bold text-foreground sm:text-xl">
-                      Get Your Best Rates
-                    </h2>
-                    <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                      Takes less than 2 minutes
-                    </p>
-                  </div>
-
-                  {/* Singpass */}
-                  <div className="mb-5">
-                    <SingpassButton />
-                    <div className="relative my-4">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-border" />
-                      </div>
-                      <div className="relative flex justify-center">
-                        <span className="bg-card px-4 text-xs text-muted-foreground">
-                          or fill in manually
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Progress steps */}
-                  <div className="mb-5">
-                    <div className="mx-auto flex max-w-xs items-center justify-center">
-                      {steps.map((step, index) => (
-                        <div key={step.id} className="flex flex-1 items-center">
-                          <div className="flex w-full flex-col items-center">
-                            <motion.div
-                              animate={
-                                index === currentStep
-                                  ? { scale: [1, 1.15, 1] }
-                                  : { scale: 1 }
-                              }
-                              transition={{
-                                duration: 0.4,
-                                ease: [0.34, 1.56, 0.64, 1],
-                              }}
-                              className={cn(
-                                "flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-semibold transition-colors",
-                                index <= currentStep
-                                  ? "border-primary bg-primary text-primary-foreground"
-                                  : "border-border bg-background text-muted-foreground"
-                              )}
-                            >
-                              {index < currentStep ? (
-                                <CheckCircle2 className="h-3.5 w-3.5" />
-                              ) : (
-                                step.id
-                              )}
-                            </motion.div>
-                            <span className="mt-1.5 hidden text-center text-[10px] font-medium text-muted-foreground sm:block">
-                              {step.title}
-                            </span>
-                          </div>
-                          {index < steps.length - 1 && (
-                            <div
-                              className={cn(
-                                "mx-1.5 h-0.5 flex-1 rounded transition-colors",
-                                index < currentStep ? "bg-primary" : "bg-border"
-                              )}
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Step title */}
-                  <div className="mb-4">
-                    <h3 className="text-base font-semibold text-foreground">
-                      {steps[currentStep].title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground">
-                      {steps[currentStep].description}
-                    </p>
-                  </div>
-
-                  {/* Form */}
-                  <FormProvider {...methods}>
-                    <form onSubmit={methods.handleSubmit(onSubmit)}>
-                      <AnimatePresence mode="wait" custom={direction}>
-                        <motion.div
-                          key={currentStep}
-                          custom={direction}
-                          variants={stepVariants}
-                          initial="enter"
-                          animate="center"
-                          exit="exit"
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                        >
-                          {currentStep === 0 && <StepLoanDetails />}
-                          {currentStep === 1 && <StepPersonal />}
-                          {currentStep === 2 && <StepEmployment />}
-                        </motion.div>
-                      </AnimatePresence>
-
-                      {methods.formState.errors.root && (
-                        <p className="mt-3 text-sm text-destructive">
-                          {methods.formState.errors.root.message}
-                        </p>
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="rounded-2xl border border-border bg-white p-6 shadow-xl sm:p-8"
+                >
+                  <div className="space-y-5">
+                    {/* Name */}
+                    <div>
+                      <Label htmlFor="lp-fullName" className="mb-1.5 block text-sm font-medium text-slate-700">
+                        Name
+                      </Label>
+                      <input
+                        id="lp-fullName"
+                        placeholder="Enter your name here"
+                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        {...register("fullName")}
+                      />
+                      {errors.fullName && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.fullName.message}</p>
                       )}
+                    </div>
 
-                      {/* Navigation */}
-                      <div className={`mt-6 flex items-center ${currentStep === 0 ? "justify-end" : "justify-between"}`}>
-                        {currentStep > 0 && (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            onClick={goToPrev}
-                            className="gap-2"
-                          >
-                            <ArrowLeft className="h-4 w-4" />
-                            Back
-                          </Button>
-                        )}
+                    {/* Mobile Number */}
+                    <div>
+                      <Label htmlFor="lp-phone" className="mb-1.5 block text-sm font-medium text-slate-700">
+                        Mobile Number
+                      </Label>
+                      <input
+                        id="lp-phone"
+                        placeholder="Enter your mobile number here"
+                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        {...register("phone")}
+                      />
+                      {errors.phone && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.phone.message}</p>
+                      )}
+                    </div>
 
-                        {currentStep < steps.length - 1 ? (
-                          <Button
-                            type="button"
-                            onClick={goToNext}
-                            className="gap-2 bg-slate-900 text-white hover:bg-slate-800"
-                          >
-                            Next
-                            <ArrowRight className="h-4 w-4" />
-                          </Button>
-                        ) : (
-                          <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="gap-2 bg-slate-900 text-white hover:bg-slate-800"
-                          >
-                            {isSubmitting ? (
-                              <>
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                                Submitting...
-                              </>
-                            ) : (
-                              <>
-                                Submit Application
-                                <ArrowRight className="h-4 w-4" />
-                              </>
-                            )}
-                          </Button>
-                        )}
+                    {/* Email */}
+                    <div>
+                      <Label htmlFor="lp-email" className="mb-1.5 block text-sm font-medium text-slate-700">
+                        Email Address
+                      </Label>
+                      <input
+                        id="lp-email"
+                        type="email"
+                        placeholder="Enter your email address here"
+                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        {...register("email")}
+                      />
+                      {errors.email && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.email.message}</p>
+                      )}
+                    </div>
+
+                    {/* Desired Loan Amount */}
+                    <div>
+                      <Label htmlFor="lp-loanAmount" className="mb-1.5 block text-sm font-medium text-slate-700">
+                        Desired Loan Amount
+                      </Label>
+                      <div className="relative">
+                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-500">
+                          $
+                        </span>
+                        <input
+                          id="lp-loanAmount"
+                          type="number"
+                          placeholder="Enter desired loan amount"
+                          className="h-11 w-full rounded-lg border border-slate-300 bg-white pl-7 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                          {...register("loanAmount", { valueAsNumber: true })}
+                        />
                       </div>
-                    </form>
-                  </FormProvider>
+                      {errors.loanAmount && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.loanAmount.message}</p>
+                      )}
+                    </div>
 
-                  {/* Privacy note */}
-                  <p className="mt-4 text-center text-[10px] leading-relaxed text-muted-foreground sm:text-xs">
-                    Your data is encrypted and secure. By submitting, you agree
-                    to our Terms of Service and Privacy Policy.
-                  </p>
-                </div>
+                    {/* Purpose of Loan */}
+                    <div>
+                      <Label className="mb-1.5 block text-sm font-medium text-slate-700">
+                        Purpose of Loan
+                      </Label>
+                      <Select
+                        onValueChange={(value) =>
+                          setValue("loanPurpose", value as QuickLeadValues["loanPurpose"], {
+                            shouldValidate: true,
+                          })
+                        }
+                      >
+                        <SelectTrigger className="h-11 w-full rounded-lg border-slate-300 bg-white text-sm text-slate-700 shadow-none focus:border-primary focus:ring-2 focus:ring-primary/20 data-[placeholder]:text-slate-400">
+                          <SelectValue placeholder="Select purpose of loan" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {loanPurposeOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.loanPurpose && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.loanPurpose.message}</p>
+                      )}
+                    </div>
+
+                    {/* Nationality — radio buttons */}
+                    <div>
+                      <div className="flex items-center gap-6">
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            value="citizen_pr"
+                            className="h-4 w-4 border-slate-300 text-primary accent-primary"
+                            {...register("nationality")}
+                          />
+                          <span className="text-sm text-slate-600">Singapore/PR</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            value="foreigner"
+                            className="h-4 w-4 border-slate-300 text-primary accent-primary"
+                            {...register("nationality")}
+                          />
+                          <span className="text-sm text-slate-600">Foreigner</span>
+                        </label>
+                      </div>
+                      {errors.nationality && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.nationality.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="mt-6 h-12 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-teal-500 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        Get Your Loan Options
+                        <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
+
+                  {errors.root && (
+                    <p className="mt-3 text-center text-sm text-red-500">
+                      {errors.root.message}
+                    </p>
+                  )}
+
+                  {/* Terms checkbox */}
+                  <div className="mt-4">
+                    <label className="flex items-start gap-2.5">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-primary"
+                        {...register("agreedToTerms")}
+                      />
+                      <span className="text-xs leading-relaxed text-slate-500">
+                        By proceeding the application, I agree to LendKaki&apos;s{" "}
+                        <a href="#" className="font-medium text-primary hover:underline">
+                          Terms of Use
+                        </a>{" "}
+                        and{" "}
+                        <a href="#" className="font-medium text-primary hover:underline">
+                          Privacy Policy
+                        </a>
+                        , and consent to receive marketing emails.
+                      </span>
+                    </label>
+                    {errors.agreedToTerms && (
+                      <p className="mt-1 text-xs font-medium text-red-500">{errors.agreedToTerms.message}</p>
+                    )}
+                  </div>
+                </form>
               )}
             </motion.div>
           </div>
