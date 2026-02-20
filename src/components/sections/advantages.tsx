@@ -105,7 +105,7 @@ export function Advantages() {
           </p>
         </div>
         <Tabs defaultValue={advantageTabs[0].value} className="mt-8">
-          <TabsList className="mx-auto grid w-full grid-cols-2 gap-2 bg-transparent sm:flex sm:items-center sm:justify-center sm:gap-4 md:gap-10">
+          <TabsList className="mx-auto h-auto grid w-full grid-cols-2 gap-2 bg-transparent sm:flex sm:items-center sm:justify-center sm:gap-4 md:gap-10">
             {advantageTabs.map((tab) => (
               <TabsTrigger
                 key={tab.value}
