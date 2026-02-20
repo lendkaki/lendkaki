@@ -142,6 +142,20 @@ const trustBadges = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  Helper: random date within the last 30 days                       */
+/* ------------------------------------------------------------------ */
+
+function randomRecentDate(): string {
+  const msIn30Days = 30 * 24 * 60 * 60 * 1000;
+  const date = new Date(Date.now() - Math.random() * msIn30Days);
+  return date.toLocaleDateString("en-SG", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+/* ------------------------------------------------------------------ */
 /*  Inner page wrapped with Suspense for useSearchParams               */
 /* ------------------------------------------------------------------ */
 
@@ -157,6 +171,12 @@ function LandingPageInner() {
   const utmCampaign = searchParams.get("utm_campaign") || "";
   const utmContent = searchParams.get("utm_content") || "";
   const utmTerm = searchParams.get("utm_term") || "";
+
+  /* Testimonial dates — generated client-side to avoid hydration mismatch */
+  const [testimonialDates, setTestimonialDates] = useState<string[]>([]);
+  useEffect(() => {
+    setTestimonialDates(testimonials.map(() => randomRecentDate()));
+  }, []);
 
   /* Form state */
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -696,6 +716,9 @@ function LandingPageInner() {
                       {t.name}
                     </p>
                     <p className="text-xs text-slate-400">{t.role}</p>
+                    {testimonialDates[i] && (
+                      <p className="text-[10px] text-slate-500 mt-0.5">{testimonialDates[i]}</p>
+                    )}
                   </div>
                 </div>
               </motion.div>
