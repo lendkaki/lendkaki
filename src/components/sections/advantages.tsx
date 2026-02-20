@@ -33,7 +33,7 @@ const advantageTabs: Tab[] = [
         "75% of our applicants receive approval within 24 hours. Some lenders can disburse funds the same day you apply. No more waiting weeks for a loan decision.",
       buttonText: "Apply Now",
       imageSrc:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+        "/lendkaki - same day approval.webp",
       imageAlt: "Fast loan approval dashboard",
     },
   },
