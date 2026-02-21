@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Vampiro_One } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -11,6 +11,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const vampiroOne = Vampiro_One({
+  variable: "--font-vampiro",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 export const viewport: Viewport = {
@@ -63,7 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} ${vampiroOne.variable} font-sans antialiased overflow-x-hidden`}
       >
         <ThemeProvider
           attribute="class"

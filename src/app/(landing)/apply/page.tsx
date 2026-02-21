@@ -267,10 +267,10 @@ function LandingPageInner() {
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
             aria-label="Scroll to top"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900">
-              <span className="text-sm font-bold text-white">LK</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#3673ae]">
+              <span className="font-[family-name:var(--font-vampiro)] text-sm text-white">LK</span>
             </div>
-            <span className="text-lg font-bold tracking-tight text-foreground">
+            <span className="font-[family-name:var(--font-vampiro)] text-xl tracking-tight text-[#3673ae]">
               LendKaki
             </span>
           </button>
@@ -551,7 +551,7 @@ function LandingPageInner() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="mt-6 h-12 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-teal-500 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
+                    className="mt-6 h-12 w-full gap-2 rounded-full bg-primary text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
                   >
                     {isSubmitting ? (
                       <>
@@ -736,7 +736,7 @@ function LandingPageInner() {
           <Button
             onClick={scrollToForm}
             size="lg"
-            className="mt-6 h-12 gap-2 bg-slate-900 px-8 text-sm font-semibold text-white shadow-lg hover:bg-slate-800 sm:text-base"
+            className="mt-6 h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
           >
             Get My Best Rates
             <ArrowRight className="h-4 w-4" />
@@ -777,7 +777,7 @@ function LandingPageInner() {
           >
             <Button
               onClick={scrollToForm}
-              className="h-12 w-full gap-2 bg-slate-900 text-sm font-semibold text-white shadow-lg hover:bg-slate-800"
+              className="h-12 w-full gap-2 bg-primary text-sm font-semibold text-white shadow-lg hover:bg-primary/90"
             >
               Get My Best Rates
               <ArrowRight className="h-4 w-4" />

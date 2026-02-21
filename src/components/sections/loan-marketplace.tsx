@@ -74,14 +74,14 @@ export function LoanMarketplace() {
               className={cn(
                 "relative rounded-full px-5 py-2 text-sm font-medium transition-all",
                 activeCategory === category.value
-                  ? "text-primary"
+                  ? "text-white"
                   : "bg-white text-foreground hover:bg-slate-50 hover:text-slate-900"
               )}
             >
               {activeCategory === category.value && (
                 <motion.div
                   layoutId="activeFilter"
-                  className="absolute inset-0 rounded-full bg-slate-900 shadow-md shadow-slate-900/20"
+                  className="absolute inset-0 rounded-full bg-primary shadow-md shadow-primary/20"
                   transition={{
                     type: "spring",
                     stiffness: 380,

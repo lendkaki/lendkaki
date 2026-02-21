@@ -105,7 +105,7 @@ export function LeadForm() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mb-6 inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5"
+              className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5"
             >
               <span className="text-lg font-bold text-white">50+</span>
               <span className="text-sm font-medium text-white/80">
@@ -289,7 +289,7 @@ export function LeadForm() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-6 h-12 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-teal-500 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
+                className="mt-6 h-12 w-full gap-2 rounded-full bg-primary text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
               >
                 {isSubmitting ? (
                   <>

@@ -191,9 +191,9 @@ export function Hero() {
                 href="#apply"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-7 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition-colors hover:bg-slate-800 sm:w-auto"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-7 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-colors hover:bg-primary/90 sm:w-auto"
               >
-                Get My Best Rates
+                Compare Rates Now
                 <ArrowRight className="h-4 w-4" />
               </motion.a>
               <motion.a

@@ -42,7 +42,7 @@ function Feature({
             <div className="flex gap-10 flex-col">
               <div className="flex gap-4 flex-col">
                 <div>
-                  <Badge variant="outline" className="border-primary/50 text-primary bg-primary/10">
+                  <Badge variant="outline" className="rounded-lg border-blue-900/30 text-blue-900 bg-white">
                     {badge}
                   </Badge>
                 </div>

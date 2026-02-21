@@ -61,7 +61,7 @@ export function Footer() {
   return (
     <footer
       ref={ref}
-      className="mt-16 w-full place-self-end rounded-t-xl bg-slate-900 text-white dark:bg-slate-950"
+      className="mt-16 w-full place-self-end rounded-t-xl bg-[#07172a] text-white dark:bg-[#07172a]"
     >
       <div className="mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8 lg:pt-24">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -71,18 +71,14 @@ export function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex justify-center gap-2 sm:justify-start">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <span className="text-sm font-bold text-primary-foreground">
-                  LK
-                </span>
-              </div>
-              <span className="text-2xl font-semibold text-white">{data.company.name}</span>
+            <div className="flex max-w-md flex-col sm:max-w-xs">
+              <span className="font-[family-name:var(--font-vampiro)] w-full text-center text-5xl font-medium text-white sm:text-left sm:text-6xl lg:text-7xl">
+                {data.company.name}
+              </span>
+              <p className="mt-6 text-center leading-relaxed text-white/60 sm:text-left">
+                {data.company.description}
+              </p>
             </div>
-
-            <p className="mt-6 max-w-md text-center leading-relaxed text-white/60 sm:max-w-xs sm:text-left">
-              {data.company.description}
-            </p>
 
             <ul className="mt-8 flex justify-center gap-6 sm:justify-start md:gap-8">
               {data.social.map(({ icon: Icon, label, href }) => (

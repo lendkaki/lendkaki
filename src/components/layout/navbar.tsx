@@ -9,8 +9,6 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#how-it-works", label: "How It Works" },
-  { href: "#apply", label: "Apply Now" },
-  { href: "#loans", label: "Loan Picks" },
 ];
 
 export function Navbar() {
@@ -40,24 +38,18 @@ export function Navbar() {
             className="flex items-center gap-2"
           >
             <div
-              className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
-                isScrolled ? "bg-primary" : "bg-slate-900"
-              )}
+              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors bg-[#3673ae]"
             >
               <span
-                className={cn(
-                  "text-sm font-bold transition-colors",
-                  isScrolled ? "text-primary-foreground" : "text-white"
-                )}
+                className="font-[family-name:var(--font-vampiro)] text-sm text-white"
               >
                 LK
               </span>
             </div>
             <span
               className={cn(
-                "text-lg font-bold tracking-tight transition-colors",
-                isScrolled ? "text-foreground" : "text-slate-900"
+                "font-[family-name:var(--font-vampiro)] text-xl tracking-tight transition-colors",
+                isScrolled ? "text-[#3673ae]" : "text-slate-900"
               )}
             >
               LendKaki
@@ -73,7 +65,7 @@ export function Navbar() {
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   isScrolled
-                    ? "text-muted-foreground hover:bg-slate-900 hover:text-white"
+                    ? "text-muted-foreground hover:bg-primary hover:text-white"
                     : "text-slate-900/80 hover:bg-white/10 hover:text-slate-900"
                 )}
               >
@@ -84,12 +76,12 @@ export function Navbar() {
               asChild
               variant={isScrolled ? "default" : "outline"}
               className={cn(
-                isScrolled && "hover:bg-slate-900 hover:text-white",
+                isScrolled && "hover:bg-primary hover:text-white",
                 !isScrolled &&
-                  "border-slate-900 bg-slate-900 text-white hover:bg-white hover:border-white hover:text-slate-900"
+                  "border-primary bg-primary text-white hover:bg-white hover:border-white hover:text-primary"
               )}
             >
-              <a href="#apply">Get My Best Rates</a>
+              <a href="#apply">Compare Rates Now</a>
             </Button>
           </div>
 
@@ -109,8 +101,8 @@ export function Navbar() {
               open
                 ? "text-slate-900 hover:bg-slate-200"
                 : isScrolled
-                  ? "hover:bg-slate-900 hover:text-white"
-                  : "text-slate-900 hover:bg-slate-900 hover:text-primary"
+                  ? "hover:bg-primary hover:text-white"
+                  : "text-slate-900 hover:bg-primary hover:text-white"
             )}
             onClick={() => setOpen(!open)}
           >
@@ -155,7 +147,7 @@ export function Navbar() {
                 className={cn(
                   buttonVariants({
                     variant: "ghost",
-                    className: "justify-start hover:bg-slate-900 hover:text-white",
+                    className: "justify-start hover:bg-primary hover:text-white",
                   })
                 )}
               >
@@ -164,8 +156,8 @@ export function Navbar() {
             ))}
           </div>
           <SheetFooter>
-            <Button asChild className="w-full hover:bg-slate-900" onClick={() => setOpen(false)}>
-              <a href="#apply">Get My Best Rates</a>
+            <Button asChild className="w-full hover:bg-primary" onClick={() => setOpen(false)}>
+              <a href="#apply">Compare Rates Now</a>
             </Button>
           </SheetFooter>
         </SheetContent>

@@ -94,7 +94,7 @@ export function Advantages() {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold bg-white text-foreground hover:bg-slate-50 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-primary"
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold bg-white text-foreground hover:bg-slate-50 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 {tab.icon} <span className="whitespace-nowrap">{tab.label}</span>
               </TabsTrigger>
@@ -108,7 +108,7 @@ export function Advantages() {
                 className="grid place-items-center gap-8 lg:grid-cols-2 lg:gap-10"
               >
                 <div className="flex flex-col gap-4 sm:gap-5">
-                  <Badge variant="outline" className="w-fit bg-background">
+                  <Badge variant="outline" className="w-fit rounded-lg bg-background">
                     {tab.content.badge}
                   </Badge>
                   <h3 className="text-2xl font-semibold sm:text-3xl lg:text-5xl">
