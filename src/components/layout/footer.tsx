@@ -71,16 +71,16 @@ export function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex max-w-md flex-col sm:max-w-xs">
-              <span className="font-[family-name:var(--font-vampiro)] w-full text-center text-5xl font-medium text-white sm:text-left sm:text-6xl lg:text-7xl">
+            <div className="mx-auto flex max-w-md flex-col lg:mx-0 lg:max-w-xs">
+              <span className="font-[family-name:var(--font-vampiro)] w-full text-center text-5xl font-medium text-white lg:text-left lg:text-7xl">
                 {data.company.name}
               </span>
-              <p className="mt-6 text-center leading-relaxed text-white/60 sm:text-left">
+              <p className="mt-6 text-center leading-relaxed text-white/60 lg:text-left">
                 {data.company.description}
               </p>
             </div>
 
-            <ul className="mt-8 flex justify-center gap-6 sm:justify-start md:gap-8">
+            <ul className="mt-8 flex justify-center gap-6 lg:justify-start md:gap-8">
               {data.social.map(({ icon: Icon, label, href }) => (
                 <li key={label}>
                   <Link
