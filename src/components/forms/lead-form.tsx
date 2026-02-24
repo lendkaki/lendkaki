@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, useInView } from "framer-motion";
@@ -28,7 +28,14 @@ export function LeadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    if (isSuccess && successRef.current) {
+      successRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [isSuccess]);
 
   const {
     register,
@@ -41,15 +48,25 @@ export function LeadForm() {
     mode: "onTouched",
   });
 
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbwK6FZhJ7GVvA5Jz9LwKzwc4N9d1eo6jv4J47B5xbVQzaVGn2iIjlSRO_eACRx2YI_h/exec";
+
   const onSubmit = async (data: QuickLeadValues) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/leads", {
+      await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          amount: String(data.amount),
+          purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
+          nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
+        }),
       });
-      if (!response.ok) throw new Error("Submission failed");
       setIsSuccess(true);
     } catch {
       setError("root", {
@@ -62,8 +79,8 @@ export function LeadForm() {
 
   if (isSuccess) {
     return (
-      <section id="apply" className="relative overflow-hidden scroll-mt-14 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-20 lg:py-28">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <section ref={successRef} id="apply" className="relative overflow-hidden scroll-mt-14 bg-gradient-to-br from-primary/10 via-primary/5 to-background py-10 sm:py-14">
+        <div className="mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -75,11 +92,14 @@ export function LeadForm() {
             <h3 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Application Submitted!
             </h3>
-            <p className="mt-3 text-base text-slate-600 sm:mt-4 sm:text-lg">
-              We&apos;re matching you with the best loan offers from our network
-              of 50+ licensed lenders. You&apos;ll receive your personalized
-              rates via email within minutes.
+            <p className="mt-3 text-base text-slate-600">
+              We are matching you with our pool of approved lenders.
             </p>
+            <div className="mt-5 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 px-6 py-5">
+              <p className="text-lg font-bold text-[#128C7E] sm:text-xl">
+                📲 You will receive a match to a lender via WhatsApp very soon!
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -167,10 +187,10 @@ export function LeadForm() {
                     id="fullName"
                     placeholder="Enter your name here"
                     className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                    {...register("fullName")}
+                    {...register("name")}
                   />
-                  {errors.fullName && (
-                    <p className="mt-1 text-xs font-medium text-red-500">{errors.fullName.message}</p>
+                  {errors.name && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.name.message}</p>
                   )}
                 </div>
 
@@ -209,7 +229,7 @@ export function LeadForm() {
 
                 {/* Desired Loan Amount */}
                 <div>
-                  <Label htmlFor="loanAmount" className="mb-1.5 block text-sm font-medium text-slate-700">
+                  <Label htmlFor="amount" className="mb-1.5 block text-sm font-medium text-slate-700">
                     Desired Loan Amount
                   </Label>
                   <div className="relative">
@@ -217,15 +237,15 @@ export function LeadForm() {
                       $
                     </span>
                     <input
-                      id="loanAmount"
+                      id="amount"
                       type="number"
                       placeholder="Enter desired loan amount"
                       className="h-11 w-full rounded-lg border border-slate-300 bg-white pl-7 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      {...register("loanAmount", { valueAsNumber: true })}
+                      {...register("amount", { valueAsNumber: true })}
                     />
                   </div>
-                  {errors.loanAmount && (
-                    <p className="mt-1 text-xs font-medium text-red-500">{errors.loanAmount.message}</p>
+                  {errors.amount && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.amount.message}</p>
                   )}
                 </div>
 
@@ -236,7 +256,7 @@ export function LeadForm() {
                   </Label>
                   <Select
                     onValueChange={(value) =>
-                      setValue("loanPurpose", value as QuickLeadValues["loanPurpose"], {
+                      setValue("purpose", value as QuickLeadValues["purpose"], {
                         shouldValidate: true,
                       })
                     }
@@ -252,8 +272,8 @@ export function LeadForm() {
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.loanPurpose && (
-                    <p className="mt-1 text-xs font-medium text-red-500">{errors.loanPurpose.message}</p>
+                  {errors.purpose && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{errors.purpose.message}</p>
                   )}
                 </div>
 
@@ -263,7 +283,7 @@ export function LeadForm() {
                     <label className="flex items-center gap-2">
                       <input
                         type="radio"
-                        value="citizen_pr"
+                        value="Singaporean_PR"
                         className="h-4 w-4 border-slate-300 text-primary accent-primary"
                         {...register("nationality")}
                       />
@@ -327,7 +347,7 @@ export function LeadForm() {
                     <a href="#" className="font-medium text-primary hover:underline">
                       Privacy Policy
                     </a>
-                    , and consent to receive marketing emails.
+                    , and consent to receive marketing messages.
                   </span>
                 </label>
                 {errors.agreedToTerms && (

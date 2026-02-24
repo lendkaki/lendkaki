@@ -181,6 +181,13 @@ function LandingPageInner() {
   /* Form state */
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const successRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isSuccess) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [isSuccess]);
 
   const {
     register,
@@ -199,24 +206,25 @@ function LandingPageInner() {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbwK6FZhJ7GVvA5Jz9LwKzwc4N9d1eo6jv4J47B5xbVQzaVGn2iIjlSRO_eACRx2YI_h/exec";
+
   const onSubmit = async (data: QuickLeadValues) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/leads", {
+      await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...data,
-          utm_source: utmSource,
-          utm_medium: utmMedium,
-          utm_campaign: utmCampaign,
-          utm_content: utmContent,
-          utm_term: utmTerm,
-          landing_page: "apply",
-          variant,
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          amount: String(data.amount),
+          purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
+          nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
         }),
       });
-      if (!response.ok) throw new Error("Submission failed");
       setIsSuccess(true);
     } catch {
       setError("root", {
@@ -401,7 +409,7 @@ function LandingPageInner() {
               className="w-full"
             >
               {isSuccess ? (
-                <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-xl sm:p-8">
+                <div ref={successRef} className="rounded-2xl border border-border bg-card p-6 text-center shadow-xl sm:p-8">
                   <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
                     <CheckCircle2 className="h-7 w-7 text-primary" />
                   </div>
@@ -409,10 +417,13 @@ function LandingPageInner() {
                     Application Submitted!
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-                    We&apos;re matching you with the best loan offers from our
-                    network of 50+ licensed lenders. You&apos;ll receive your
-                    personalized rates via email within minutes.
+                    We are matching you with our pool of approved lenders.
                   </p>
+                  <div className="mt-5 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 px-5 py-4">
+                    <p className="text-base font-bold text-[#128C7E] sm:text-lg">
+                      📲 You will receive a match to a lender via WhatsApp very soon!
+                    </p>
+                  </div>
                 </div>
               ) : (
                 <form
@@ -422,17 +433,17 @@ function LandingPageInner() {
                   <div className="space-y-5">
                     {/* Name */}
                     <div>
-                      <Label htmlFor="lp-fullName" className="mb-1.5 block text-sm font-medium text-slate-700">
+                      <Label htmlFor="lp-name" className="mb-1.5 block text-sm font-medium text-slate-700">
                         Name
                       </Label>
                       <input
-                        id="lp-fullName"
+                        id="lp-name"
                         placeholder="Enter your name here"
                         className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        {...register("fullName")}
+                        {...register("name")}
                       />
-                      {errors.fullName && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.fullName.message}</p>
+                      {errors.name && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.name.message}</p>
                       )}
                     </div>
 
@@ -471,7 +482,7 @@ function LandingPageInner() {
 
                     {/* Desired Loan Amount */}
                     <div>
-                      <Label htmlFor="lp-loanAmount" className="mb-1.5 block text-sm font-medium text-slate-700">
+                      <Label htmlFor="lp-amount" className="mb-1.5 block text-sm font-medium text-slate-700">
                         Desired Loan Amount
                       </Label>
                       <div className="relative">
@@ -479,15 +490,15 @@ function LandingPageInner() {
                           $
                         </span>
                         <input
-                          id="lp-loanAmount"
+                          id="lp-amount"
                           type="number"
                           placeholder="Enter desired loan amount"
                           className="h-11 w-full rounded-lg border border-slate-300 bg-white pl-7 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                          {...register("loanAmount", { valueAsNumber: true })}
+                          {...register("amount", { valueAsNumber: true })}
                         />
                       </div>
-                      {errors.loanAmount && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.loanAmount.message}</p>
+                      {errors.amount && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.amount.message}</p>
                       )}
                     </div>
 
@@ -498,7 +509,7 @@ function LandingPageInner() {
                       </Label>
                       <Select
                         onValueChange={(value) =>
-                          setValue("loanPurpose", value as QuickLeadValues["loanPurpose"], {
+                          setValue("purpose", value as QuickLeadValues["purpose"], {
                             shouldValidate: true,
                           })
                         }
@@ -514,8 +525,8 @@ function LandingPageInner() {
                           ))}
                         </SelectContent>
                       </Select>
-                      {errors.loanPurpose && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.loanPurpose.message}</p>
+                      {errors.purpose && (
+                        <p className="mt-1 text-xs font-medium text-red-500">{errors.purpose.message}</p>
                       )}
                     </div>
 
@@ -525,7 +536,7 @@ function LandingPageInner() {
                         <label className="flex items-center gap-2">
                           <input
                             type="radio"
-                            value="citizen_pr"
+                            value="Singaporean_PR"
                             className="h-4 w-4 border-slate-300 text-primary accent-primary"
                             {...register("nationality")}
                           />
@@ -589,7 +600,7 @@ function LandingPageInner() {
                         <a href="#" className="font-medium text-primary hover:underline">
                           Privacy Policy
                         </a>
-                        , and consent to receive marketing emails.
+                        , and consent to receive marketing messages.
                       </span>
                     </label>
                     {errors.agreedToTerms && (

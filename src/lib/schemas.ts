@@ -58,7 +58,7 @@ export const leadFormSchema = stepLoanDetailsSchema
 export type LeadFormValues = z.infer<typeof leadFormSchema>;
 
 export const quickLeadSchema = z.object({
-  fullName: z
+  name: z
     .string({ error: "Please fill out this field." })
     .min(2, "Name must be at least 2 characters"),
   phone: z
@@ -67,11 +67,10 @@ export const quickLeadSchema = z.object({
   email: z
     .string({ error: "Please fill out this field." })
     .email("Please enter a valid email address"),
-  loanAmount: z
+  amount: z
     .number({ error: "Please fill out this field." })
-    .min(1000, "Minimum loan amount is $1,000")
-    .max(300000, "Maximum loan amount is $300,000"),
-  loanPurpose: z.enum(
+    .min(0),
+  purpose: z.enum(
     [
       "personal",
       "business",
@@ -86,7 +85,7 @@ export const quickLeadSchema = z.object({
     ],
     { error: "Please fill out this field." }
   ),
-  nationality: z.enum(["citizen_pr", "foreigner"], {
+  nationality: z.enum(["Singaporean_PR", "foreigner"], {
     error: "Please fill out this field.",
   }),
   agreedToTerms: z.boolean().refine((val) => val === true, {
