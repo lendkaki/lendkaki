@@ -58,6 +58,7 @@ const FAQ_ITEMS = [
 export function Faq() {
   return (
     <FaqSection
+      id="faq"
       title="Frequently Asked Questions"
       description="Everything you need to know about finding your perfect loan"
       items={FAQ_ITEMS}

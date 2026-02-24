@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   Mail,
   MapPin,
-  Phone,
   Facebook,
   Instagram,
   Twitter,
@@ -34,21 +33,16 @@ const data = {
   company_links: [
     { text: "About Us", href: "#about" },
     { text: "How It Works", href: "#how-it-works" },
-    { text: "Our Partners", href: "#partners" },
-    { text: "Blog", href: "#blog" },
   ],
   resources: [
-    { text: "FAQs", href: "#faq" },
+    { text: "FAQs", href: "/#faq" },
     { text: "Loan Calculator", href: "#apply" },
-    { text: "Guides & Tips", href: "#guides" },
-    { text: "Contact Us", href: "#contact" },
   ],
   contact: [
     { icon: Mail, text: "support@lendkaki.sg", href: "mailto:support@lendkaki.sg" },
-    { icon: Phone, text: "+65 6123 4567", href: "tel:+6561234567" },
     {
       icon: MapPin,
-      text: "1 Raffles Place, Singapore 048616",
+      text: "2 Venture Drive, #19-21, Vision Exchange, Singapore 608526",
       isAddress: true,
     },
   ],
@@ -223,18 +217,28 @@ export function Footer() {
             </p>
           </motion.div>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-6 text-center text-xs leading-relaxed text-white/40"
+            className="mt-6 space-y-2 text-center text-xs leading-relaxed text-white/40"
           >
-            LendKaki is a loan comparison platform. We are not a lender. All loan
-            products are offered by licensed banks and financial institutions
-            regulated by the Monetary Authority of Singapore (MAS) and/or the
-            Ministry of Law (MinLaw). Rates shown are indicative and subject to
-            change.
-          </motion.p>
+            <p>
+              LendKaki is managed and operated by Lendkaki Pay Pte. Ltd. (UEN: 202607335C).
+            </p>
+            <p>
+              LendKaki is a loan comparison platform. We are not a lender. All loan
+              products are offered by licensed banks and financial institutions
+              regulated by the Monetary Authority of Singapore (MAS) and/or the
+              Ministry of Law (MinLaw). Rates shown are indicative and subject to
+              change.
+            </p>
+            <p className="pt-1">
+              <Link href="/terms" className="hover:text-white/70 underline underline-offset-2">Terms of Use</Link>
+              {" · "}
+              <Link href="/privacy" className="hover:text-white/70 underline underline-offset-2">Privacy Policy</Link>
+            </p>
+          </motion.div>
         </div>
       </div>
     </footer>

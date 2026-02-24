@@ -593,11 +593,11 @@ function LandingPageInner() {
                       />
                       <span className="text-xs leading-relaxed text-slate-500">
                         By proceeding the application, I agree to LendKaki&apos;s{" "}
-                        <a href="#" className="font-medium text-primary hover:underline">
+                        <a href="/terms" className="font-medium text-primary hover:underline">
                           Terms of Use
                         </a>{" "}
                         and{" "}
-                        <a href="#" className="font-medium text-primary hover:underline">
+                        <a href="/privacy" className="font-medium text-primary hover:underline">
                           Privacy Policy
                         </a>
                         , and consent to receive marketing messages.
@@ -761,12 +761,13 @@ function LandingPageInner() {
       <footer ref={footerRef} className="border-t border-border bg-slate-900 px-4 py-6 sm:px-6">
         <div className="mx-auto max-w-4xl">
           <p className="text-center text-[10px] leading-relaxed text-slate-400 sm:text-xs">
-            LendKaki is a loan comparison platform. We are not a lender. All
+            LendKaki is managed and operated by Lendkaki Pay Pte. Ltd. (UEN: 202607335C). LendKaki is a loan comparison platform. We are not a lender. All
             loan products are offered by licensed banks and financial
             institutions regulated by the Monetary Authority of Singapore (MAS)
             and/or the Ministry of Law (MinLaw). Rates shown are indicative and
-            subject to change. By submitting an application, you agree to our
-            Terms of Service and Privacy Policy.
+            subject to change. By submitting an application, you agree to our{" "}
+            <a href="/terms" className="underline hover:text-slate-300">Terms of Use</a> and{" "}
+            <a href="/privacy" className="underline hover:text-slate-300">Privacy Policy</a>.
           </p>
           <p className="mt-3 text-center text-[10px] text-slate-500">
             &copy; 2026 LendKaki. All rights reserved.

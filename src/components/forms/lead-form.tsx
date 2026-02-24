@@ -340,11 +340,11 @@ export function LeadForm() {
                   />
                   <span className="text-xs leading-relaxed text-slate-500">
                     By proceeding the application, I agree to LendKaki&apos;s{" "}
-                    <a href="#" className="font-medium text-primary hover:underline">
+                    <a href="/terms" className="font-medium text-primary hover:underline">
                       Terms of Use
                     </a>{" "}
                     and{" "}
-                    <a href="#" className="font-medium text-primary hover:underline">
+                    <a href="/privacy" className="font-medium text-primary hover:underline">
                       Privacy Policy
                     </a>
                     , and consent to receive marketing messages.
