@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
   Mail,
   MapPin,
+  Phone,
   Facebook,
   Instagram,
   Twitter,
@@ -40,6 +41,7 @@ const data = {
   ],
   contact: [
     { icon: Mail, text: "support@lendkaki.sg", href: "mailto:support@lendkaki.sg" },
+    { icon: Phone, text: "+65 8900 9628", href: "tel:+6589009628" },
     {
       icon: MapPin,
       text: "2 Venture Drive, #19-21, Vision Exchange, Singapore 608526",
