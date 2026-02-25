@@ -33,10 +33,7 @@ export function Navbar() {
       >
         <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2"
-          >
+          <Link href="/" className="flex items-center gap-2">
             <div
               className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors bg-[#3673ae]"
             >
@@ -54,7 +51,7 @@ export function Navbar() {
             >
               LendKaki
             </span>
-          </button>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden items-center gap-2 lg:flex">

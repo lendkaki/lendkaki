@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsOfUsePage() {
   return (
-    <main className="min-h-screen bg-background">
+    <div className="bg-background">
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         {/* Back */}
         <BackButton />
@@ -123,6 +123,6 @@ export default function TermsOfUsePage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

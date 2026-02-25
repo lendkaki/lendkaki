@@ -30,6 +30,7 @@ import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
 /*  Headline variants for ad message matching                          */
@@ -270,10 +271,10 @@ function LandingPageInner() {
       {/* ============================================================ */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          <Link
+            href="/"
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
-            aria-label="Scroll to top"
+            aria-label="Go to home page"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#3673ae]">
               <span className="font-[family-name:var(--font-vampiro)] text-sm text-white">LK</span>
@@ -281,7 +282,7 @@ function LandingPageInner() {
             <span className="font-[family-name:var(--font-vampiro)] text-xl tracking-tight text-[#3673ae]">
               LendKaki
             </span>
-          </button>
+          </Link>
           <div className="flex items-center gap-2 text-xs text-muted-foreground sm:text-sm">
             <Shield className="h-4 w-4 text-primary" />
             <span>256-bit SSL Encrypted</span>
