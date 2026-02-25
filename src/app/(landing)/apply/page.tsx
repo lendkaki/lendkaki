@@ -31,6 +31,9 @@ import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { PolicyModal } from "@/components/ui/policy-modal";
+import { TermsContent } from "@/components/content/terms-content";
+import { PrivacyContent } from "@/components/content/privacy-content";
 
 /* ------------------------------------------------------------------ */
 /*  Headline variants for ad message matching                          */
@@ -182,6 +185,8 @@ function LandingPageInner() {
   /* Form state */
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -594,13 +599,13 @@ function LandingPageInner() {
                       />
                       <span className="text-xs leading-relaxed text-slate-500">
                         By proceeding the application, I agree to LendKaki&apos;s{" "}
-                        <a href="/terms" className="font-medium text-primary hover:underline">
+                        <button type="button" onClick={() => setShowTerms(true)} className="font-medium text-primary hover:underline">
                           Terms of Use
-                        </a>{" "}
+                        </button>{" "}
                         and{" "}
-                        <a href="/privacy" className="font-medium text-primary hover:underline">
+                        <button type="button" onClick={() => setShowPrivacy(true)} className="font-medium text-primary hover:underline">
                           Privacy Policy
-                        </a>
+                        </button>
                         , and consent to receive marketing messages.
                       </span>
                     </label>
@@ -798,6 +803,13 @@ function LandingPageInner() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <PolicyModal isOpen={showTerms} onClose={() => setShowTerms(false)} title="Terms of Use">
+        <TermsContent />
+      </PolicyModal>
+      <PolicyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} title="Privacy Policy">
+        <PrivacyContent />
+      </PolicyModal>
     </div>
   );
 }

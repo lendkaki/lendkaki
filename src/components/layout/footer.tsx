@@ -38,6 +38,7 @@ const data = {
   resources: [
     { text: "FAQs", href: "/#faq" },
     { text: "Loan Calculator", href: "#apply" },
+    { text: "PDPA Compliance", href: "/pdpa" },
   ],
   contact: [
     { icon: Mail, text: "support@lendkaki.sg", href: "mailto:support@lendkaki.sg" },

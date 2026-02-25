@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/select";
 import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
+import { PolicyModal } from "@/components/ui/policy-modal";
+import { TermsContent } from "@/components/content/terms-content";
+import { PrivacyContent } from "@/components/content/privacy-content";
 
 const valueProps = [
   "Fast, Easy Application Process",
@@ -27,6 +30,8 @@ const valueProps = [
 export function LeadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const successRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -107,6 +112,7 @@ export function LeadForm() {
   }
 
   return (
+    <>
     <section
       id="apply"
       ref={sectionRef}
@@ -340,13 +346,13 @@ export function LeadForm() {
                   />
                   <span className="text-xs leading-relaxed text-slate-500">
                     By proceeding the application, I agree to LendKaki&apos;s{" "}
-                    <a href="/terms" className="font-medium text-primary hover:underline">
+                    <button type="button" onClick={() => setShowTerms(true)} className="font-medium text-primary hover:underline">
                       Terms of Use
-                    </a>{" "}
+                    </button>{" "}
                     and{" "}
-                    <a href="/privacy" className="font-medium text-primary hover:underline">
+                    <button type="button" onClick={() => setShowPrivacy(true)} className="font-medium text-primary hover:underline">
                       Privacy Policy
-                    </a>
+                    </button>
                     , and consent to receive marketing messages.
                   </span>
                 </label>
@@ -359,5 +365,13 @@ export function LeadForm() {
         </motion.div>
       </div>
     </section>
+
+    <PolicyModal isOpen={showTerms} onClose={() => setShowTerms(false)} title="Terms of Use">
+      <TermsContent />
+    </PolicyModal>
+    <PolicyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} title="Privacy Policy">
+      <PrivacyContent />
+    </PolicyModal>
+    </>
   );
 }
