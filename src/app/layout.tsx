@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "LendKaki — Find Singapore's Best Loan Rates | Loan Aggregator SG",
   description:
-    "Compare personal loans, business loans & bridging loans from 50+ licensed Singapore lenders. Find the lowest rates in 60 seconds. No credit score impact.",
+    "Compare personal loans, business loans & bridging loans from 20+ licensed Singapore lenders. Find the lowest rates in 60 seconds. No credit score impact.",
   keywords: [
     "Best Personal Loans Singapore",
     "Loan Aggregator SG",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LendKaki — Find Singapore's Best Loan Rates",
     description:
-      "Compare 50+ licensed lenders. One application. No impact on your credit score.",
+      "Compare 20+ licensed lenders. One application. No impact on your credit score.",
     url: "https://lendkaki.sg",
     siteName: "LendKaki",
     locale: "en_SG",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "LendKaki — Find Singapore's Best Loan Rates",
     description:
-      "Compare 50+ licensed lenders. One application. No impact on your credit score.",
+      "Compare 20+ licensed lenders. One application. No impact on your credit score.",
   },
   robots: {
     index: true,

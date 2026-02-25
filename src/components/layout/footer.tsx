@@ -17,7 +17,7 @@ const data = {
   company: {
     name: "LendKaki",
     description:
-      "Singapore's most trusted loan comparison platform. Compare rates from 50+ licensed lenders and get your best deal in minutes. Fast, free, and secure.",
+      "Singapore's most trusted loan comparison platform. Compare rates from 20+ licensed lenders and get your best deal in minutes. Fast, free, and secure.",
   },
   social: [
     { icon: Facebook, label: "Facebook", href: "#" },

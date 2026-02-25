@@ -47,18 +47,18 @@ const headlineVariants: Record<
     before: "Compare Singapore's Best Loan Rates in",
     highlight: "60 Seconds",
     subheadline:
-      "One quick form. 50+ licensed lenders. Personalized offers — no credit score impact.",
+      "One application, 20+ licensed lenders and banks. Personalised offers.",
   },
   fast: {
     before: "Get Approved for a Loan in Under",
     highlight: "24 Hours",
     subheadline:
-      "Skip the bank queues. Apply once, get matched with 50+ lenders instantly.",
+      "Skip the bank queues. Apply once, get matched with 20+ lenders instantly.",
   },
   free: {
     before: "Free Loan Comparison — Zero Credit Score Impact",
     subheadline:
-      "Compare rates from 50+ licensed lenders without affecting your credit. 100% free.",
+      "Compare rates from 20+ licensed lenders without affecting your credit. 100% free.",
   },
   save: {
     before: "Save Thousands on Your Next Loan",
@@ -139,7 +139,7 @@ const faqItems = [
 /* ------------------------------------------------------------------ */
 
 const trustBadges = [
-  { icon: Users, label: "50+ Licensed Lenders", sub: "MAS & MinLaw regulated" },
+  { icon: Users, label: "20+ Licensed Lenders", sub: "MAS & MinLaw regulated" },
   { icon: Clock, label: "Same-Day Approval", sub: "Funds within 24 hours" },
   { icon: Shield, label: "Zero Credit Impact", sub: "Soft checks only" },
   { icon: BadgeCheck, label: "100% Free", sub: "No hidden fees ever" },
@@ -355,7 +355,7 @@ function LandingPageInner() {
                 className="mt-6 space-y-3 sm:mt-8"
               >
                 {[
-                  "50+ licensed lenders in one place",
+                  "20+ licensed lenders in one place",
                   "100% free — no hidden fees",
                   "No credit score impact",
                 ].map((item) => (

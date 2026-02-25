@@ -6,7 +6,7 @@ const FAQ_ITEMS = [
   {
     question: "How does LendKaki work?",
     answer:
-      "LendKaki is a free loan comparison platform. Simply fill out one application form with your loan requirements, and we'll match you with offers from 50+ licensed lenders in Singapore. You'll receive personalized rates without any credit score impact, allowing you to compare and choose the best option for your needs.",
+      "LendKaki is a free loan comparison platform. Simply fill out one application form with your loan requirements, and we'll match you with offers from 20+ licensed lenders in Singapore. You'll receive personalized rates without any credit score impact, allowing you to compare and choose the best option for your needs.",
   },
   {
     question: "Is LendKaki's service really free?",
@@ -31,7 +31,7 @@ const FAQ_ITEMS = [
   {
     question: "Who are the lenders on your platform?",
     answer:
-      "We partner with 50+ licensed moneylenders and financial institutions in Singapore, including major banks like DBS, OCBC, UOB, and reputable licensed moneylenders. All our partners are licensed by the Ministry of Law and follow strict lending regulations.",
+      "We partner with over 20 licensed financial institutions in Singapore. Our network includes MAS-regulated banks and MinLaw-licensed moneylenders. All our partners are fully licensed and regulated, and must meet our standards before being listed on the platform.",
   },
   {
     question: "What are the eligibility requirements?",

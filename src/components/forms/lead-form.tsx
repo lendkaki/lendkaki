@@ -133,7 +133,7 @@ export function LeadForm() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5"
             >
-              <span className="text-lg font-bold text-white">50+</span>
+              <span className="text-lg font-bold text-white">20+</span>
               <span className="text-sm font-medium text-white/80">
                 Trusted Lenders to Choose From
               </span>

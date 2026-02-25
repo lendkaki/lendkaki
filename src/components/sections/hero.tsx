@@ -176,8 +176,7 @@ export function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-foreground/70 sm:mt-6 sm:text-lg lg:mx-0"
             >
-              Compare 50+ licensed lenders. One application.
-              No credit score impact.
+              Compare 20+ licensed lenders. One application.
             </motion.p>
 
             {/* CTAs */}

@@ -3,7 +3,7 @@ import { Users, Clock, ShieldCheck, BadgeDollarSign } from "lucide-react";
 const trustItems = [
   {
     icon: Users,
-    title: "50+ Licensed Lenders",
+    title: "20+ Licensed Lenders",
     subtitle: "MAS & MinLaw regulated",
   },
   {

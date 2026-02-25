@@ -8,7 +8,7 @@ export function HowItWorks() {
       <Feature
         badge="How It Works"
         title="Get matched with the best loan offers"
-        subtitle="Apply once and receive personalized rates from 50+ licensed lenders in three simple steps."
+        subtitle="Apply once and receive personalized rates from 20+ licensed lenders in three simple steps."
         features={[
           {
             title: "Apply Once",
@@ -18,7 +18,7 @@ export function HowItWorks() {
           {
             title: "Compare Offers",
             description:
-              "Receive personalized rates from 50+ licensed lenders. Compare interest rates, tenure, and monthly instalments side by side.",
+              "Receive personalized rates from 20+ licensed lenders. Compare interest rates, tenure, and monthly instalments side by side.",
           },
           {
             title: "Get Funded",
