@@ -772,8 +772,9 @@ function LandingPageInner() {
             institutions regulated by the Monetary Authority of Singapore (MAS)
             and/or the Ministry of Law (MinLaw). Rates shown are indicative and
             subject to change. By submitting an application, you agree to our{" "}
-            <a href="/terms" className="underline hover:text-slate-300">Terms of Use</a> and{" "}
-            <a href="/privacy" className="underline hover:text-slate-300">Privacy Policy</a>.
+            <a href="/terms" className="underline hover:text-slate-300">Terms of Use</a>,{" "}
+            <a href="/privacy" className="underline hover:text-slate-300">Privacy Policy</a>, and{" "}
+            <a href="/pdpa" className="underline hover:text-slate-300">PDPA Compliance</a>.
           </p>
           <p className="mt-3 text-center text-[10px] text-slate-500">
             &copy; 2026 LendKaki. All rights reserved.
