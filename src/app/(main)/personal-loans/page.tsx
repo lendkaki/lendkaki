@@ -1032,7 +1032,7 @@ export default function PersonalLoansPage() {
               size="lg"
               className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
             >
-              Apply Now (Free)
+              Apply Now
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>

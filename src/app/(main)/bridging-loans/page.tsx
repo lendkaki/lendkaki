@@ -436,7 +436,7 @@ export default function BridgingLoansPage() {
             </div>
           </motion.div>
           <div className="mt-8 text-center">
-            <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">Apply Now (Free)<ArrowRight className="h-4 w-4" /></Button>
+            <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">Apply Now<ArrowRight className="h-4 w-4" /></Button>
           </div>
           <p className="mt-6 text-center text-[10px] leading-relaxed text-muted-foreground sm:text-xs">This calculator provides indicative estimates only and does not constitute a loan offer. Actual bridging loan terms, interest rates, and monthly instalments may vary depending on the lender and your financial profile.</p>
         </div>

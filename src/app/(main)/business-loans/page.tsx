@@ -625,7 +625,7 @@ export default function BusinessLoansPage() {
           </motion.div>
           <div className="mt-8 text-center">
             <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">
-              Apply Now (Free)<ArrowRight className="h-4 w-4" />
+              Apply Now<ArrowRight className="h-4 w-4" />
             </Button>
           </div>
           <p className="mt-6 text-center text-[10px] leading-relaxed text-muted-foreground sm:text-xs">
