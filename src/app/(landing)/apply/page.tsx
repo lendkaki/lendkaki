@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { PolicyModal } from "@/components/ui/policy-modal";
+import { MatchingModal } from "@/components/ui/matching-modal";
 import { TermsContent } from "@/components/content/terms-content";
 import { PrivacyContent } from "@/components/content/privacy-content";
 
@@ -185,6 +186,7 @@ function LandingPageInner() {
   /* Form state */
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showMatching, setShowMatching] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const successRef = useRef<HTMLDivElement>(null);
@@ -231,7 +233,15 @@ function LandingPageInner() {
           nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
         }),
       });
-      setIsSuccess(true);
+
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: "Loan Application",
+          content_category: "Lead Form",
+        });
+      }
+
+      setShowMatching(true);
     } catch {
       setError("root", {
         message: "Something went wrong. Please try again.",
@@ -420,14 +430,11 @@ function LandingPageInner() {
                     <CheckCircle2 className="h-7 w-7 text-primary" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground sm:text-2xl">
-                    Application Submitted!
+                    Thank You for Your Submission!
                   </h3>
-                  <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-                    We are matching you with our pool of approved lenders.
-                  </p>
                   <div className="mt-5 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 px-5 py-4">
                     <p className="text-base font-bold text-[#128C7E] sm:text-lg">
-                      📲 You will receive a match to a lender via WhatsApp very soon!
+                      📲 We will contact you via WhatsApp with further instructions on your loan and matched lender.
                     </p>
                   </div>
                 </div>
@@ -805,6 +812,13 @@ function LandingPageInner() {
         )}
       </AnimatePresence>
 
+      <MatchingModal
+        isOpen={showMatching}
+        onComplete={() => {
+          setShowMatching(false);
+          setIsSuccess(true);
+        }}
+      />
       <PolicyModal isOpen={showTerms} onClose={() => setShowTerms(false)} title="Terms of Use">
         <TermsContent />
       </PolicyModal>

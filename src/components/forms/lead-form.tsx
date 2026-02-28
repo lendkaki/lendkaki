@@ -17,6 +17,7 @@ import {
 import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { PolicyModal } from "@/components/ui/policy-modal";
+import { MatchingModal } from "@/components/ui/matching-modal";
 import { TermsContent } from "@/components/content/terms-content";
 import { PrivacyContent } from "@/components/content/privacy-content";
 
@@ -30,6 +31,7 @@ const valueProps = [
 export function LeadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showMatching, setShowMatching] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -72,7 +74,15 @@ export function LeadForm() {
           nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
         }),
       });
-      setIsSuccess(true);
+
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: "Loan Application",
+          content_category: "Lead Form",
+        });
+      }
+
+      setShowMatching(true);
     } catch {
       setError("root", {
         message: "Something went wrong. Please try again.",
@@ -95,14 +105,11 @@ export function LeadForm() {
               <CheckCircle2 className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-2xl font-bold text-slate-900 sm:text-3xl">
-              Application Submitted!
+              Thank You for Your Submission!
             </h3>
-            <p className="mt-3 text-base text-slate-600">
-              We are matching you with our pool of approved lenders.
-            </p>
             <div className="mt-5 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 px-6 py-5">
               <p className="text-lg font-bold text-[#128C7E] sm:text-xl">
-                📲 You will receive a match to a lender via WhatsApp very soon!
+                📲 We will contact you via WhatsApp with further instructions on your loan and matched lender.
               </p>
             </div>
           </motion.div>
@@ -366,6 +373,13 @@ export function LeadForm() {
       </div>
     </section>
 
+    <MatchingModal
+      isOpen={showMatching}
+      onComplete={() => {
+        setShowMatching(false);
+        setIsSuccess(true);
+      }}
+    />
     <PolicyModal isOpen={showTerms} onClose={() => setShowTerms(false)} title="Terms of Use">
       <TermsContent />
     </PolicyModal>
