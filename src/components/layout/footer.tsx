@@ -176,22 +176,22 @@ export function Footer() {
               <p className="text-lg font-medium text-white">Contact Us</p>
               <ul className="mt-8 flex flex-col items-center space-y-4 text-sm sm:items-start">
                 {data.contact.map(({ icon: Icon, text, href, isAddress }) => (
-                  <li key={text} className="w-full sm:w-auto">
+                  <li key={text}>
                     {href ? (
                       <a
-                        className="inline-flex items-center gap-1.5"
+                        className="flex items-start gap-1.5"
                         href={href}
                       >
-                        <Icon className="size-5 shrink-0 text-primary shadow-sm" />
+                        <Icon className="mt-0.5 size-5 shrink-0 text-primary shadow-sm" />
                         <span className="text-white/60 transition hover:text-white">
                           {text}
                         </span>
                       </a>
                     ) : (
-                      <div className="inline-flex items-center gap-1.5">
-                        <Icon className="size-5 shrink-0 text-primary shadow-sm" />
+                      <div className="flex items-start gap-1.5">
+                        <Icon className="mt-0.5 size-5 shrink-0 text-primary shadow-sm" />
                         {isAddress ? (
-                          <address className="-mt-0.5 not-italic text-white/60 transition">
+                          <address className="not-italic text-white/60 transition">
                             {text}
                           </address>
                         ) : (
