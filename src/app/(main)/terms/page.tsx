@@ -40,7 +40,7 @@ export default function TermsOfUsePage() {
           <h2>2. Eligibility</h2>
           <p>To use our services, you must:</p>
           <ul>
-            <li>Be at least 21 years of age</li>
+            <li>Be at least 18 years of age</li>
             <li>Be a Singapore Citizen, Permanent Resident, or foreigner with a valid pass</li>
             <li>Have a valid Singapore phone number and email address</li>
           </ul>

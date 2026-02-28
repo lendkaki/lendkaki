@@ -120,7 +120,7 @@ const faqItems = [
   {
     question: "Will checking rates affect my credit score?",
     answer:
-      "No, checking your rates on LendKaki will not affect your credit score. We use a soft credit inquiry that doesn't impact your credit report. Only when you proceed to accept a loan offer and the lender performs a hard credit check will it affect your score.",
+      "No, checking your rates on LendKaki will not affect your credit score. We use a soft credit enquiry that doesn't impact your credit report. Only when you proceed to accept a loan offer and the lender performs a hard credit check will it affect your score.",
   },
   {
     question: "How quickly can I get approved?",

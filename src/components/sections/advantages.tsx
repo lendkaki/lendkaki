@@ -42,7 +42,7 @@ const advantageTabs: Tab[] = [
       badge: "Widest Network",
       title: "Access Singapore's largest lending network.",
       description:
-        "We partner with 20+ MAS-regulated banks and MinLaw-licensed moneylenders. Compare rates from OCBC, DBS, UOB, and specialized lenders all in one place.",
+        "We partner with 20+ MAS-regulated banks and MinLaw-licensed moneylenders. Compare rates from OCBC, DBS, UOB, and specialised lenders all in one place.",
       imageSrc: "/images/lendkaki - multiple lenders one platform.webp",
       imageAlt: "LendKaki — multiple lenders, one platform",
     },

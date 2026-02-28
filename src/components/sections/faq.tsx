@@ -6,7 +6,7 @@ const FAQ_ITEMS = [
   {
     question: "How does LendKaki work?",
     answer:
-      "LendKaki is a free loan comparison platform. Simply fill out one application form with your loan requirements, and we'll match you with offers from 20+ licensed lenders in Singapore. You'll receive personalized rates without any credit score impact, allowing you to compare and choose the best option for your needs.",
+      "LendKaki is a free loan comparison platform. Simply fill out one application form with your loan requirements, and we'll match you with offers from 20+ licensed lenders in Singapore. You'll receive personalised rates, allowing you to compare and choose the best option for your needs.",
   },
   {
     question: "Is LendKaki's service really free?",
@@ -16,7 +16,7 @@ const FAQ_ITEMS = [
   {
     question: "Will checking rates affect my credit score?",
     answer:
-      "No, checking your rates on LendKaki will not affect your credit score. We use a soft credit inquiry that doesn't impact your credit report. Only when you proceed to accept a loan offer and the lender performs a hard credit check will it affect your score.",
+      "No, checking your rates on LendKaki will not affect your credit score. We use a soft credit enquiry that doesn't impact your credit report. Only when you proceed to accept a loan offer and the lender performs a hard credit check will it affect your score.",
   },
   {
     question: "How quickly can I get approved?",
@@ -36,7 +36,7 @@ const FAQ_ITEMS = [
   {
     question: "What are the eligibility requirements?",
     answer:
-      "Generally, you must be at least 21 years old, a Singapore Citizen or PR (some lenders accept foreigners), and have a minimum monthly income. Specific requirements vary by lender and loan type. Self-employed individuals and those with past credit issues may still qualify with certain lenders.",
+      "Generally, applicants must be at least 18 years old. We accept Singapore Citizens, Permanent Residents (PRs), and foreigners.\n\nPlease note that income requirements vary depending on your nationality, as different banks and licensed lenders set their own minimum income criteria for Singaporeans, PRs, and foreigners.\n\nSpecific eligibility requirements also differ based on the lender and loan type. Self-employed individuals and applicants with past credit issues may still qualify, subject to the lender's assessment.",
   },
   {
     question: "What documents do I need to prepare?",
@@ -46,7 +46,7 @@ const FAQ_ITEMS = [
   {
     question: "Can I apply if I have bad credit or existing loans?",
     answer:
-      "Yes! We work with lenders who specialize in various credit profiles. Even if you have existing loans, bad credit history, or have been rejected by banks, some of our partner lenders may still be able to help you. Rates and terms will vary based on your credit situation.",
+      "Yes! We work with lenders who specialise in various credit profiles. Even if you have existing loans, bad credit history, or have been rejected by banks, some of our partner lenders may still be able to help you. Rates and terms will vary based on your credit situation.",
   },
   {
     question: "Is my personal information secure?",
