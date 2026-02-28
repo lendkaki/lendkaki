@@ -53,7 +53,7 @@ const benefits = [
     icon: RefreshCw,
     title: "Consolidate All Your Debts",
     description:
-      "Combine multiple high-interest debts — credit cards, personal loans, overdrafts — into a single, manageable loan with a lower interest rate.",
+      "Combine multiple high-interest debts (credit cards, personal loans, overdrafts) into a single, manageable loan with a lower interest rate.",
   },
   {
     icon: TrendingDown,
@@ -79,19 +79,19 @@ const testimonials = [
   {
     text: "Had 4 credit cards and 2 personal loans. LendKaki matched me with a debt consolidation plan that saved me over $500 a month in repayments. Life-changing.",
     name: "Priya Nair",
-    role: "Debt Consolidation — $45,000",
+    role: "Debt Consolidation · $45,000",
     image: "/testimonials/priya nair.webp",
   },
   {
     text: "The interest on my credit cards was killing me. LendKaki found me a consolidation loan at a much lower rate. Now I have one payment and I'm actually making progress.",
     name: "Tan Wei Ming",
-    role: "Debt Consolidation — $32,000",
+    role: "Debt Consolidation · $32,000",
     image: "/testimonials/tan wei ming.webp",
   },
   {
     text: "I didn't realise how much I was overpaying until LendKaki showed me my options. Simple process, great rate, and I'm now on track to be debt-free in 3 years.",
     name: "Ahmad Rizal",
-    role: "Debt Consolidation — $60,000",
+    role: "Debt Consolidation · $60,000",
     image: "/testimonials/ahmad rizal.webp",
   },
 ];
@@ -100,7 +100,7 @@ const faqItems = [
   {
     question: "What is a debt consolidation loan?",
     answer:
-      "A debt consolidation loan combines multiple debts — such as credit card balances, personal loans, and overdrafts — into a single loan with one monthly repayment. This typically results in a lower overall interest rate and a simpler repayment structure.",
+      "A debt consolidation loan combines multiple debts (such as credit card balances, personal loans, and overdrafts) into a single loan with one monthly repayment. This typically results in a lower overall interest rate and a simpler repayment structure.",
   },
   {
     question: "How much can I save with debt consolidation?",
@@ -125,7 +125,7 @@ const faqItems = [
   {
     question: "Is LendKaki's service free?",
     answer:
-      "Yes, absolutely. LendKaki is 100% free for borrowers. We earn a commission from lenders when you successfully take up a loan — there are no charges for using our platform.",
+      "Yes, absolutely. LendKaki is 100% free for borrowers. We earn a commission from lenders when you successfully take up a loan. There are no charges for using our platform.",
   },
 ];
 
@@ -273,7 +273,7 @@ export default function DebtConsolidationPage() {
                 One application, 20+ licensed lenders and banks. Replace multiple high-interest debts with one affordable monthly payment.
               </motion.p>
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 space-y-3 sm:mt-8">
-                {["Combine credit cards, loans & overdrafts", "One lower monthly repayment", "100% free — no hidden fees"].map((item) => (
+                {["Combine credit cards, loans & overdrafts", "One lower monthly repayment", "100% free, no hidden fees"].map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900"><CheckCircle2 className="h-3.5 w-3.5 text-white" /></div>
                     <span className="text-sm font-medium text-slate-900/80 sm:text-base">{item}</span>
@@ -436,7 +436,7 @@ export default function DebtConsolidationPage() {
             </div>
           </motion.div>
           <div className="mt-8 text-center">
-            <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">Apply Now — It&apos;s Free<ArrowRight className="h-4 w-4" /></Button>
+            <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">Apply Now (Free)<ArrowRight className="h-4 w-4" /></Button>
           </div>
           <p className="mt-6 text-center text-[10px] leading-relaxed text-muted-foreground sm:text-xs">This calculator provides indicative estimates only and does not constitute a loan offer. Actual debt consolidation terms, interest rates, and monthly instalments may vary depending on the lender and your credit profile.</p>
         </div>

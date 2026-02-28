@@ -13,7 +13,7 @@ export function HowItWorks() {
           {
             title: "Apply Once",
             description:
-              "Fill in your details in under 2 minutes. One simple form — no need to apply at every bank separately.",
+              "Fill in your details in under 2 minutes. One simple form, no need to apply at every bank separately.",
           },
           {
             title: "Compare Offers",
@@ -27,7 +27,7 @@ export function HowItWorks() {
           },
         ]}
         imageUrl="/images/lendkaki how it works.webp"
-        imageAlt="LendKaki — how it works"
+        imageAlt="LendKaki how it works"
       />
     </section>
   );

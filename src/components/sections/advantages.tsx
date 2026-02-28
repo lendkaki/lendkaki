@@ -44,7 +44,7 @@ const advantageTabs: Tab[] = [
       description:
         "We partner with 20+ MAS-regulated banks and MinLaw-licensed moneylenders. Compare rates from OCBC, DBS, UOB, and specialised lenders all in one place.",
       imageSrc: "/images/lendkaki - multiple lenders one platform.webp",
-      imageAlt: "LendKaki — multiple lenders, one platform",
+      imageAlt: "LendKaki multiple lenders, one platform",
     },
   },
   {
@@ -57,7 +57,7 @@ const advantageTabs: Tab[] = [
       description:
         "We use soft credit checks only, so your credit score stays protected. Compare as many offers as you want with zero impact on your credit report.",
       imageSrc: "/images/lendkaki - zero credit impact.webp",
-      imageAlt: "LendKaki — zero credit impact",
+      imageAlt: "LendKaki zero credit impact",
     },
   },
   {
@@ -70,7 +70,7 @@ const advantageTabs: Tab[] = [
       description:
         "Zero charges for borrowers. We earn from lenders, not from you. No application fees, no comparison fees, no hidden costs. Ever.",
       imageSrc: "/images/lendkaki - zero fees.webp",
-      imageAlt: "LendKaki — zero fees, 100% free",
+      imageAlt: "LendKaki zero fees, 100% free",
     },
   },
 ];

@@ -79,19 +79,19 @@ const testimonials = [
   {
     text: "Needed a bridging loan urgently for my property purchase. LendKaki connected me with a lender who disbursed the funds the same day. Absolute lifesaver.",
     name: "Kenneth Teo",
-    role: "Bridging Loan — $300,000",
+    role: "Bridging Loan · $300,000",
     image: "/testimonials/kenneth teo.webp",
   },
   {
     text: "My HDB sale was delayed and I needed to complete my new condo purchase. LendKaki got me a bridging loan within 24 hours. Very smooth experience.",
     name: "Tan Wei Ming",
-    role: "Bridging Loan — $180,000",
+    role: "Bridging Loan · $180,000",
     image: "/testimonials/tan wei ming.webp",
   },
   {
     text: "Was worried about missing my option to purchase deadline. LendKaki matched me with a lender immediately and the rate was better than my bank's quote.",
     name: "Priya Nair",
-    role: "Bridging Loan — $250,000",
+    role: "Bridging Loan · $250,000",
     image: "/testimonials/priya nair.webp",
   },
 ];
@@ -125,7 +125,7 @@ const faqItems = [
   {
     question: "Is LendKaki's service really free?",
     answer:
-      "Yes, absolutely. LendKaki is 100% free for borrowers. We earn a commission from lenders when you successfully take up a loan — there are no fees or charges for using our platform.",
+      "Yes, absolutely. LendKaki is 100% free for borrowers. We earn a commission from lenders when you successfully take up a loan. There are no fees or charges for using our platform.",
   },
 ];
 
@@ -273,7 +273,7 @@ export default function BridgingLoansPage() {
                 Bridge the gap on your property purchase. 20+ licensed lenders, same-day disbursement available.
               </motion.p>
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 space-y-3 sm:mt-8">
-                {["Same-day disbursement available", "Secured against your property equity", "100% free — no hidden fees"].map((item) => (
+                {["Same-day disbursement available", "Secured against your property equity", "100% free, no hidden fees"].map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900"><CheckCircle2 className="h-3.5 w-3.5 text-white" /></div>
                     <span className="text-sm font-medium text-slate-900/80 sm:text-base">{item}</span>
@@ -436,7 +436,7 @@ export default function BridgingLoansPage() {
             </div>
           </motion.div>
           <div className="mt-8 text-center">
-            <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">Apply Now — It&apos;s Free<ArrowRight className="h-4 w-4" /></Button>
+            <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">Apply Now (Free)<ArrowRight className="h-4 w-4" /></Button>
           </div>
           <p className="mt-6 text-center text-[10px] leading-relaxed text-muted-foreground sm:text-xs">This calculator provides indicative estimates only and does not constitute a loan offer. Actual bridging loan terms, interest rates, and monthly instalments may vary depending on the lender and your financial profile.</p>
         </div>

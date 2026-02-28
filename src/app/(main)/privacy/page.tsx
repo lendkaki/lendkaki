@@ -3,7 +3,7 @@ import { BackButton } from "@/components/ui/back-button";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | LendKaki",
-  description: "Privacy Policy for LendKaki — Singapore's loan comparison platform.",
+  description: "Privacy Policy for LendKaki, Singapore's loan comparison platform.",
 };
 
 export default function PrivacyPolicyPage() {

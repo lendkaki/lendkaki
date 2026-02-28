@@ -71,7 +71,7 @@ const benefits = [
     icon: BarChart3,
     title: "Flexible Loan Structures",
     description:
-      "Whether you need a term loan, revolving credit, or invoice financing — we match you with lenders whose products fit your business model.",
+      "Whether you need a term loan, revolving credit, or invoice financing, we match you with lenders whose products fit your business model.",
   },
 ];
 
@@ -79,19 +79,19 @@ const testimonials = [
   {
     text: "As an SME owner, getting a business loan used to take weeks. Through LendKaki I got approved within 24 hours and funds were in my account the next day.",
     name: "Ahmad Rizal",
-    role: "Business Loan — $80,000",
+    role: "Business Loan · $80,000",
     image: "/testimonials/ahmad rizal.webp",
   },
   {
     text: "I needed working capital fast to fulfil a large order. LendKaki matched me with a lender who disbursed within the same day. Saved my business.",
     name: "Kenneth Teo",
-    role: "Business Loan — $150,000",
+    role: "Business Loan · $150,000",
     image: "/testimonials/kenneth teo.webp",
   },
   {
     text: "Compared rates from 5 different banks in one go. Saved thousands in interest and got better repayment terms than what my current bank offered.",
     name: "Tan Wei Ming",
-    role: "Business Loan — $50,000",
+    role: "Business Loan · $50,000",
     image: "/testimonials/tan wei ming.webp",
   },
 ];
@@ -120,7 +120,7 @@ const faqItems = [
   {
     question: "Is LendKaki really free for businesses?",
     answer:
-      "Yes, absolutely. LendKaki is 100% free for borrowers. We earn a referral fee from lenders when you successfully take up a loan — there are no fees or charges for businesses using our platform.",
+      "Yes, absolutely. LendKaki is 100% free for borrowers. We earn a referral fee from lenders when you successfully take up a loan. There are no fees or charges for businesses using our platform.",
   },
   {
     question: "Can my business apply if it has an existing loan?",
@@ -409,7 +409,7 @@ export default function BusinessLoansPage() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="mt-6 space-y-3 sm:mt-8"
               >
-                {["20+ licensed lenders — one simple form", "Working capital from $10,000 to $500,000", "Fast disbursement — 24 to 48 hours"].map((item) => (
+                {["20+ licensed lenders, one simple form", "Working capital from $10,000 to $500,000", "Fast disbursement in 24 to 48 hours"].map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900">
                       <CheckCircle2 className="h-3.5 w-3.5 text-white" />
@@ -625,7 +625,7 @@ export default function BusinessLoansPage() {
           </motion.div>
           <div className="mt-8 text-center">
             <Button onClick={scrollToForm} size="lg" className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base">
-              Apply Now — It&apos;s Free<ArrowRight className="h-4 w-4" />
+              Apply Now (Free)<ArrowRight className="h-4 w-4" />
             </Button>
           </div>
           <p className="mt-6 text-center text-[10px] leading-relaxed text-muted-foreground sm:text-xs">

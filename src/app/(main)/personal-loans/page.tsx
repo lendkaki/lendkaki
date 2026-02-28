@@ -78,7 +78,7 @@ const benefits = [
     icon: HeartHandshake,
     title: "No Hidden Fees",
     description:
-      "Our service is 100% free for borrowers. We never charge you a single cent — lenders pay us when you get matched.",
+      "Our service is 100% free for borrowers. We never charge you a single cent. Lenders pay us when you get matched.",
   },
 ];
 
@@ -88,21 +88,21 @@ const benefits = [
 
 const testimonials = [
   {
-    text: "I needed a personal loan urgently for an unexpected expense. LendKaki matched me with 3 offers within minutes — the rates were much better than what my bank offered.",
+    text: "I needed a personal loan urgently for an unexpected expense. LendKaki matched me with 3 offers within minutes. The rates were much better than what my bank offered.",
     name: "Tan Wei Ming",
-    role: "Personal Loan — $15,000",
+    role: "Personal Loan · $15,000",
     image: "/testimonials/tan wei ming.webp",
   },
   {
     text: "Was comparing personal loans across different banks for weeks. LendKaki did it all in one go. Saved me so much time and I got a great rate.",
     name: "Priya Nair",
-    role: "Personal Loan — $30,000",
+    role: "Personal Loan · $30,000",
     image: "/testimonials/priya nair.webp",
   },
   {
     text: "As a foreigner, I thought getting a personal loan in Singapore would be difficult. LendKaki connected me with lenders who cater to foreigners. Very smooth process.",
     name: "Ahmad Rizal",
-    role: "Personal Loan — $8,000",
+    role: "Personal Loan · $8,000",
     image: "/testimonials/ahmad rizal.webp",
   },
 ];
@@ -115,7 +115,7 @@ const faqItems = [
   {
     question: "What is a personal loan?",
     answer:
-      "A personal loan is an unsecured loan that you can use for any purpose — from covering unexpected expenses and consolidating debt to funding a wedding or renovation. Unlike secured loans, you do not need to pledge any collateral.",
+      "A personal loan is an unsecured loan that you can use for any purpose, from covering unexpected expenses and consolidating debt to funding a wedding or renovation. Unlike secured loans, you do not need to pledge any collateral.",
   },
   {
     question: "What are the eligibility requirements?",
@@ -505,7 +505,7 @@ export default function PersonalLoansPage() {
               >
                 {[
                   "20+ licensed lenders in one place",
-                  "100% free — no hidden fees",
+                  "100% free, no hidden fees",
                   "Same-day approval available",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-3">
@@ -1032,7 +1032,7 @@ export default function PersonalLoansPage() {
               size="lg"
               className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
             >
-              Apply Now — It&apos;s Free
+              Apply Now (Free)
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>

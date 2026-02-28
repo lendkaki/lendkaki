@@ -3,7 +3,7 @@ import { BackButton } from "@/components/ui/back-button";
 
 export const metadata: Metadata = {
   title: "Terms of Use | LendKaki",
-  description: "Terms of Use for LendKaki — Singapore's loan comparison platform.",
+  description: "Terms of Use for LendKaki, Singapore's loan comparison platform.",
 };
 
 export default function TermsOfUsePage() {

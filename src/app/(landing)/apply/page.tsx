@@ -57,7 +57,7 @@ const headlineVariants: Record<
       "Skip the bank queues. Apply once, get matched with 20+ lenders instantly.",
   },
   free: {
-    before: "Free Loan Comparison — Zero Credit Score Impact",
+    before: "Free Loan Comparison | Zero Credit Score Impact",
     subheadline:
       "Compare rates from 20+ licensed lenders without affecting your credit. 100% free.",
   },
@@ -89,7 +89,7 @@ const partnerLogos = [
 
 const testimonials = [
   {
-    text: "I was dreading applying to multiple banks. LendKaki matched me with 5 offers in under a minute — I saved over $2,000 in interest compared to my bank's rate.",
+    text: "I was dreading applying to multiple banks. LendKaki matched me with 5 offers in under a minute. I saved over $2,000 in interest compared to my bank's rate.",
     name: "Tan Wei Ming",
     role: "Personal Loan",
     image: "/testimonials/tan wei ming.webp",
@@ -366,7 +366,7 @@ function LandingPageInner() {
               >
                 {[
                   "20+ licensed lenders in one place",
-                  "100% free — no hidden fees",
+                  "100% free, no hidden fees",
                   "No credit score impact",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-3">

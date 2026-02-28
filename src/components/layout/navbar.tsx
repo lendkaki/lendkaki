@@ -21,8 +21,8 @@ const navCategories = [
   {
     label: "Company",
     links: [
-      { href: "#about", label: "About Us" },
-      { href: "#how-it-works", label: "How It Works" },
+      { href: "/why-lendkaki", label: "Why LendKaki?" },
+      { href: "/#how-it-works", label: "How It Works" },
     ],
   },
   {

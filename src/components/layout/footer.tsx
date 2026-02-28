@@ -29,7 +29,7 @@ const data = {
     { text: "Debt Consolidation", href: "/debt-consolidation" },
   ],
   company_links: [
-    { text: "About Us", href: "#about" },
+    { text: "Why LendKaki?", href: "/why-lendkaki" },
     { text: "How It Works", href: "#how-it-works" },
   ],
   resources: [

@@ -8,13 +8,13 @@ import { motion } from "motion/react";
 
 const testimonials: Testimonial[] = [
   {
-    text: "I was dreading applying to multiple banks. LendKaki matched me with 5 offers in under a minute — I saved over $2,000 in interest compared to my bank's rate.",
+    text: "I was dreading applying to multiple banks. LendKaki matched me with 5 offers in under a minute. I saved over $2,000 in interest compared to my bank's rate.",
     image: "/testimonials/tan wei ming.webp",
     name: "Tan Wei Ming",
     role: "Personal Loan",
   },
   {
-    text: "Finally consolidated all my credit card debts into one manageable loan. The whole process was transparent — no surprise fees, no hard credit checks.",
+    text: "Finally consolidated all my credit card debts into one manageable loan. The whole process was transparent with no surprise fees, no hard credit checks.",
     image: "/testimonials/priya nair.webp",
     name: "Priya Nair",
     role: "Debt Consolidation",
@@ -26,7 +26,7 @@ const testimonials: Testimonial[] = [
     role: "Business Loan",
   },
   {
-    text: "We needed funds for our wedding quickly. The multi-step form was super easy — took less than 2 minutes. Got a great rate from a lender I wouldn't have found on my own.",
+    text: "We needed funds for our wedding quickly. The multi-step form was super easy and took less than 2 minutes. Got a great rate from a lender I wouldn't have found on my own.",
     image: "/testimonials/rachel lim.webp",
     name: "Rachel Lim",
     role: "Wedding Loan",
