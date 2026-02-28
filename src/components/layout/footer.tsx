@@ -23,10 +23,10 @@ const data = {
     { icon: null, label: "TikTok", href: "https://www.tiktok.com/@lendkaki.sg" },
   ],
   loanTypes: [
-    { text: "Personal Loans", href: "#loans" },
-    { text: "Business Loans", href: "#loans" },
-    { text: "Bridging Loans", href: "#loans" },
-    { text: "Debt Consolidation", href: "#loans" },
+    { text: "Personal Loans", href: "/personal-loans" },
+    { text: "Business Loans", href: "/business-loans" },
+    { text: "Bridging Loans", href: "/bridging-loans" },
+    { text: "Debt Consolidation", href: "/debt-consolidation" },
   ],
   company_links: [
     { text: "About Us", href: "#about" },
