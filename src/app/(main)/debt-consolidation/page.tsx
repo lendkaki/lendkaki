@@ -219,9 +219,9 @@ export default function DebtConsolidationPage() {
     }
   };
 
-  const [loanAmount, setLoanAmount] = useState(30000);
-  const [tenure, setTenure] = useState(36);
-  const [interestRate, setInterestRate] = useState(8);
+  const [loanAmount, setLoanAmount] = useState(10000);
+  const [tenure, setTenure] = useState(12);
+  const [interestRate, setInterestRate] = useState(6);
 
   const calcResults = useMemo(() => {
     const monthly = calculateMonthlyInstallment(loanAmount, interestRate, tenure);
@@ -407,9 +407,9 @@ export default function DebtConsolidationPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={calcInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.15 }} className="rounded-2xl border border-border bg-white p-6 shadow-xl sm:p-8">
             <div className="space-y-8">
-              <SliderField icon={DollarSign} label="Total Debt Amount" value={loanAmount} displayValue={fmtWhole.format(loanAmount)} min={5000} max={200000} step={1000} minLabel="$5,000" maxLabel="$200,000" onChange={setLoanAmount} />
-              <SliderField icon={Calendar} label="Repayment Tenure" value={tenure} displayValue={`${tenure} month${tenure === 1 ? "" : "s"}`} min={12} max={84} step={1} minLabel="12 months" maxLabel="84 months" onChange={setTenure} />
-              <SliderField icon={Percent} label="Interest Rate (p.a.)" value={interestRate} displayValue={`${interestRate.toFixed(1)}%`} min={1} max={30} step={0.1} minLabel="1%" maxLabel="30%" onChange={setInterestRate} />
+              <SliderField icon={DollarSign} label="Loan Amount" value={loanAmount} displayValue={fmtWhole.format(loanAmount)} min={1000} max={100000} step={1000} minLabel="$1,000" maxLabel="≥ $100,000" onChange={setLoanAmount} />
+              <SliderField icon={Calendar} label="Tenure" value={tenure} displayValue={`${tenure} month${tenure === 1 ? "" : "s"}`} min={1} max={24} step={1} minLabel="1 month" maxLabel="≥ 24 months" onChange={setTenure} />
+              <SliderField icon={Percent} label="Interest Rate (p.a.)" value={interestRate} displayValue={`${interestRate.toFixed(1)}%`} min={1} max={48} step={0.1} minLabel="1%" maxLabel="48%" onChange={setInterestRate} />
             </div>
             <div className="my-8 border-t border-border" />
             <div className="space-y-6">

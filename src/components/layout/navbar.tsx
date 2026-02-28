@@ -166,7 +166,7 @@ export function Navbar() {
                   "border-primary bg-primary text-white hover:bg-white hover:border-white hover:text-primary"
               )}
             >
-              <a href="#apply">Compare Rates Now</a>
+              <a href="#apply">Apply Now</a>
             </Button>
           </div>
 

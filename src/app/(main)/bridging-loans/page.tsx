@@ -219,9 +219,9 @@ export default function BridgingLoansPage() {
     }
   };
 
-  const [loanAmount, setLoanAmount] = useState(200000);
-  const [tenure, setTenure] = useState(6);
-  const [interestRate, setInterestRate] = useState(3);
+  const [loanAmount, setLoanAmount] = useState(10000);
+  const [tenure, setTenure] = useState(12);
+  const [interestRate, setInterestRate] = useState(6);
 
   const calcResults = useMemo(() => {
     const monthly = calculateMonthlyInstallment(loanAmount, interestRate, tenure);
@@ -407,9 +407,9 @@ export default function BridgingLoansPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={calcInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.15 }} className="rounded-2xl border border-border bg-white p-6 shadow-xl sm:p-8">
             <div className="space-y-8">
-              <SliderField icon={DollarSign} label="Loan Amount" value={loanAmount} displayValue={fmtWhole.format(loanAmount)} min={10000} max={1000000} step={10000} minLabel="$10,000" maxLabel="$1,000,000" onChange={setLoanAmount} />
-              <SliderField icon={Calendar} label="Tenure" value={tenure} displayValue={`${tenure} month${tenure === 1 ? "" : "s"}`} min={1} max={12} step={1} minLabel="1 month" maxLabel="12 months" onChange={setTenure} />
-              <SliderField icon={Percent} label="Interest Rate (p.a.)" value={interestRate} displayValue={`${interestRate.toFixed(1)}%`} min={1} max={24} step={0.1} minLabel="1%" maxLabel="24%" onChange={setInterestRate} />
+              <SliderField icon={DollarSign} label="Loan Amount" value={loanAmount} displayValue={fmtWhole.format(loanAmount)} min={1000} max={100000} step={1000} minLabel="$1,000" maxLabel="≥ $100,000" onChange={setLoanAmount} />
+              <SliderField icon={Calendar} label="Tenure" value={tenure} displayValue={`${tenure} month${tenure === 1 ? "" : "s"}`} min={1} max={24} step={1} minLabel="1 month" maxLabel="≥ 24 months" onChange={setTenure} />
+              <SliderField icon={Percent} label="Interest Rate (p.a.)" value={interestRate} displayValue={`${interestRate.toFixed(1)}%`} min={1} max={48} step={0.1} minLabel="1%" maxLabel="48%" onChange={setInterestRate} />
             </div>
             <div className="my-8 border-t border-border" />
             <div className="space-y-6">

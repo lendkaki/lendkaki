@@ -112,7 +112,7 @@ export default function LoanCalculatorPage() {
                 max={100000}
                 step={1000}
                 minLabel="$1,000"
-                maxLabel="$100,000"
+                maxLabel="≥ $100,000"
                 onChange={setLoanAmount}
               />
 
@@ -125,7 +125,7 @@ export default function LoanCalculatorPage() {
                 max={24}
                 step={1}
                 minLabel="1 month"
-                maxLabel="24 months"
+                maxLabel="≥ 24 months"
                 onChange={setTenure}
               />
 
