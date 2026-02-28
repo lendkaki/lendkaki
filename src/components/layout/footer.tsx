@@ -174,9 +174,9 @@ export function Footer() {
               className="text-center sm:text-left"
             >
               <p className="text-lg font-medium text-white">Contact Us</p>
-              <ul className="mt-8 flex flex-col items-center space-y-4 text-sm sm:items-start">
+              <ul className="mt-8 space-y-4 text-sm">
                 {data.contact.map(({ icon: Icon, text, href, isAddress }) => (
-                  <li key={text}>
+                  <li key={text} className="flex justify-center sm:justify-start">
                     {href ? (
                       <a
                         className="flex items-start gap-1.5"
@@ -188,7 +188,7 @@ export function Footer() {
                         </span>
                       </a>
                     ) : (
-                      <div className="flex items-start gap-1.5">
+                      <div className="flex items-start gap-1.5 max-w-[220px] sm:max-w-none">
                         <Icon className="mt-0.5 size-5 shrink-0 text-primary shadow-sm" />
                         {isAddress ? (
                           <address className="not-italic text-white/60 transition">
