@@ -18,9 +18,9 @@ const data = {
       "Singapore's most trusted loan comparison platform. Compare rates from banks and licensed financial institutions. Fast, free, and secure.",
   },
   social: [
-    { icon: Facebook, label: "Facebook", href: "#" },
-    { icon: Instagram, label: "Instagram", href: "#" },
-    { icon: null, label: "TikTok", href: "#" },
+    { icon: Facebook, label: "Facebook", href: "https://www.facebook.com/share/1Auajw8YMF/" },
+    { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/lendkaki.sg?igsh=NWRqYnoxcmpoMzBt" },
+    { icon: null, label: "TikTok", href: "https://www.tiktok.com/@lendkaki.sg" },
   ],
   loanTypes: [
     { text: "Personal Loans", href: "#loans" },
@@ -34,7 +34,7 @@ const data = {
   ],
   resources: [
     { text: "FAQs", href: "/#faq" },
-    { text: "Loan Calculator", href: "#apply" },
+    { text: "Loan Calculator", href: "/loan-calculator" },
     { text: "PDPA Compliance", href: "/pdpa" },
   ],
   contact: [
@@ -79,6 +79,8 @@ export function Footer() {
                 <li key={label}>
                   <Link
                     href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-white/70 transition hover:text-white"
                   >
                     <span className="sr-only">{label}</span>
