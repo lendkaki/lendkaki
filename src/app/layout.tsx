@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Vampiro_One } from "next/font/google";
 import Script from "next/script";
 import { ThemeProvider } from "@/components/theme-provider";
+import { WhatsAppFloat } from "@/components/ui/whatsapp-float";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -106,6 +107,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <WhatsAppFloat />
         </ThemeProvider>
       </body>
     </html>
