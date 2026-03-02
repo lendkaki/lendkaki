@@ -96,6 +96,21 @@ export default function RootLayout({
           />
         </noscript>
         {/* End Meta Pixel Code */}
+
+        {/* Google Analytics 4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-REHKBEB1Q4"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-REHKBEB1Q4');
+          `}
+        </Script>
+        {/* End Google Analytics 4 */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${vampiroOne.variable} font-sans antialiased overflow-x-hidden`}
