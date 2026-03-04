@@ -72,6 +72,7 @@ export function LeadForm() {
           amount: String(data.amount),
           purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
           nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
+          landingpage: typeof window !== "undefined" ? window.location.pathname : "",
         }),
       });
 

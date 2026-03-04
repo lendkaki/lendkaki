@@ -372,6 +372,7 @@ export default function PersonalLoansPage() {
             data.purpose,
           nationality:
             data.nationality === "foreigner" ? "Foreigner" : data.nationality,
+          landingpage: typeof window !== "undefined" ? window.location.pathname : "",
         }),
       });
 
