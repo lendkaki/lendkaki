@@ -21,7 +21,7 @@ export function WhatsAppFloat() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (pathname === "/apply") return null;
+  if (pathname === "/apply" || pathname === "/apply-now") return null;
 
   return (
     <AnimatePresence>
