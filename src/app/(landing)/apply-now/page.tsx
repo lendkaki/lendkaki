@@ -15,17 +15,13 @@ import {
   BadgeCheck,
   Star,
   ChevronDown,
+  ChevronLeft,
   Zap,
+  Check,
+  UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
@@ -131,6 +127,27 @@ const trustBadges = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  Multi-step form constants                                          */
+/* ------------------------------------------------------------------ */
+
+const TOTAL_STEPS = 4;
+
+const STEP_LABELS = ["Loan Info", "Contact", "About You", "Review"];
+
+const STEP_FIELDS: (keyof QuickLeadValues)[][] = [
+  ["amount", "purpose"],
+  ["name", "email", "phone"],
+  ["nationality"],
+  ["agreedToTerms"],
+];
+
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0 }),
+};
+
+/* ------------------------------------------------------------------ */
 /*  Helper: random date within the last 30 days                       */
 /* ------------------------------------------------------------------ */
 
@@ -173,6 +190,8 @@ function LandingPageInner() {
   const [showMatching, setShowMatching] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [direction, setDirection] = useState(1);
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -185,18 +204,39 @@ function LandingPageInner() {
     register,
     handleSubmit,
     setValue,
+    trigger,
+    watch,
+    getValues,
     formState: { errors },
     setError,
   } = useForm<QuickLeadValues>({
     resolver: zodResolver(quickLeadSchema),
     mode: "onTouched",
+    defaultValues: {
+      agreedToTerms: false,
+    },
   });
+
+  const watchedPurpose = watch("purpose");
+  const watchedNationality = watch("nationality");
 
   const formRef = useRef<HTMLDivElement>(null);
 
   const scrollToForm = useCallback(() => {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
+
+  const handleNext = async () => {
+    const valid = await trigger(STEP_FIELDS[currentStep]);
+    if (!valid) return;
+    setDirection(1);
+    setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
+  };
+
+  const handleBack = () => {
+    setDirection(-1);
+    setCurrentStep((s) => Math.max(s - 1, 0));
+  };
 
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycby2hR6rxThjW8CIjpMDtlWePt9HI96GUivfMMkumu1xah6fwDLjSOzHY8Kh70tIt9yj/exec";
@@ -487,188 +527,438 @@ function LandingPageInner() {
                   </motion.a>
                 </motion.div>
               ) : (
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="rounded-2xl border border-border bg-white p-6 shadow-xl sm:p-8"
-                >
-                  <div className="space-y-5">
-                    {/* Name */}
-                    <div>
-                      <Label htmlFor="an-name" className="mb-1.5 block text-sm font-medium text-slate-700">
-                        Name
-                      </Label>
-                      <input
-                        id="an-name"
-                        placeholder="Enter your name here"
-                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        {...register("name")}
+                <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-xl">
+                  {/* ---- Progress indicator ---- */}
+                  <div className="border-b border-border/50 bg-slate-50/80 px-6 py-4 sm:px-8">
+                    <div className="flex items-center justify-between">
+                      {STEP_LABELS.map((label, i) => (
+                        <div key={label} className="flex flex-col items-center gap-1.5">
+                          <motion.div
+                            className={cn(
+                              "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors duration-300",
+                              i < currentStep
+                                ? "bg-primary text-white"
+                                : i === currentStep
+                                  ? "bg-primary text-white ring-4 ring-primary/20"
+                                  : "bg-slate-200 text-slate-400"
+                            )}
+                            whileTap={i <= currentStep ? { scale: 0.9 } : undefined}
+                            onClick={() => {
+                              if (i < currentStep) {
+                                setDirection(-1);
+                                setCurrentStep(i);
+                              }
+                            }}
+                            style={{ cursor: i < currentStep ? "pointer" : "default" }}
+                          >
+                            {i < currentStep ? <Check className="h-3.5 w-3.5" /> : i + 1}
+                          </motion.div>
+                          <span
+                            className={cn(
+                              "hidden text-[10px] font-medium sm:block",
+                              i === currentStep ? "text-primary" : "text-slate-400"
+                            )}
+                          >
+                            {label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-200">
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        animate={{ width: `${(currentStep / (TOTAL_STEPS - 1)) * 100}%` }}
+                        transition={{ duration: 0.35, ease: "easeInOut" }}
                       />
-                      {errors.name && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.name.message}</p>
-                      )}
-                    </div>
-
-                    {/* Mobile Number */}
-                    <div>
-                      <Label htmlFor="an-phone" className="mb-1.5 block text-sm font-medium text-slate-700">
-                        Mobile Number
-                      </Label>
-                      <input
-                        id="an-phone"
-                        placeholder="Enter your mobile number here"
-                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        {...register("phone")}
-                      />
-                      {errors.phone && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.phone.message}</p>
-                      )}
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <Label htmlFor="an-email" className="mb-1.5 block text-sm font-medium text-slate-700">
-                        Email Address
-                      </Label>
-                      <input
-                        id="an-email"
-                        type="email"
-                        placeholder="Enter your email address here"
-                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        {...register("email")}
-                      />
-                      {errors.email && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.email.message}</p>
-                      )}
-                    </div>
-
-                    {/* Desired Loan Amount */}
-                    <div>
-                      <Label htmlFor="an-amount" className="mb-1.5 block text-sm font-medium text-slate-700">
-                        Desired Loan Amount
-                      </Label>
-                      <div className="relative">
-                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-500">
-                          $
-                        </span>
-                        <input
-                          id="an-amount"
-                          type="number"
-                          placeholder="Enter desired loan amount"
-                          className="h-11 w-full rounded-lg border border-slate-300 bg-white pl-7 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                          {...register("amount", { valueAsNumber: true })}
-                        />
-                      </div>
-                      {errors.amount && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.amount.message}</p>
-                      )}
-                    </div>
-
-                    {/* Purpose of Loan */}
-                    <div>
-                      <Label className="mb-1.5 block text-sm font-medium text-slate-700">
-                        Purpose of Loan
-                      </Label>
-                      <Select
-                        onValueChange={(value) =>
-                          setValue("purpose", value as QuickLeadValues["purpose"], {
-                            shouldValidate: true,
-                          })
-                        }
-                      >
-                        <SelectTrigger className="h-11 w-full rounded-lg border-slate-300 bg-white text-sm text-slate-700 shadow-none focus:border-primary focus:ring-2 focus:ring-primary/20 data-[placeholder]:text-slate-400">
-                          <SelectValue placeholder="Select purpose of loan" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {loanPurposeOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {errors.purpose && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.purpose.message}</p>
-                      )}
-                    </div>
-
-                    {/* Nationality — radio buttons */}
-                    <div>
-                      <div className="flex items-center gap-6">
-                        <label className="flex items-center gap-2">
-                          <input
-                            type="radio"
-                            value="Singaporean_PR"
-                            className="h-4 w-4 border-slate-300 text-primary accent-primary"
-                            {...register("nationality")}
-                          />
-                          <span className="text-sm text-slate-600">Singapore/PR</span>
-                        </label>
-                        <label className="flex items-center gap-2">
-                          <input
-                            type="radio"
-                            value="foreigner"
-                            className="h-4 w-4 border-slate-300 text-primary accent-primary"
-                            {...register("nationality")}
-                          />
-                          <span className="text-sm text-slate-600">Foreigner</span>
-                        </label>
-                      </div>
-                      {errors.nationality && (
-                        <p className="mt-1 text-xs font-medium text-red-500">{errors.nationality.message}</p>
-                      )}
                     </div>
                   </div>
 
-                  {/* Submit Button */}
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="mt-6 h-12 w-full gap-2 rounded-full bg-primary text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Submitting...
-                      </>
+                  {/* ---- Step content ---- */}
+                  <form onSubmit={handleSubmit(onSubmit)} className="p-6 sm:p-8">
+                    <div className="min-h-[320px]">
+                      <AnimatePresence mode="wait" custom={direction}>
+                        <motion.div
+                          key={currentStep}
+                          custom={direction}
+                          variants={slideVariants}
+                          initial="enter"
+                          animate="center"
+                          exit="exit"
+                          transition={{ duration: 0.25, ease: "easeInOut" }}
+                        >
+                          {/* ====== Step 0: Loan Details ====== */}
+                          {currentStep === 0 && (
+                            <div className="space-y-5">
+                              <div>
+                                <h3 className="text-lg font-semibold text-slate-900">
+                                  How much do you need?
+                                </h3>
+                                <p className="mt-1 text-sm text-slate-500">
+                                  Tell us about your loan requirements
+                                </p>
+                              </div>
+
+                              <div>
+                                <Label className="mb-1.5 block text-sm font-medium text-slate-700">
+                                  Desired Loan Amount
+                                </Label>
+                                <div className="relative">
+                                  <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold text-slate-400">
+                                    $
+                                  </span>
+                                  <input
+                                    type="number"
+                                    placeholder="e.g. 10000"
+                                    className="h-14 w-full rounded-xl border border-slate-300 bg-white pl-9 pr-4 text-lg font-semibold outline-none transition-all placeholder:text-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    {...register("amount", { valueAsNumber: true })}
+                                  />
+                                </div>
+                                {errors.amount && (
+                                  <p className="mt-1 text-xs font-medium text-red-500">{errors.amount.message}</p>
+                                )}
+                              </div>
+
+                              <div>
+                                <Label className="mb-2 block text-sm font-medium text-slate-700">
+                                  What&apos;s the loan for?
+                                </Label>
+                                <div className="grid grid-cols-2 gap-2">
+                                  {loanPurposeOptions.map((opt) => (
+                                    <motion.button
+                                      key={opt.value}
+                                      type="button"
+                                      whileHover={{ scale: 1.02 }}
+                                      whileTap={{ scale: 0.97 }}
+                                      onClick={() =>
+                                        setValue("purpose", opt.value as QuickLeadValues["purpose"], {
+                                          shouldValidate: true,
+                                        })
+                                      }
+                                      className={cn(
+                                        "relative rounded-xl border px-3 py-2.5 text-left text-sm font-medium transition-all duration-200",
+                                        watchedPurpose === opt.value
+                                          ? "border-primary bg-primary/5 text-primary ring-2 ring-primary/20"
+                                          : "border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                                      )}
+                                    >
+                                      {watchedPurpose === opt.value && (
+                                        <motion.div
+                                          initial={{ scale: 0 }}
+                                          animate={{ scale: 1 }}
+                                          className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary"
+                                        >
+                                          <Check className="h-2.5 w-2.5 text-white" />
+                                        </motion.div>
+                                      )}
+                                      {opt.label}
+                                    </motion.button>
+                                  ))}
+                                </div>
+                                {errors.purpose && (
+                                  <p className="mt-1 text-xs font-medium text-red-500">{errors.purpose.message}</p>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* ====== Step 1: Personal Info ====== */}
+                          {currentStep === 1 && (
+                            <div className="space-y-5">
+                              <div>
+                                <h3 className="text-lg font-semibold text-slate-900">
+                                  Tell us about yourself
+                                </h3>
+                                <p className="mt-1 text-sm text-slate-500">
+                                  We&apos;ll use this to send you personalised offers
+                                </p>
+                              </div>
+
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.05, duration: 0.3 }}
+                              >
+                                <Label htmlFor="ms-name" className="mb-1.5 block text-sm font-medium text-slate-700">
+                                  Full Name
+                                </Label>
+                                <input
+                                  id="ms-name"
+                                  placeholder="Enter your full name"
+                                  className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                  {...register("name")}
+                                />
+                                {errors.name && (
+                                  <p className="mt-1 text-xs font-medium text-red-500">{errors.name.message}</p>
+                                )}
+                              </motion.div>
+
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1, duration: 0.3 }}
+                              >
+                                <Label htmlFor="ms-email" className="mb-1.5 block text-sm font-medium text-slate-700">
+                                  Email Address
+                                </Label>
+                                <input
+                                  id="ms-email"
+                                  type="email"
+                                  placeholder="Enter your email address"
+                                  className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                  {...register("email")}
+                                />
+                                {errors.email && (
+                                  <p className="mt-1 text-xs font-medium text-red-500">{errors.email.message}</p>
+                                )}
+                              </motion.div>
+
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.15, duration: 0.3 }}
+                              >
+                                <Label htmlFor="ms-phone" className="mb-1.5 block text-sm font-medium text-slate-700">
+                                  Mobile Number
+                                </Label>
+                                <input
+                                  id="ms-phone"
+                                  placeholder="e.g. 91234567"
+                                  className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                  {...register("phone")}
+                                />
+                                {errors.phone && (
+                                  <p className="mt-1 text-xs font-medium text-red-500">{errors.phone.message}</p>
+                                )}
+                              </motion.div>
+                            </div>
+                          )}
+
+                          {/* ====== Step 2: Nationality ====== */}
+                          {currentStep === 2 && (
+                            <div className="space-y-5">
+                              <div>
+                                <h3 className="text-lg font-semibold text-slate-900">
+                                  Almost there!
+                                </h3>
+                                <p className="mt-1 text-sm text-slate-500">
+                                  This helps us match you with the right lenders
+                                </p>
+                              </div>
+
+                              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <motion.button
+                                  type="button"
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.97 }}
+                                  onClick={() =>
+                                    setValue("nationality", "Singaporean_PR", { shouldValidate: true })
+                                  }
+                                  className={cn(
+                                    "relative rounded-2xl border-2 p-6 text-center transition-all duration-200",
+                                    watchedNationality === "Singaporean_PR"
+                                      ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                                      : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                                  )}
+                                >
+                                  {watchedNationality === "Singaporean_PR" && (
+                                    <motion.div
+                                      initial={{ scale: 0 }}
+                                      animate={{ scale: 1 }}
+                                      className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-primary"
+                                    >
+                                      <Check className="h-3 w-3 text-white" />
+                                    </motion.div>
+                                  )}
+                                  <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50">
+                                    <UserCheck className="h-6 w-6 text-emerald-700" />
+                                  </div>
+                                  <p className="font-semibold text-slate-900">Singapore / PR</p>
+                                  <p className="mt-1 text-xs text-slate-500">Citizen or Permanent Resident</p>
+                                </motion.button>
+
+                                <motion.button
+                                  type="button"
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.97 }}
+                                  onClick={() =>
+                                    setValue("nationality", "foreigner", { shouldValidate: true })
+                                  }
+                                  className={cn(
+                                    "relative rounded-2xl border-2 p-6 text-center transition-all duration-200",
+                                    watchedNationality === "foreigner"
+                                      ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                                      : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                                  )}
+                                >
+                                  {watchedNationality === "foreigner" && (
+                                    <motion.div
+                                      initial={{ scale: 0 }}
+                                      animate={{ scale: 1 }}
+                                      className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-primary"
+                                    >
+                                      <Check className="h-3 w-3 text-white" />
+                                    </motion.div>
+                                  )}
+                                  <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
+                                    <Users className="h-6 w-6 text-blue-500" />
+                                  </div>
+                                  <p className="font-semibold text-slate-900">Foreigner</p>
+                                  <p className="mt-1 text-xs text-slate-500">Employment Pass, S Pass, or other</p>
+                                </motion.button>
+                              </div>
+                              {errors.nationality && (
+                                <p className="mt-1 text-xs font-medium text-red-500">{errors.nationality.message}</p>
+                              )}
+                            </div>
+                          )}
+
+                          {/* ====== Step 3: Review & Submit ====== */}
+                          {currentStep === 3 && (
+                            <div className="space-y-5">
+                              <div>
+                                <h3 className="text-lg font-semibold text-slate-900">
+                                  Review your application
+                                </h3>
+                                <p className="mt-1 text-sm text-slate-500">
+                                  Make sure everything looks right before submitting
+                                </p>
+                              </div>
+
+                              <div className="space-y-2.5 rounded-xl bg-slate-50 p-4">
+                                {[
+                                  { label: "Loan Amount", value: `$${(getValues("amount") ?? 0).toLocaleString()}` },
+                                  { label: "Purpose", value: loanPurposeOptions.find((o) => o.value === getValues("purpose"))?.label ?? "—" },
+                                  { label: "Name", value: getValues("name") || "—" },
+                                  { label: "Email", value: getValues("email") || "—" },
+                                  { label: "Phone", value: getValues("phone") || "—" },
+                                  {
+                                    label: "Nationality",
+                                    value: getValues("nationality") === "Singaporean_PR"
+                                      ? "Singapore / PR"
+                                      : getValues("nationality") === "foreigner"
+                                        ? "Foreigner"
+                                        : "—",
+                                  },
+                                ].map(({ label, value }, i) => (
+                                  <motion.div
+                                    key={label}
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.04 * i, duration: 0.25 }}
+                                    className="flex items-center justify-between border-b border-slate-200/80 pb-2.5 last:border-0 last:pb-0"
+                                  >
+                                    <span className="text-xs font-medium text-slate-500">{label}</span>
+                                    <span className="text-sm font-semibold text-slate-900">{value}</span>
+                                  </motion.div>
+                                ))}
+                              </div>
+
+                              <div>
+                                <label className="flex items-start gap-2.5">
+                                  <input
+                                    type="checkbox"
+                                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-primary"
+                                    {...register("agreedToTerms")}
+                                  />
+                                  <span className="text-xs leading-relaxed text-slate-500">
+                                    By proceeding the application, I agree to LendKaki&apos;s{" "}
+                                    <button type="button" onClick={() => setShowTerms(true)} className="font-medium text-primary hover:underline">
+                                      Terms of Use
+                                    </button>{" "}
+                                    and{" "}
+                                    <button type="button" onClick={() => setShowPrivacy(true)} className="font-medium text-primary hover:underline">
+                                      Privacy Policy
+                                    </button>
+                                    , and consent to receive marketing messages.
+                                  </span>
+                                </label>
+                                {errors.agreedToTerms && (
+                                  <p className="mt-1 text-xs font-medium text-red-500">{errors.agreedToTerms.message}</p>
+                                )}
+                              </div>
+
+                              {errors.root && (
+                                <p className="text-center text-sm text-red-500">{errors.root.message}</p>
+                              )}
+                            </div>
+                          )}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+
+                    {/* ---- Navigation ---- */}
+                    {currentStep < TOTAL_STEPS - 1 ? (
+                      <div className="mt-6 flex items-center gap-3">
+                        {currentStep > 0 && (
+                          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={handleBack}
+                              className="gap-1 rounded-full"
+                            >
+                              <ChevronLeft className="h-4 w-4" />
+                              Back
+                            </Button>
+                          </motion.div>
+                        )}
+                        <div className="flex-1" />
+                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                          <Button
+                            type="button"
+                            onClick={handleNext}
+                            className="gap-1 rounded-full px-6"
+                          >
+                            Next
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </motion.div>
+                      </div>
                     ) : (
-                      <>
-                        Get Your Loan Options
-                        <ArrowRight className="h-4 w-4" />
-                      </>
+                      <div className="mt-6 flex flex-col items-center gap-3">
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full"
+                        >
+                          <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="h-14 w-full gap-2 rounded-full bg-primary text-base font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl"
+                          >
+                            {isSubmitting ? (
+                              <>
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                                Submitting...
+                              </>
+                            ) : (
+                              <>
+                                Get Your Loan Options
+                                <ArrowRight className="h-5 w-5" />
+                              </>
+                            )}
+                          </Button>
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={handleBack}
+                            className="gap-1 rounded-full text-slate-500"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                            Back
+                          </Button>
+                        </motion.div>
+                      </div>
                     )}
-                  </Button>
 
-                  {errors.root && (
-                    <p className="mt-3 text-center text-sm text-red-500">
-                      {errors.root.message}
+                    {/* Step counter */}
+                    <p className="mt-3 text-center text-xs text-slate-400">
+                      Step {currentStep + 1} of {TOTAL_STEPS}
                     </p>
-                  )}
-
-                  {/* Terms checkbox */}
-                  <div className="mt-4">
-                    <label className="flex items-start gap-2.5">
-                      <input
-                        type="checkbox"
-                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-primary"
-                        {...register("agreedToTerms")}
-                      />
-                      <span className="text-xs leading-relaxed text-slate-500">
-                        By proceeding the application, I agree to LendKaki&apos;s{" "}
-                        <button type="button" onClick={() => setShowTerms(true)} className="font-medium text-primary hover:underline">
-                          Terms of Use
-                        </button>{" "}
-                        and{" "}
-                        <button type="button" onClick={() => setShowPrivacy(true)} className="font-medium text-primary hover:underline">
-                          Privacy Policy
-                        </button>
-                        , and consent to receive marketing messages.
-                      </span>
-                    </label>
-                    {errors.agreedToTerms && (
-                      <p className="mt-1 text-xs font-medium text-red-500">{errors.agreedToTerms.message}</p>
-                    )}
-                  </div>
-                </form>
+                  </form>
+                </div>
               )}
             </motion.div>
           </div>
