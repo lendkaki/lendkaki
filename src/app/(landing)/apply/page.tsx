@@ -313,10 +313,10 @@ function LandingPageInner() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div
             ref={formRef}
-            className="grid items-start gap-8 pb-12 pt-10 sm:pb-16 sm:pt-14 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pb-20 lg:pt-16"
+            className="grid items-start gap-8 pb-12 pt-10 sm:pb-16 sm:pt-14 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pb-12 lg:pt-10"
           >
             {/* Left: Headline + Value Props */}
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -358,35 +358,48 @@ function LandingPageInner() {
                 {subheadline}
               </motion.p>
 
-              {/* Value prop bullets */}
+              {/* Value prop bullets + mascot side-by-side on mobile/tablet */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="mt-6 space-y-3 sm:mt-8"
+                className="mt-6 flex items-center justify-between gap-3 sm:mt-8 sm:justify-start lg:block"
               >
-                {[
-                  "20+ licensed lenders in one place",
-                  "100% free, no hidden fees",
-                  "No credit score impact",
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                {/* Bullets */}
+                <div className="space-y-3">
+                  {[
+                    "20+ licensed lenders in one place",
+                    "100% free, no hidden fees",
+                    "No credit score impact",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-900/80 sm:text-base">
+                        {item}
+                      </span>
                     </div>
-                    <span className="text-sm font-medium text-slate-900/80 sm:text-base">
-                      {item}
-                    </span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                {/* Mascot pointing down – mobile/tablet only, beside bullets */}
+                <motion.img
+                  src="/images/otter point down.webp"
+                  alt="LendKaki mascot"
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.45, delay: 0.35 }}
+                  className="mr-4 w-24 shrink-0 object-contain drop-shadow-md sm:mr-6 sm:w-28 lg:hidden"
+                />
               </motion.div>
 
-              {/* Social proof snippet - desktop only */}
+              {/* Social proof – all viewports */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="mt-8 hidden items-center gap-3 lg:flex"
+                className="mt-6 flex items-center gap-3 sm:mt-8"
               >
                 <div className="flex -space-x-2">
                   {[
@@ -416,6 +429,16 @@ function LandingPageInner() {
                   Trusted by thousands of Singaporeans
                 </span>
               </motion.div>
+
+              {/* Mascot pointing right – desktop only */}
+              <motion.img
+                src="/images/otter point right.webp"
+                alt="LendKaki mascot"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-8 hidden w-56 self-center object-contain drop-shadow-lg lg:block xl:w-64"
+              />
             </div>
 
             {/* Right: Form Card */}
