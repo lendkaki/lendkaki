@@ -5,19 +5,17 @@ import { motion, useInView } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle2,
-  Clock,
-  Shield,
-  Star,
-  Zap,
   Handshake,
   Landmark,
   Lock,
   Smartphone,
   TrendingDown,
   FileCheck,
+  Zap,
   ThumbsUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
 
 const coreReasons = [
@@ -95,148 +93,127 @@ const edgeCards = [
   },
 ];
 
-const numbers = [
-  { value: "20+", label: "Regulated Lenders" },
-  { value: "<60s", label: "To Complete the Form" },
-  { value: "$0", label: "Cost to You" },
-  { value: "Same Day", label: "Possible Disbursement" },
-];
-
 export default function WhyLendKakiPage() {
   const reasonsRef = useRef<HTMLDivElement>(null);
-  const reasonsInView = useInView(reasonsRef, { once: true, margin: "-50px" });
+  const reasonsInView = useInView(reasonsRef, { once: true, margin: "-80px" });
 
   const processRef = useRef<HTMLDivElement>(null);
-  const processInView = useInView(processRef, { once: true, margin: "-50px" });
+  const processInView = useInView(processRef, { once: true, margin: "-80px" });
 
   const edgeRef = useRef<HTMLDivElement>(null);
-  const edgeInView = useInView(edgeRef, { once: true, margin: "-50px" });
-
-  const numbersRef = useRef<HTMLDivElement>(null);
-  const numbersInView = useInView(numbersRef, { once: true, margin: "-50px" });
-
-  const purposeRef = useRef<HTMLDivElement>(null);
-  const purposeInView = useInView(purposeRef, { once: true, margin: "-50px" });
-
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const ctaInView = useInView(ctaRef, { once: true, margin: "-50px" });
+  const edgeInView = useInView(edgeRef, { once: true, margin: "-80px" });
 
   return (
     <>
-      {/* HERO */}
-      <section className="hero-gradient relative overflow-hidden pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary"
-          >
-            Why LendKaki?
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05 }}
-            className="text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl"
-          >
-            Apply Once.{" "}
-            <span className="text-primary">Save Thousands.</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-700 sm:text-xl"
-          >
-            Most people spend days contacting banks one by one. LendKaki lets
-            you skip the queue. Apply once, and let 20+ licensed lenders
-            compete to give you the lowest rate.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4"
-          >
-            <Button
-              asChild
-              size="lg"
-              className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
-            >
-              <Link href="/personal-loans#apply">
-                Get My Free Rates
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="h-12 px-8 text-sm font-semibold sm:text-base"
-            >
-              <Link href="/loan-calculator">Estimate My Repayments</Link>
-            </Button>
-          </motion.div>
+      {/* HERO — Team photo with overlaid text */}
+      <section className="relative w-full overflow-hidden">
+        <div className="relative aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
+          <Image
+            src="/images/lendkaki team.webp"
+            alt="The LendKaki team"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
         </div>
-      </section>
 
-      {/* NUMBERS */}
-      <section
-        ref={numbersRef}
-        className="border-y border-border/50 bg-white py-10 sm:py-12"
-      >
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {numbers.map((n, i) => (
-              <motion.div
-                key={n.label}
-                initial={{ opacity: 0, y: 15 }}
-                animate={numbersInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="text-center"
+        <div className="absolute inset-0 flex items-end">
+          <div className="w-full px-4 pb-8 sm:px-6 sm:pb-12 lg:px-8 lg:pb-16">
+            <div className="mx-auto max-w-6xl">
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="max-w-2xl text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl xl:text-6xl"
               >
-                <p className="text-3xl font-bold text-primary sm:text-4xl">
-                  {n.value}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">{n.label}</p>
+                Apply Once.{" "}
+                <span className="text-[#7bb8e8]">Save Thousands.</span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg"
+              >
+                Most people spend days contacting banks one by one. LendKaki
+                lets you skip the queue — apply once, and let 20+ licensed
+                lenders compete for your business.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="mt-6"
+              >
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
+                >
+                  <Link href="/personal-loans#apply">
+                    Get My Free Rates
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
               </motion.div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CORE REASONS */}
-      <section ref={reasonsRef} className="bg-background py-16 sm:py-24">
+      {/* CORE VALUE PROPOSITION — Asymmetric layout */}
+      <section ref={reasonsRef} className="dot-grid bg-background py-20 sm:py-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={reasonsInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center sm:mb-16"
+            className="mb-14"
           >
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Four Reasons Singaporeans Pick LendKaki
+              Why Singaporeans Pick LendKaki
             </h2>
-            <p className="mt-3 text-base text-muted-foreground sm:text-lg">
-              Taking out a loan doesn&apos;t have to be complicated or time-consuming.
+            <p className="mt-3 max-w-lg text-base text-muted-foreground sm:text-lg">
+              Taking out a loan doesn&apos;t have to be complicated or
+              time-consuming.
             </p>
           </motion.div>
 
-          <div className="grid gap-8 sm:grid-cols-2">
-            {coreReasons.map((reason, i) => (
+          {/* Featured first reason */}
+          {(() => {
+            const FeaturedIcon = coreReasons[0].icon;
+            return (
+              <motion.div
+                initial={{ opacity: 0, x: -24 }}
+                animate={reasonsInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-12 rounded-xl border-l-4 border-primary bg-primary/8 p-6 sm:p-8"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <FeaturedIcon className="h-5 w-5 text-primary" />
+                  <h3 className="text-xl font-semibold text-foreground sm:text-2xl">
+                    {coreReasons[0].title}
+                  </h3>
+                </div>
+                <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
+                  {coreReasons[0].description}
+                </p>
+              </motion.div>
+            );
+          })()}
+
+          {/* Remaining 3 reasons — lighter treatment */}
+          <div className="grid gap-10 sm:grid-cols-3">
+            {coreReasons.slice(1).map((reason, i) => (
               <motion.div
                 key={reason.title}
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                animate={
-                  reasonsInView ? { opacity: 1, scale: 1, y: 0 } : {}
-                }
-                transition={{ duration: 0.4, delay: 0.1 + i * 0.1 }}
-                className="group rounded-2xl border border-border bg-white p-7 shadow-sm transition-shadow hover:shadow-md sm:p-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={reasonsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.3 + i * 0.12 }}
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20">
-                  <reason.icon className="h-6 w-6 text-primary" />
-                </div>
+                <div className="mb-3 h-1 w-8 rounded-full bg-primary" />
                 <h3 className="text-lg font-semibold text-foreground">
                   {reason.title}
                 </h3>
@@ -249,160 +226,150 @@ export default function WhyLendKakiPage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section
-        ref={processRef}
-        className="bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 sm:py-24"
-      >
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      {/* HOW IT WORKS — Timeline (dark section) */}
+      <section ref={processRef} className="bg-slate-900 py-20 sm:py-28">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={processInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center sm:mb-16"
+            className="mb-14"
           >
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               From Application to Approval in 3 Steps
             </h2>
-            <p className="mt-3 text-base text-muted-foreground sm:text-lg">
+            <p className="mt-3 max-w-lg text-base text-slate-400 sm:text-lg">
               No paperwork upfront, no branch visits needed.
             </p>
           </motion.div>
 
-          <div className="space-y-8">
-            {howItWorks.map((item, i) => (
+          {/* Desktop timeline */}
+          <div className="hidden sm:block">
+            <div className="relative">
+              <div className="absolute left-0 right-0 top-5 h-px bg-slate-700" />
               <motion.div
-                key={item.step}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                animate={processInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.15 }}
-                className="flex gap-5 rounded-2xl border border-border bg-white p-6 shadow-sm sm:gap-6 sm:p-8"
-              >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-xl font-bold text-white">
-                  {item.step}
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {item.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                initial={{ scaleX: 0 }}
+                animate={processInView ? { scaleX: 1 } : {}}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute left-0 right-0 top-5 h-px origin-left bg-primary"
+              />
+
+              <div className="relative grid grid-cols-3 gap-8">
+                {howItWorks.map((item, i) => (
+                  <motion.div
+                    key={item.step}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={processInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 + i * 0.2 }}
+                  >
+                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                      {item.step}
+                    </div>
+                    <h3 className="text-lg font-semibold text-white">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                      {item.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile vertical timeline */}
+          <div className="sm:hidden">
+            <div className="relative pl-10">
+              <div className="absolute left-[15px] top-0 bottom-0 w-px bg-slate-700" />
+              <motion.div
+                initial={{ scaleY: 0 }}
+                animate={processInView ? { scaleY: 1 } : {}}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute left-[15px] top-0 bottom-0 w-px origin-top bg-primary"
+              />
+
+              <div className="space-y-10">
+                {howItWorks.map((item, i) => (
+                  <motion.div
+                    key={item.step}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={processInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 + i * 0.2 }}
+                    className="relative"
+                  >
+                    <div className="absolute -left-10 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                      {item.step}
+                    </div>
+                    <h3 className="text-lg font-semibold text-white">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                      {item.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* OUR EDGE */}
-      <section ref={edgeRef} className="bg-white py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      {/* WHAT SETS US APART — Alternating zigzag on blue gradient */}
+      <section ref={edgeRef} className="hero-gradient py-20 sm:py-28">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={edgeInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center sm:mb-16"
+            className="mb-14"
           >
-            <span className="inline-flex items-center justify-center rounded-lg border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              What Sets Us Apart
-            </span>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               Honest Rates. No Gimmicks. Zero Fees.
             </h2>
-            <p className="mt-3 text-base text-muted-foreground sm:text-lg">
-              Here&apos;s why borrowers keep coming back to LendKaki.
+            <p className="mt-3 max-w-lg text-base text-slate-700 sm:text-lg">
+              Here&apos;s why borrowers keep coming back.
             </p>
           </motion.div>
 
-          <div className="grid gap-8 sm:grid-cols-2">
+          <div className="space-y-12 sm:space-y-16">
             {edgeCards.map((card, i) => (
               <motion.div
                 key={card.title}
-                initial={{ opacity: 0, y: 15 }}
-                animate={edgeInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.1 + i * 0.1 }}
-                className="flex gap-4 rounded-2xl border border-border bg-slate-50/50 p-6 sm:p-7"
+                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                animate={edgeInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.15 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                className={`flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-12 ${
+                  i % 2 !== 0 ? "sm:flex-row-reverse sm:text-right" : ""
+                }`}
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                  <card.icon className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">
+                <div className={`flex items-center gap-3 sm:w-2/5 sm:shrink-0 ${
+                  i % 2 !== 0 ? "sm:justify-end" : ""
+                }`}>
+                  <card.icon className="h-5 w-5 shrink-0 text-slate-900" />
+                  <h3 className="text-lg font-semibold text-slate-900">
                     {card.title}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                    {card.description}
-                  </p>
                 </div>
+                <p className="text-sm leading-relaxed text-slate-700 sm:w-3/5">
+                  {card.description}
+                </p>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SOCIAL PROOF */}
-      <section className="bg-slate-900 py-14 sm:py-20">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-          <div className="mb-6 flex items-center justify-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className="h-6 w-6 fill-yellow-400 text-yellow-400"
-              />
-            ))}
-          </div>
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
-            Real Stories from Real Borrowers
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate-400">
-            Thousands of Singaporeans have used LendKaki to secure better
-            rates. Here are a few of their experiences.
-          </p>
-
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {[
-              {
-                text: "I'd been putting off refinancing my personal loan for months because I didn't want to visit every bank. One form on LendKaki and I had three quotes by lunchtime.",
-                name: "Tan Wei Ming",
-              },
-              {
-                text: "My SME needed a short-term bridging facility fast. LendKaki connected me with a licensed lender the same afternoon and funds arrived the next morning.",
-                name: "Ahmad Rizal",
-              },
-              {
-                text: "Was sceptical at first, but the whole thing was genuinely free. I ended up saving roughly $1,800 in interest versus my previous bank's rate.",
-                name: "Priya Nair",
-              },
-            ].map((t) => (
-              <div
-                key={t.name}
-                className="rounded-xl border border-slate-700/50 bg-slate-800/50 p-5 text-left"
-              >
-                <p className="text-sm leading-relaxed text-slate-300">
-                  &ldquo;{t.text}&rdquo;
-                </p>
-                <p className="mt-4 text-sm font-semibold text-white">
-                  {t.name}
-                </p>
-              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* OUR PURPOSE */}
-      <section ref={purposeRef} className="bg-background py-16 sm:py-24">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
+      <section className="dot-grid bg-background py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={purposeInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="max-w-prose"
           >
-            <span className="inline-flex items-center justify-center rounded-lg border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              Our Purpose
-            </span>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Levelling the Playing Field for Borrowers
             </h2>
             <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -419,7 +386,7 @@ export default function WhyLendKakiPage() {
               (MinLaw). Our matching service is entirely free for borrowers, and
               it always will be.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
               {[
                 "MAS & MinLaw Regulated Partners",
                 "Full PDPA Compliance",
@@ -436,31 +403,26 @@ export default function WhyLendKakiPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section ref={ctaRef} className="hero-gradient py-16 sm:py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={ctaInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="mx-auto max-w-2xl px-4 text-center sm:px-6"
-        >
-          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
+      <section className="bg-primary py-16 sm:py-20">
+        <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Ready to See What You Qualify For?
           </h2>
-          <p className="mt-3 text-base text-slate-900/70 sm:text-lg">
+          <p className="mt-3 text-base text-white/80 sm:text-lg">
             It takes under a minute, costs nothing, and could save you
             thousands in interest.
           </p>
           <Button
             asChild
             size="lg"
-            className="mt-8 h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
+            className="mt-8 h-12 gap-2 bg-white px-8 text-sm font-semibold text-primary shadow-lg hover:bg-white/90 sm:text-base"
           >
             <Link href="/personal-loans#apply">
               Get Started
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
-        </motion.div>
+        </div>
       </section>
     </>
   );
