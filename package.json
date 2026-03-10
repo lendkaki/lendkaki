@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "supabase": "supabase",
+    "db:push": "supabase db push",
+    "db:link": "supabase link",
+    "db:login": "supabase login",
+    "db:logout": "supabase logout"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -33,6 +38,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "supabase": "^2.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

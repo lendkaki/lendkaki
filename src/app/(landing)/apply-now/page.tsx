@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { submitLeadInBackground } from "@/lib/api/leads";
 import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
@@ -241,38 +242,39 @@ function LandingPageInner() {
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycby2hR6rxThjW8CIjpMDtlWePt9HI96GUivfMMkumu1xah6fwDLjSOzHY8Kh70tIt9yj/exec";
 
-  const onSubmit = async (data: QuickLeadValues) => {
+  const onSubmit = (data: QuickLeadValues) => {
     setIsSubmitting(true);
-    try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          amount: String(data.amount),
-          purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
-          nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
-          landingpage: typeof window !== "undefined" ? window.location.pathname : "",
-        }),
-      });
+    setShowMatching(true);
+    setIsSubmitting(false);
 
-      if (typeof window !== "undefined" && window.fbq) {
-        window.fbq("track", "Lead", {
-          content_name: "Loan Application",
-          content_category: "Lead Form",
-        });
-      }
-
-      setShowMatching(true);
-    } catch {
-      setError("root", {
-        message: "Something went wrong. Please try again.",
+    submitLeadInBackground(data, {
+      landing_page: typeof window !== "undefined" ? window.location.pathname : "/apply-now",
+      variant,
+      utm_source: utmSource || undefined,
+      utm_medium: utmMedium || undefined,
+      utm_campaign: utmCampaign || undefined,
+      utm_content: utmContent || undefined,
+      utm_term: utmTerm || undefined,
+    });
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        amount: String(data.amount),
+        purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
+        nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
+        landingpage: typeof window !== "undefined" ? window.location.pathname : "",
+      }),
+    });
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead", {
+        content_name: "Loan Application",
+        content_category: "Lead Form",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { submitLeadInBackground } from "@/lib/api/leads";
 import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { PolicyModal } from "@/components/ui/policy-modal";
@@ -58,38 +59,31 @@ export function LeadForm() {
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycby2hR6rxThjW8CIjpMDtlWePt9HI96GUivfMMkumu1xah6fwDLjSOzHY8Kh70tIt9yj/exec";
 
-  const onSubmit = async (data: QuickLeadValues) => {
+  const onSubmit = (data: QuickLeadValues) => {
     setIsSubmitting(true);
-    try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          amount: String(data.amount),
-          purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
-          nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
-          landingpage: typeof window !== "undefined" ? window.location.pathname : "",
-        }),
-      });
+    setShowMatching(true);
+    setIsSubmitting(false);
 
-      if (typeof window !== "undefined" && window.fbq) {
-        window.fbq("track", "Lead", {
-          content_name: "Loan Application",
-          content_category: "Lead Form",
-        });
-      }
-
-      setShowMatching(true);
-    } catch {
-      setError("root", {
-        message: "Something went wrong. Please try again.",
+    submitLeadInBackground(data);
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        amount: String(data.amount),
+        purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
+        nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
+        landingpage: typeof window !== "undefined" ? window.location.pathname : "",
+      }),
+    });
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead", {
+        content_name: "Loan Application",
+        content_category: "Lead Form",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
