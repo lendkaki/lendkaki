@@ -92,6 +92,13 @@ export async function POST(request: Request) {
         };
       }
 
+      if (!payload) {
+        return NextResponse.json(
+          { error: "Validation failed" },
+          { status: 400 }
+        );
+      }
+
       const { error } = await supabase.from("leads").insert(payload);
 
       if (error) {
