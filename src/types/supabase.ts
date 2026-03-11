@@ -75,6 +75,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      myinfo_profiles: {
+        Row: {
+          id: string;
+          created_at: string;
+          flow: string | null;
+          sub: string | null;
+          uinfin: string | null;
+          loan_amount: number | null;
+          loan_purpose: string | null;
+          raw: Json;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          flow?: string | null;
+          sub?: string | null;
+          uinfin?: string | null;
+          loan_amount?: number | null;
+          loan_purpose?: string | null;
+          raw: Json;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          flow?: string | null;
+          sub?: string | null;
+          uinfin?: string | null;
+          loan_amount?: number | null;
+          loan_purpose?: string | null;
+          raw?: Json;
+        };
+        Relationships: [];
+      };
     };
     Views: {};
     Functions: {};
