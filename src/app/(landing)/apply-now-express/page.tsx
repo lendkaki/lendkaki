@@ -757,15 +757,10 @@ function LandingPageInner() {
                             <div className="space-y-5">
                               <div>
                                 <h3 className="text-lg font-semibold text-slate-900">
-                                  Connect with Singpass
+                                  Almost there!
                                 </h3>
                                 <p className="mt-1 text-sm text-slate-500">
-                                  We&apos;ll redirect you to Singpass to retrieve your Myinfo profile.
-                                  After login, you can view the returned data at{" "}
-                                  <code className="rounded bg-slate-100 px-1 text-[11px]">
-                                    /singpass
-                                  </code>
-                                  .
+                                  Use Singpass to auto-fill your details.
                                 </p>
                               </div>
 
@@ -782,30 +777,40 @@ function LandingPageInner() {
                                 </p>
                               </div>
 
-                              <Button
-                                type="button"
-                                className="h-11 w-full gap-2 rounded-full bg-primary text-sm font-semibold text-white shadow-lg hover:bg-primary/90"
-                                onClick={handleExpressSingpass}
-                                disabled={isSubmitting}
-                              >
-                                {isSubmitting ? (
-                                  <>
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    Redirecting to Singpass…
-                                  </>
-                                ) : (
-                                  <>
-                                    Continue with Singpass
-                                    <ArrowRight className="h-4 w-4" />
-                                  </>
-                                )}
-                              </Button>
+                              {isSubmitting ? (
+                                <div className="flex h-[44px] items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-700">
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                  Redirecting…
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="block w-full transition-opacity hover:opacity-80 disabled:opacity-60"
+                                  onClick={handleExpressSingpass}
+                                  disabled={isSubmitting}
+                                >
+                                  <img
+                                    src="/images/buttons/myinfo-neutral.svg"
+                                    alt="Retrieve MyInfo with Singpass"
+                                    className="h-[44px] w-full"
+                                  />
+                                </button>
+                              )}
 
-                              <p className="text-xs text-slate-500">
-                                This is a test flow. Once Singpass returns your data, you can inspect it on
-                                the <code className="rounded bg-slate-100 px-1 text-[11px]">/singpass</code>{" "}
-                                debug page and later wire it back into this journey.
-                              </p>
+                              <div className="flex items-center gap-3">
+                                <div className="h-px flex-1 bg-slate-200" />
+                                <span className="text-xs font-medium text-slate-400">or</span>
+                                <div className="h-px flex-1 bg-slate-200" />
+                              </div>
+
+                              <button
+                                type="button"
+                                className="flex w-full items-center justify-center gap-1.5 py-1 text-sm font-medium text-slate-500 transition-colors hover:text-slate-700"
+                                onClick={() => router.push("/apply-now")}
+                              >
+                                Fill in manually instead
+                                <ArrowRight className="h-3.5 w-3.5" />
+                              </button>
                             </div>
                           )}
 

@@ -4,13 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
   Check,
   CheckCircle2,
+  ChevronDown,
   Clock,
   Loader2,
   Shield,
@@ -20,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { MatchingModal } from "@/components/ui/matching-modal";
 import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { submitLeadInBackground } from "@/lib/api/leads";
@@ -47,6 +49,50 @@ const headlineVariants: Record<
       "One simple form. Matched to 20+ licensed lenders and banks. No obligation.",
   },
 };
+
+const testimonials = [
+  {
+    text: "I was dreading applying to multiple banks. LendKaki matched me with 5 offers in under a minute. I saved over $2,000 in interest compared to my bank's rate.",
+    name: "Tan Wei Ming",
+    role: "Personal Loan",
+    image: "/testimonials/tan wei ming.webp",
+  },
+  {
+    text: "As an SME owner, getting a business loan used to take weeks. Through LendKaki I got approved within 24 hours and funds were in my account the next day.",
+    name: "Ahmad Rizal",
+    role: "Business Loan",
+    image: "/testimonials/ahmad rizal.webp",
+  },
+  {
+    text: "Needed a bridging loan urgently for my property purchase. LendKaki connected me with a lender who disbursed the funds the same day. Lifesaver.",
+    name: "Kenneth Teo",
+    role: "Bridging Loan",
+    image: "/testimonials/kenneth teo.webp",
+  },
+];
+
+const faqItems = [
+  {
+    question: "Is LendKaki's service really free?",
+    answer:
+      "Yes, absolutely! LendKaki is 100% free for borrowers. We earn a commission from lenders when you successfully take up a loan, so there are no hidden fees or charges for using our platform.",
+  },
+  {
+    question: "Will checking rates affect my credit score?",
+    answer:
+      "No, checking your rates on LendKaki will not affect your credit score. We use a soft credit enquiry that doesn't impact your credit report. Only when you proceed to accept a loan offer and the lender performs a hard credit check will it affect your score.",
+  },
+  {
+    question: "How quickly can I get approved?",
+    answer:
+      "Most applications are processed within minutes, and you'll typically receive loan offers within 24 hours. Once you accept an offer, funds can be disbursed as quickly as the same day. Some lenders offer instant approval for amounts up to $30,000.",
+  },
+  {
+    question: "Is my personal information secure?",
+    answer:
+      "Absolutely. We use bank-level 256-bit SSL encryption to protect your data. Your information is only shared with lenders you choose to proceed with, and we never sell your data to third parties. We comply with Singapore's PDPA.",
+  },
+];
 
 function randomRecentDate(): string {
   const msIn30Days = 30 * 24 * 60 * 60 * 1000;
@@ -147,14 +193,18 @@ export default function ApplyNowExpressReviewPage() {
 
   const [testimonialDates, setTestimonialDates] = useState<string[]>([]);
   useEffect(() => {
-    setTestimonialDates(trustBadges.map(() => randomRecentDate()));
+    setTestimonialDates(testimonials.map(() => randomRecentDate()));
   }, []);
 
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showMatching, setShowMatching] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const onSubmit = (data: QuickLeadValues) => {
     setIsSubmitting(true);
+    setShowMatching(true);
+    setIsSubmitting(false);
 
     submitLeadInBackground(data, {
       landing_page:
@@ -176,9 +226,6 @@ export default function ApplyNowExpressReviewPage() {
         landingpage: typeof window !== "undefined" ? window.location.pathname : "",
       }),
     });
-
-    setSubmitted(true);
-    setIsSubmitting(false);
   };
 
   if (checkingAuth) {
@@ -192,33 +239,6 @@ export default function ApplyNowExpressReviewPage() {
     );
   }
 
-  if (submitted) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="flex flex-col items-center gap-4"
-        >
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-            <CheckCircle2 className="h-8 w-8 text-green-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-slate-900">Application submitted!</h2>
-          <p className="max-w-md text-sm leading-relaxed text-slate-600">
-            Thank you! We&apos;re matching you with the best lenders now. You&apos;ll hear from us within 24 hours.
-          </p>
-          <Button
-            className="mt-4 gap-2 rounded-full px-6"
-            onClick={() => router.push("/")}
-          >
-            Back to home
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </motion.div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -379,8 +399,89 @@ export default function ApplyNowExpressReviewPage() {
                 initial={{ opacity: 0, scale: 0.98, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="relative overflow-hidden rounded-2xl bg-white/95 p-6 shadow-2xl ring-1 ring-slate-900/5 sm:p-7"
+                className={submitted
+                  ? "relative overflow-hidden rounded-2xl"
+                  : "relative overflow-hidden rounded-2xl bg-white/95 p-6 shadow-2xl ring-1 ring-slate-900/5 sm:p-7"
+                }
               >
+                {submitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="rounded-2xl bg-[#0f1b3d] px-6 py-8 text-center shadow-2xl sm:px-10 sm:py-10"
+                  >
+                    <motion.h3
+                      initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ type: "spring", stiffness: 180, damping: 14, delay: 0.1 }}
+                      className="text-2xl font-extrabold uppercase tracking-wide text-white sm:text-3xl"
+                    >
+                      What to Do Next?
+                    </motion.h3>
+
+                    <motion.ol
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.25, duration: 0.4 }}
+                      className="mt-6 space-y-4 text-left"
+                    >
+                      {[
+                        { n: "1", text: "Our system is now matching your request to the most suitable lender from our network of 20+ licensed financial institutions." },
+                        { n: "2", text: "A LendKaki agent will reach out to you via WhatsApp shortly with your personalised loan offer and next steps." },
+                        { n: "3", text: "Simply reply to our WhatsApp message, and our agent will guide you through the process. Once verified, your loan will be disbursed directly from the lender." },
+                      ].map(({ n, text }, i) => (
+                        <motion.li
+                          key={n}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.35 + i * 0.1, duration: 0.35 }}
+                          className="flex gap-3"
+                        >
+                          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/20 text-xs font-bold text-white">
+                            {n}
+                          </span>
+                          <p className="text-sm leading-relaxed text-white/80 sm:text-base">{text}</p>
+                        </motion.li>
+                      ))}
+                    </motion.ol>
+
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.65 }}
+                      className="my-5 flex items-center gap-3"
+                    >
+                      <span className="h-px flex-1 bg-white/15" />
+                      <span className="text-xs font-medium uppercase tracking-wider text-white/40">or</span>
+                      <span className="h-px flex-1 bg-white/15" />
+                    </motion.div>
+
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.7 }}
+                      className="text-sm text-white/60"
+                    >
+                      Can&apos;t wait? Chat with us now
+                    </motion.p>
+
+                    <motion.a
+                      href="https://wa.me/6589009628?text=Hi,I%20just%20submitted%20loan%20application"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.78, duration: 0.35 }}
+                      className="mt-3 inline-flex cursor-pointer items-center gap-2.5 rounded-full border border-white/30 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/10"
+                    >
+                      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-[#25D366]">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                      </svg>
+                      WhatsApp Us Now
+                    </motion.a>
+                  </motion.div>
+                ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wide text-primary">
@@ -433,7 +534,6 @@ export default function ApplyNowExpressReviewPage() {
                     ))}
                   </div>
 
-                  {/* Editable fields for name/email/phone to keep UX cohesive */}
                   <div className="space-y-3 rounded-xl border border-slate-200 bg-white/80 p-4">
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                       Edit your contact details
@@ -558,12 +658,211 @@ export default function ApplyNowExpressReviewPage() {
                     </Button>
                   </div>
                 </form>
+                )}
               </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
+
+      {/* TRUST STRIP */}
+      <section className="border-y border-border/50 bg-white py-8 sm:py-10">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
+            {trustBadges.map((badge, i) => (
+              <motion.div
+                key={badge.label}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="flex flex-col items-center gap-2 text-center"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 sm:h-12 sm:w-12">
+                  <badge.icon className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground sm:text-base">{badge.label}</p>
+                  <p className="text-[10px] text-muted-foreground sm:text-xs">{badge.sub}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="bg-slate-900 py-12 sm:py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8 text-center sm:mb-10"
+          >
+            <h2 className="text-2xl font-bold text-white sm:text-3xl">
+              Real Results from Real Borrowers
+            </h2>
+            <p className="mt-2 text-sm text-slate-400 sm:text-base">
+              Join thousands of Singaporeans who found better rates with us.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 + i * 0.1 }}
+                className="rounded-xl border border-slate-700/50 bg-slate-800/50 p-5 sm:p-6"
+              >
+                <div className="mb-3 flex items-center gap-1">
+                  {[...Array(5)].map((_, j) => (
+                    <Star key={j} className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed text-slate-300">&ldquo;{t.text}&rdquo;</p>
+                <div className="mt-4 flex items-center gap-3">
+                  <img src={t.image} alt={t.name} width={36} height={36} className="h-9 w-9 rounded-full object-cover" />
+                  <div>
+                    <p className="text-sm font-semibold text-white">{t.name}</p>
+                    <p className="text-xs text-slate-400">{t.role}</p>
+                    {testimonialDates[i] && (
+                      <p className="mt-0.5 text-[10px] text-slate-500">{testimonialDates[i]}</p>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-white py-12 sm:py-16">
+        <div className="mx-auto max-w-2xl px-4 sm:px-6">
+          <h2 className="mb-6 text-center text-2xl font-bold text-foreground sm:mb-8 sm:text-3xl">
+            Common Questions
+          </h2>
+          <div className="space-y-2">
+            {faqItems.map((item, index) => (
+              <FaqItem key={index} question={item.question} answer={item.answer} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL CTA BANNER */}
+      <section className="hero-gradient py-12 sm:py-16">
+        <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+            Ready to find your best rate?
+          </h2>
+          <p className="mt-3 text-sm text-slate-900/70 sm:text-base">
+            Join thousands of Singaporeans who save on their loans every month.
+          </p>
+          <Button
+            onClick={() => router.push("/apply-now-express")}
+            size="lg"
+            className="mt-6 h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
+          >
+            Get My Best Rates
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-border bg-slate-900 px-4 py-6 sm:px-6">
+        <div className="mx-auto max-w-4xl">
+          <p className="text-center text-[10px] leading-relaxed text-slate-400 sm:text-xs">
+            LendKaki is managed and operated by Lendkaki Pay Pte. Ltd. (UEN: 202607335C). LendKaki is a loan comparison platform. We are not a lender. All
+            loan products are offered by licensed banks and financial
+            institutions regulated by the Monetary Authority of Singapore (MAS)
+            and/or the Ministry of Law (MinLaw). Rates shown are indicative and
+            subject to change. By submitting an application, you agree to our{" "}
+            <a href="/terms" className="underline hover:text-slate-300">Terms of Use</a>,{" "}
+            <a href="/privacy" className="underline hover:text-slate-300">Privacy Policy</a>, and{" "}
+            <a href="/pdpa" className="underline hover:text-slate-300">PDPA Compliance</a>.
+          </p>
+          <p className="mt-3 text-center text-[10px] text-slate-500">
+            &copy; 2026 LendKaki. All rights reserved.
+          </p>
+        </div>
+      </footer>
+
+      <MatchingModal
+        isOpen={showMatching}
+        onComplete={() => {
+          setShowMatching(false);
+          setSubmitted(true);
+        }}
+      />
     </div>
+  );
+}
+
+function FaqItem({
+  question,
+  answer,
+  index,
+}: {
+  question: string;
+  answer: string;
+  index: number;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, delay: index * 0.1 }}
+      className={cn(
+        "rounded-lg bg-white border transition-all duration-200",
+        isOpen ? "border-primary/30 shadow-sm" : "border-border/50"
+      )}
+    >
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex h-auto w-full items-center justify-between gap-3 px-4 py-3.5 text-left sm:px-5 sm:py-4"
+      >
+        <span
+          className={cn(
+            "flex-1 text-sm font-medium transition-colors sm:text-base",
+            isOpen ? "text-foreground" : "text-foreground/70"
+          )}
+        >
+          {question}
+        </span>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="shrink-0"
+        >
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 transition-colors",
+              isOpen ? "text-primary" : "text-muted-foreground"
+            )}
+          />
+        </motion.div>
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1, transition: { duration: 0.2, ease: "easeOut" } }}
+            exit={{ height: 0, opacity: 0, transition: { duration: 0.2, ease: "easeIn" } }}
+          >
+            <div className="px-4 pb-3.5 pt-1 sm:px-5 sm:pb-4">
+              <p className="text-sm leading-relaxed text-muted-foreground">{answer}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
