@@ -152,16 +152,7 @@ export async function GET(req: NextRequest) {
     const flow = session.auth?.flow;
     let redirectPath = "/singpass";
     if (flow === "apply-now-express") {
-      const params = new URLSearchParams();
-      params.set("from", "singpass");
-      params.set("flow", "apply-now-express");
-      if (session.auth?.loan_amount != null) {
-        params.set("amount", String(session.auth.loan_amount));
-      }
-      if (session.auth?.loan_purpose) {
-        params.set("purpose", session.auth.loan_purpose);
-      }
-      redirectPath = `/apply-now-express-review?${params.toString()}`;
+      redirectPath = "/apply-now-express-review";
     }
 
     const isProd = process.env.NODE_ENV === "production";

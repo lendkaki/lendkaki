@@ -1,7 +1,7 @@
  "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
@@ -106,10 +106,7 @@ function randomRecentDate(): string {
 
 export default function ApplyNowExpressReviewPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const variant = searchParams.get("v") || "default";
-  const { before, highlight, after, subheadline } =
-    headlineVariants[variant] || headlineVariants.default;
+  const { before, highlight, after, subheadline } = headlineVariants.default;
 
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [myinfo, setMyinfo] = useState<any | null>(null);
@@ -135,18 +132,6 @@ export default function ApplyNowExpressReviewPage() {
   };
 
   useEffect(() => {
-    const amountParam = searchParams.get("amount");
-    const purposeParam = searchParams.get("purpose");
-    if (amountParam) {
-      const n = Number(amountParam);
-      if (!Number.isNaN(n)) setValue("amount", n);
-    }
-    if (purposeParam) {
-      setValue("purpose", purposeParam as any);
-    }
-  }, [searchParams, setValue]);
-
-  useEffect(() => {
     let cancelled = false;
     async function check() {
       try {
@@ -158,6 +143,14 @@ export default function ApplyNowExpressReviewPage() {
         const json = await res.json();
         if (!cancelled) {
           setMyinfo(json);
+
+          // Prefill loan info from myinfo_profiles
+          const amount = (json as any).loan_amount;
+          const purpose = (json as any).loan_purpose;
+          if (amount != null && !Number.isNaN(Number(amount))) setValue("amount", Number(amount));
+          if (purpose) setValue("purpose", purpose as any);
+
+          // Prefill contact from Myinfo person data
           const person = (json as any).person_info ?? json;
           const fullName = (person?.name as any)?.value ?? null;
           const email =
@@ -173,7 +166,6 @@ export default function ApplyNowExpressReviewPage() {
           if (email) setValue("email", email);
           if (mobile) setValue("phone", mobile);
 
-          // Singpass users are always SG citizens/PRs
           const natDesc = ((person?.nationality as any)?.desc ?? "").toLowerCase();
           const isForeigner = natDesc && !natDesc.includes("singapore");
           setValue("nationality", isForeigner ? "foreigner" : "Singaporean_PR");

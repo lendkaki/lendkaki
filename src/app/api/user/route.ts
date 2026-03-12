@@ -28,18 +28,20 @@ export async function GET(req: NextRequest) {
     if (sub) {
       const { data } = await supabase
         .from("myinfo_profiles" as const)
-        .select("raw")
+        .select("raw, loan_amount, loan_purpose")
         .eq("sub", sub)
         .order("created_at", { ascending: false })
         .limit(1)
         .single();
 
-      if (data?.raw) {
-        const raw = data.raw as Record<string, unknown>;
+      if (data) {
+        const raw = (data.raw ?? {}) as Record<string, unknown>;
         const userinfo = (raw.userinfo ?? raw) as Record<string, unknown>;
         fullPayload = {
           ...session.user,
           person_info: (userinfo as any).person_info ?? null,
+          loan_amount: data.loan_amount ?? null,
+          loan_purpose: data.loan_purpose ?? null,
         };
       }
     }
