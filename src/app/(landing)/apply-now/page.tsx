@@ -27,6 +27,7 @@ import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Slider } from "@/components/ui/slider";
 import { PolicyModal } from "@/components/ui/policy-modal";
 import { MatchingModal } from "@/components/ui/matching-modal";
 import { TermsContent } from "@/components/content/terms-content";
@@ -137,7 +138,7 @@ const STEP_LABELS = ["Loan Info", "Contact", "About You", "Review"];
 
 const STEP_FIELDS: (keyof QuickLeadValues)[][] = [
   ["amount", "purpose"],
-  ["name", "email", "phone"],
+  ["name", "phone"],
   ["nationality"],
   ["agreedToTerms"],
 ];
@@ -193,6 +194,7 @@ function LandingPageInner() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [loanAmount, setLoanAmount] = useState(5000);
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -215,6 +217,7 @@ function LandingPageInner() {
     mode: "onTouched",
     defaultValues: {
       agreedToTerms: false,
+      amount: 5000,
     },
   });
 
@@ -263,7 +266,7 @@ function LandingPageInner() {
       body: JSON.stringify({
         name: data.name,
         phone: data.phone,
-        email: data.email,
+        email: data.email ?? "",
         amount: String(data.amount),
         purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
         nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
@@ -624,19 +627,28 @@ function LandingPageInner() {
                               </div>
 
                               <div>
-                                <Label className="mb-1.5 block text-sm font-medium text-slate-700">
-                                  Desired Loan Amount
-                                </Label>
-                                <div className="relative">
-                                  <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold text-slate-400">
-                                    $
+                                <div className="mb-3 flex items-center justify-between">
+                                  <Label className="text-sm font-medium text-slate-700">
+                                    Desired Loan Amount
+                                  </Label>
+                                  <span className="text-lg font-bold tabular-nums text-slate-900">
+                                    {loanAmount === 500 ? "≤ " : loanAmount === 10000 ? "≥ " : ""}${loanAmount.toLocaleString()}
                                   </span>
-                                  <input
-                                    type="number"
-                                    placeholder="e.g. 10000"
-                                    className="h-14 w-full rounded-xl border border-slate-300 bg-white pl-9 pr-4 text-lg font-semibold outline-none transition-all placeholder:text-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                    {...register("amount", { valueAsNumber: true })}
-                                  />
+                                </div>
+                                <Slider
+                                  value={[loanAmount]}
+                                  min={500}
+                                  max={10000}
+                                  step={500}
+                                  onValueChange={([v]) => {
+                                    setLoanAmount(v);
+                                    setValue("amount", v, { shouldValidate: true });
+                                  }}
+                                  className="[&_[data-slot=slider-thumb]]:h-10 [&_[data-slot=slider-thumb]]:w-10 [&_[data-slot=slider-thumb]]:border-2 [&_[data-slot=slider-track]]:h-2.5"
+                                />
+                                <div className="mt-2 flex justify-between text-xs text-slate-400">
+                                  <span>≤ $500</span>
+                                  <span>≥ $10,000</span>
                                 </div>
                                 {errors.amount && (
                                   <p className="mt-1 text-xs font-medium text-red-500">{errors.amount.message}</p>
@@ -714,26 +726,6 @@ function LandingPageInner() {
                                 />
                                 {errors.name && (
                                   <p className="mt-1 text-xs font-medium text-red-500">{errors.name.message}</p>
-                                )}
-                              </motion.div>
-
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1, duration: 0.3 }}
-                              >
-                                <Label htmlFor="ms-email" className="mb-1.5 block text-sm font-medium text-slate-700">
-                                  Email Address
-                                </Label>
-                                <input
-                                  id="ms-email"
-                                  type="email"
-                                  placeholder="Enter your email address"
-                                  className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                  {...register("email")}
-                                />
-                                {errors.email && (
-                                  <p className="mt-1 text-xs font-medium text-red-500">{errors.email.message}</p>
                                 )}
                               </motion.div>
 
@@ -854,7 +846,6 @@ function LandingPageInner() {
                                   { label: "Loan Amount", value: `$${(getValues("amount") ?? 0).toLocaleString()}` },
                                   { label: "Purpose", value: loanPurposeOptions.find((o) => o.value === getValues("purpose"))?.label ?? "—" },
                                   { label: "Name", value: getValues("name") || "—" },
-                                  { label: "Email", value: getValues("email") || "—" },
                                   { label: "Phone", value: getValues("phone") || "—" },
                                   {
                                     label: "Nationality",

@@ -369,7 +369,7 @@ export default function PersonalLoansPage() {
       body: JSON.stringify({
         name: data.name,
         phone: data.phone,
-        email: data.email,
+        email: data.email ?? "",
         amount: String(data.amount),
         purpose:
           loanPurposeOptions.find((o) => o.value === data.purpose)?.label ??
@@ -673,28 +673,6 @@ export default function PersonalLoansPage() {
                       {errors.phone && (
                         <p className="mt-1 text-xs font-medium text-red-500">
                           {errors.phone.message}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <Label
-                        htmlFor="pl-email"
-                        className="mb-1.5 block text-sm font-medium text-slate-700"
-                      >
-                        Email Address
-                      </Label>
-                      <input
-                        id="pl-email"
-                        type="email"
-                        placeholder="Enter your email address here"
-                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        {...register("email")}
-                      />
-                      {errors.email && (
-                        <p className="mt-1 text-xs font-medium text-red-500">
-                          {errors.email.message}
                         </p>
                       )}
                     </div>

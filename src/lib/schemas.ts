@@ -16,8 +16,9 @@ export const stepPersonalSchema = z.object({
     .string({ error: "Full name is required" })
     .min(2, "Name must be at least 2 characters"),
   email: z
-    .string({ error: "Email is required" })
-    .email("Please enter a valid email address"),
+    .string()
+    .email("Please enter a valid email address")
+    .optional(),
   phone: z
     .string({ error: "Phone number is required" })
     .regex(/^[689]\d{7}$/, "Please enter a valid Singapore phone number"),
@@ -65,8 +66,9 @@ export const quickLeadSchema = z.object({
     .string({ error: "Please fill out this field." })
     .regex(/^[689]\d{7}$/, "Please enter a valid Singapore phone number"),
   email: z
-    .string({ error: "Please fill out this field." })
-    .email("Please enter a valid email address"),
+    .string()
+    .email("Please enter a valid email address")
+    .optional(),
   amount: z
     .number({ error: "Please fill out this field." })
     .min(0),
