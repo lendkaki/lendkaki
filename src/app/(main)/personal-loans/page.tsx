@@ -327,14 +327,15 @@ export default function PersonalLoansPage() {
   const [showPrivacy, setShowPrivacy] = useState(false);
 
   const formRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
 
   const scrollToForm = useCallback(() => {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
   useEffect(() => {
-    if (isSuccess) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    if (isSuccess && successRef.current) {
+      successRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [isSuccess]);
 
@@ -560,10 +561,11 @@ export default function PersonalLoansPage() {
             >
               {isSuccess ? (
                 <motion.div
+                  ref={successRef}
                   initial={{ opacity: 0, scale: 0.92 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative overflow-hidden rounded-2xl bg-[#0f1b3d] px-6 py-8 text-center shadow-2xl sm:px-10 sm:py-10"
+                  className="scroll-mt-14 relative overflow-hidden rounded-2xl bg-[#0f1b3d] px-6 py-8 text-center shadow-2xl sm:px-10 sm:py-10"
                 >
                   <motion.h3
                     initial={{ opacity: 0, scale: 0.8, y: 10 }}

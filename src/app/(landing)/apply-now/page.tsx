@@ -196,10 +196,11 @@ function LandingPageInner() {
   const [direction, setDirection] = useState(1);
   const [loanAmount, setLoanAmount] = useState(5000);
   const successRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isSuccess) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    if (isSuccess && successRef.current) {
+      successRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [isSuccess]);
 
@@ -235,6 +236,7 @@ function LandingPageInner() {
     if (!valid) return;
     setDirection(1);
     setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
+    setTimeout(() => cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
   };
 
   const handleBack = () => {
@@ -482,7 +484,7 @@ function LandingPageInner() {
                   initial={{ opacity: 0, scale: 0.92 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative overflow-hidden rounded-2xl bg-[#0f1b3d] px-6 py-8 text-center shadow-2xl sm:px-10 sm:py-10"
+                  className="scroll-mt-14 relative overflow-hidden rounded-2xl bg-[#0f1b3d] px-6 py-8 text-center shadow-2xl sm:px-10 sm:py-10"
                 >
                   <motion.h3
                     initial={{ opacity: 0, scale: 0.8, y: 10 }}
@@ -555,7 +557,7 @@ function LandingPageInner() {
                   </motion.a>
                 </motion.div>
               ) : (
-                <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-xl">
+                <div ref={cardRef} className="scroll-mt-14 overflow-hidden rounded-2xl border border-border bg-white shadow-xl">
                   {/* ---- Progress indicator ---- */}
                   <div className="border-b border-border/50 bg-slate-50/80 px-6 py-4 sm:px-8">
                     <div className="flex items-center justify-between">
