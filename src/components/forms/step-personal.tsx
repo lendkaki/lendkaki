@@ -48,6 +48,7 @@ export function StepPersonal() {
           </div>
           <FormInput
             id="phone"
+            type="tel"
             placeholder="9123 4567"
             icon={<Phone className="h-4 w-4" />}
             error={errors.phone?.message}

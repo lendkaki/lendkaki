@@ -668,6 +668,7 @@ export default function PersonalLoansPage() {
                       </Label>
                       <input
                         id="pl-phone"
+                        type="tel"
                         placeholder="Enter your mobile number here"
                         className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
                         {...register("phone")}

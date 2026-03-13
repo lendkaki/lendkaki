@@ -529,7 +529,7 @@ export default function BusinessLoansPage() {
                     </div>
                     <div>
                       <Label htmlFor="bl-phone" className="mb-1.5 block text-sm font-medium text-slate-700">Mobile Number</Label>
-                      <input id="bl-phone" placeholder="Enter your mobile number here" className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20" {...register("phone")} />
+                      <input id="bl-phone" type="tel" placeholder="Enter your mobile number here" className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20" {...register("phone")} />
                       {errors.phone && <p className="mt-1 text-xs font-medium text-red-500">{errors.phone.message}</p>}
                     </div>
                     <div>
