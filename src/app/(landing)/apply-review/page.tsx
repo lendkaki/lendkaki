@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -104,7 +104,7 @@ function randomRecentDate(): string {
   });
 }
 
-export default function ApplyNowExpressReviewPage() {
+export default function ApplyReviewPage() {
   const router = useRouter();
   const { before, highlight, after, subheadline } = headlineVariants.default;
 
@@ -137,20 +137,18 @@ export default function ApplyNowExpressReviewPage() {
       try {
         const res = await fetch("/api/user", { credentials: "include" });
         if (!res.ok) {
-          if (!cancelled) router.replace("/apply-now-express");
+          if (!cancelled) router.replace("/apply");
           return;
         }
         const json = await res.json();
         if (!cancelled) {
           setMyinfo(json);
 
-          // Prefill loan info from myinfo_profiles
           const amount = (json as any).loan_amount;
           const purpose = (json as any).loan_purpose;
           if (amount != null && !Number.isNaN(Number(amount))) setValue("amount", Number(amount));
           if (purpose) setValue("purpose", purpose as any);
 
-          // Prefill contact from Myinfo person data
           const person = (json as any).person_info ?? json;
           const fullName = (person?.name as any)?.value ?? null;
           const email =
@@ -171,7 +169,7 @@ export default function ApplyNowExpressReviewPage() {
           setValue("nationality", isForeigner ? "foreigner" : "Singaporean_PR");
         }
       } catch {
-        if (!cancelled) router.replace("/apply-now-express");
+        if (!cancelled) router.replace("/apply");
         return;
       } finally {
         if (!cancelled) setCheckingAuth(false);
@@ -200,7 +198,7 @@ export default function ApplyNowExpressReviewPage() {
 
     submitLeadInBackground(data, {
       landing_page:
-        typeof window !== "undefined" ? window.location.pathname : "/apply-now-express-review",
+        typeof window !== "undefined" ? window.location.pathname : "/apply-review",
     });
 
     fetch(GOOGLE_SCRIPT_URL, {
@@ -380,7 +378,6 @@ export default function ApplyNowExpressReviewPage() {
               />
             </div>
 
-            {/* Right: Review Card instead of multi-step form */}
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -657,7 +654,6 @@ export default function ApplyNowExpressReviewPage() {
         </div>
       </section>
 
-      {/* TRUST STRIP */}
       <section className="border-y border-border/50 bg-white py-8 sm:py-10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
@@ -682,7 +678,6 @@ export default function ApplyNowExpressReviewPage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
       <section className="bg-slate-900 py-12 sm:py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <motion.div
@@ -730,7 +725,6 @@ export default function ApplyNowExpressReviewPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-2xl px-4 sm:px-6">
           <h2 className="mb-6 text-center text-2xl font-bold text-foreground sm:mb-8 sm:text-3xl">
@@ -744,7 +738,6 @@ export default function ApplyNowExpressReviewPage() {
         </div>
       </section>
 
-      {/* FINAL CTA BANNER */}
       <section className="hero-gradient py-12 sm:py-16">
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
           <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
@@ -754,7 +747,7 @@ export default function ApplyNowExpressReviewPage() {
             Join thousands of Singaporeans who save on their loans every month.
           </p>
           <Button
-            onClick={() => router.push("/apply-now-express")}
+            onClick={() => router.push("/apply")}
             size="lg"
             className="mt-6 h-12 gap-2 bg-primary px-8 text-sm font-semibold text-white shadow-lg hover:bg-primary/90 sm:text-base"
           >
@@ -764,7 +757,6 @@ export default function ApplyNowExpressReviewPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="border-t border-border bg-slate-900 px-4 py-6 sm:px-6">
         <div className="mx-auto max-w-4xl">
           <p className="text-center text-[10px] leading-relaxed text-slate-400 sm:text-xs">
@@ -857,4 +849,3 @@ function FaqItem({
     </motion.div>
   );
 }
-

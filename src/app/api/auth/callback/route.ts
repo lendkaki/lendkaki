@@ -151,8 +151,8 @@ export async function GET(req: NextRequest) {
 
     const flow = session.auth?.flow;
     let redirectPath = "/singpass";
-    if (flow === "apply-now-express") {
-      redirectPath = "/apply-now-express-review";
+    if (flow === "apply" || flow === "apply-now-express") {
+      redirectPath = "/apply-review";
     }
 
     const isProd = process.env.NODE_ENV === "production";
