@@ -13,6 +13,7 @@ import {
 import { redact, summarizeObjectKeys, tryDecodeJwt } from "@/lib/security/redact";
 import { withSecurityHeaders } from "@/lib/security/headers";
 import { supabase } from "@/lib/supabase";
+import { parseMyinfoPayload } from "@/lib/myinfo/parser";
 
 export async function GET(req: NextRequest) {
   const requestId = createRequestId();
@@ -119,13 +120,41 @@ export async function GET(req: NextRequest) {
         } as any,
       };
 
-      const { error: myinfoError } = await supabase
+      const { data: myinfoRow, error: myinfoError } = await supabase
         .from("myinfo_profiles" as const)
-        .insert(insertPayload);
+        .insert(insertPayload)
+        .select("id")
+        .single();
       if (myinfoError) {
         console.error(`[CALLBACK ${requestId}] Failed to insert myinfo_profiles`, myinfoError);
       } else {
         console.log(`[CALLBACK ${requestId}] Stored myinfo_profiles row for sub=${redact(String(idTokenClaims.sub))}`);
+      }
+
+      // Parse raw payload into structured customer_profiles row
+      try {
+        const profileData = parseMyinfoPayload(
+          String(idTokenClaims.sub),
+          insertPayload.raw as Record<string, unknown>,
+          {
+            loanAmount: loan_amount,
+            loanPurpose: loan_purpose,
+          }
+        );
+
+        const { data: profileRow, error: profileError } = await supabase
+          .from("customer_profiles" as const)
+          .insert(profileData as any)
+          .select("id")
+          .single();
+
+        if (profileError) {
+          console.error(`[CALLBACK ${requestId}] Failed to insert customer_profiles`, profileError);
+        } else {
+          console.log(`[CALLBACK ${requestId}] Stored customer_profiles row id=${profileRow?.id}`);
+        }
+      } catch (parseError) {
+        console.error(`[CALLBACK ${requestId}] Exception while parsing/saving customer_profiles`, parseError);
       }
     } catch (saveError) {
       console.error(`[CALLBACK ${requestId}] Exception while saving myinfo_profiles`, saveError);

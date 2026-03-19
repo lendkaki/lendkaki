@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,11 +9,11 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
-  Check,
   CheckCircle2,
   ChevronDown,
   Clock,
   Loader2,
+  Pencil,
   Shield,
   Star,
   Users,
@@ -26,6 +26,7 @@ import { loanPurposeOptions } from "@/lib/loan-data";
 import { quickLeadSchema, type QuickLeadValues } from "@/lib/schemas";
 import { submitLeadInBackground } from "@/lib/api/leads";
 import { cn } from "@/lib/utils";
+import { MYINFO_CODE_LABELS, formatAddress } from "@/lib/myinfo/codes";
 
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby2hR6rxThjW8CIjpMDtlWePt9HI96GUivfMMkumu1xah6fwDLjSOzHY8Kh70tIt9yj/exec";
@@ -110,12 +111,12 @@ export default function ApplyReviewPage() {
 
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [myinfo, setMyinfo] = useState<any | null>(null);
+  const [customerProfileId, setCustomerProfileId] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<QuickLeadValues>({
     resolver: zodResolver(quickLeadSchema),
@@ -124,12 +125,6 @@ export default function ApplyReviewPage() {
       agreedToTerms: false,
     },
   });
-
-  const formatSummaryValue = (v: unknown): string => {
-    if (v === undefined || v === null || v === "") return "—";
-    if (typeof v === "string" || typeof v === "number") return String(v);
-    return JSON.stringify(v);
-  };
 
   useEffect(() => {
     let cancelled = false;
@@ -144,29 +139,44 @@ export default function ApplyReviewPage() {
         if (!cancelled) {
           setMyinfo(json);
 
-          const amount = (json as any).loan_amount;
-          const purpose = (json as any).loan_purpose;
-          if (amount != null && !Number.isNaN(Number(amount))) setValue("amount", Number(amount));
-          if (purpose) setValue("purpose", purpose as any);
+          const profile = (json as any).profile;
+          if (profile) {
+            if (profile.id) setCustomerProfileId(profile.id);
+            if (profile.loan_amount != null) setValue("amount", Number(profile.loan_amount));
+            if (profile.loan_purpose) setValue("purpose", profile.loan_purpose as any);
+            if (profile.name) setValue("name", profile.name);
+            if (profile.email) setValue("email", profile.email);
+            if (profile.mobileno) setValue("phone", profile.mobileno);
 
-          const person = (json as any).person_info ?? json;
-          const fullName = (person?.name as any)?.value ?? null;
-          const email =
-            (person?.email as any)?.value ??
-            (person?.emailaddress as any)?.value ??
-            null;
-          const mobile =
-            (person?.mobileno as any)?.nbr?.value ??
-            (person?.mobileno as any)?.value ??
-            null;
+            const res_status = (profile.residential_status ?? "").toUpperCase();
+            const isForeigner = res_status === "A";
+            setValue("nationality", isForeigner ? "foreigner" : "Singaporean_PR");
+          } else {
+            // Fallback for old sessions without customer_profiles
+            const amount = (json as any).loan_amount;
+            const purpose = (json as any).loan_purpose;
+            if (amount != null && !Number.isNaN(Number(amount))) setValue("amount", Number(amount));
+            if (purpose) setValue("purpose", purpose as any);
 
-          if (fullName) setValue("name", fullName);
-          if (email) setValue("email", email);
-          if (mobile) setValue("phone", mobile);
+            const person = (json as any).person_info ?? json;
+            const fullName = (person?.name as any)?.value ?? null;
+            const email =
+              (person?.email as any)?.value ??
+              (person?.emailaddress as any)?.value ??
+              null;
+            const mobile =
+              (person?.mobileno as any)?.nbr?.value ??
+              (person?.mobileno as any)?.value ??
+              null;
 
-          const natDesc = ((person?.nationality as any)?.desc ?? "").toLowerCase();
-          const isForeigner = natDesc && !natDesc.includes("singapore");
-          setValue("nationality", isForeigner ? "foreigner" : "Singaporean_PR");
+            if (fullName) setValue("name", fullName);
+            if (email) setValue("email", email);
+            if (mobile) setValue("phone", mobile);
+
+            const natDesc = ((person?.nationality as any)?.desc ?? "").toLowerCase();
+            const isForeigner = natDesc && !natDesc.includes("singapore");
+            setValue("nationality", isForeigner ? "foreigner" : "Singaporean_PR");
+          }
         }
       } catch {
         if (!cancelled) router.replace("/apply");
@@ -199,6 +209,7 @@ export default function ApplyReviewPage() {
     submitLeadInBackground(data, {
       landing_page:
         typeof window !== "undefined" ? window.location.pathname : "/apply-review",
+      customer_profile_id: customerProfileId ?? undefined,
     });
 
     fetch(GOOGLE_SCRIPT_URL, {
@@ -471,111 +482,246 @@ export default function ApplyReviewPage() {
                     </motion.a>
                   </motion.div>
                 ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                      Express flow
+                      Singpass verified
                     </p>
                     <h2 className="mt-1 text-lg font-semibold text-slate-900">
                       Review & submit your application
                     </h2>
                     <p className="mt-1 text-xs text-slate-500">
-                      We&apos;ve pulled your details from Singpass. Confirm they look correct before
-                      submitting.
+                      Your details were retrieved via Myinfo. Review everything below before submitting.
                     </p>
                   </div>
 
-                  <div className="space-y-2.5 rounded-xl bg-slate-50 p-4">
-                    {[
-                      {
-                        label: "Loan Amount",
-                        value: `$${Number(
-                          (watch("amount") as number | undefined) ?? 0
-                        ).toLocaleString()}`,
-                      },
-                      {
-                        label: "Purpose",
-                        value:
-                          loanPurposeOptions.find(
-                            (o) => o.value === (watch("purpose") as string | undefined)
-                          )?.label ?? "—",
-                      },
-                      { label: "Name", value: watch("name") },
-                      { label: "Email", value: watch("email") },
-                      { label: "Phone", value: watch("phone") },
-                      {
-                        label: "Nationality",
-                        value: watch("nationality") === "foreigner" ? "Foreigner" : "Singaporean / PR",
-                      },
-                    ].map(({ label, value }, i) => (
-                      <motion.div
-                        key={label}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.04 * i, duration: 0.25 }}
-                        className="flex items-center justify-between border-b border-slate-200/80 pb-2.5 last:border-0 last:pb-0"
-                      >
-                        <span className="text-xs font-medium text-slate-500">{label}</span>
-                        <span className="text-sm font-semibold text-slate-900">
-                          {formatSummaryValue(value)}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </div>
+                  {(() => {
+                    const p = (myinfo as any)?.profile;
+                    if (!p) return (
+                      <p className="text-xs text-slate-500">No profile data available.</p>
+                    );
 
-                  <div className="space-y-3 rounded-xl border border-slate-200 bg-white/80 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Edit your contact details
-                    </p>
-                    <div className="space-y-3">
-                      <div>
-                        <label className="text-xs font-medium text-slate-600">
-                          Full name
-                        </label>
-                        <input
-                          type="text"
-                          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-xs shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                          {...register("name")}
-                        />
-                        {errors.name && (
-                          <p className="mt-1 text-[11px] font-medium text-red-500">
-                            {errors.name.message}
-                          </p>
-                        )}
+                    const Row = ({ label, value }: { label: string; value: string }) => (
+                      <div className="flex items-start justify-between gap-2 border-b border-slate-100 py-1.5 last:border-0">
+                        <span className="shrink-0 text-[11px] font-medium text-slate-400">{label}</span>
+                        <span className="text-right text-[11px] font-semibold text-slate-800">{value || "—"}</span>
                       </div>
-                      <div>
-                        <label className="text-xs font-medium text-slate-600">
-                          Mobile number
-                        </label>
-                        <input
-                          type="tel"
-                          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-xs shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                          {...register("phone")}
-                        />
-                        {errors.phone && (
-                          <p className="mt-1 text-[11px] font-medium text-red-500">
-                            {errors.phone.message}
-                          </p>
-                        )}
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium text-slate-600">
-                          Email address
-                        </label>
-                        <input
-                          type="email"
-                          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-xs shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                          {...register("email")}
-                        />
-                        {errors.email && (
-                          <p className="mt-1 text-[11px] font-medium text-red-500">
-                            {errors.email.message}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                    );
 
+                    const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+                      <div className="rounded-lg bg-slate-50/80 p-3">
+                        <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">{title}</p>
+                        {children}
+                      </div>
+                    );
+
+                    const rc = (cat: string, code: string | null) =>
+                      MYINFO_CODE_LABELS[cat]?.[code ?? ""] ?? code ?? "—";
+
+                    const cpfObj = p.cpf_contributions as Record<string, unknown> | null;
+                    const cpf = (cpfObj?.history ?? cpfObj) as any[] | null;
+                    const noa = p.noa_basic as Record<string, unknown> | null;
+                    const vehicles = p.vehicles as any[] | null;
+                    const hdbown = p.hdbownership as any[] | null;
+                    const isForeigner = (p.residential_status ?? "").toUpperCase() === "A";
+
+                    return (
+                      <div className="max-h-[60vh] space-y-3 overflow-y-auto pr-1">
+                        {/* Loan Request */}
+                        <Section title="Loan Request">
+                          <Row label="Amount" value={`$${Number(p.loan_amount ?? 0).toLocaleString()}`} />
+                          <Row label="Purpose" value={loanPurposeOptions.find((o) => o.value === p.loan_purpose)?.label ?? p.loan_purpose ?? "—"} />
+                        </Section>
+
+                        {/* Identity */}
+                        <Section title="Identity">
+                          <Row label="NRIC / FIN" value={p.uinfin ?? "—"} />
+                          <Row label="Full Name" value={p.name ?? "—"} />
+                          <Row label="Alias" value={p.aliasname ?? "—"} />
+                          <Row label="Hanyu Pinyin" value={p.hanyupinyinname ?? "—"} />
+                          <Row label="Hanyu Pinyin (Alias)" value={p.hanyupinyinaliasname ?? "—"} />
+                          <Row label="Married Name" value={p.marriedname ?? "—"} />
+                          <Row label="Date of Birth" value={p.dob ?? "—"} />
+                          <Row label="Sex" value={rc("sex", p.sex)} />
+                          <Row label="Race" value={p.race ?? "—"} />
+                          <Row label="Nationality" value={p.nationality ?? "—"} />
+                          <Row label="Country of Birth" value={p.birthcountry ?? "—"} />
+                          <Row label="Residential Status" value={rc("residential", p.residential_status)} />
+                          <Row label="Marital Status" value={rc("marital", p.marital_status)} />
+                        </Section>
+
+                        {/* Contact */}
+                        <Section title="Contact">
+                          <Row label="Mobile" value={p.mobileno ?? "—"} />
+                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 py-1.5 last:border-0">
+                            <span className="shrink-0 text-[11px] font-medium text-slate-400">Email</span>
+                            <div className="flex items-center gap-1.5">
+                              <input
+                                type="email"
+                                className="w-36 rounded border border-transparent bg-transparent text-right text-[11px] font-semibold text-slate-800 transition-colors hover:border-slate-200 focus:border-primary focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary/20 sm:w-48"
+                                {...register("email")}
+                              />
+                              <Pencil className="h-3 w-3 shrink-0 text-slate-300" />
+                            </div>
+                          </div>
+                          <Row label="Registered Address" value={formatAddress(p.regadd)} />
+                        </Section>
+
+                        {/* Housing */}
+                        <Section title="Housing">
+                          <Row label="Housing Type (Private)" value={p.housingtype ? rc("housingtype", p.housingtype) : "—"} />
+                          <Row label="HDB Type" value={p.hdbtype ? rc("hdbtype", p.hdbtype) : "—"} />
+                          <div className="mt-1 space-y-1">
+                            <p className="text-[10px] font-semibold text-slate-500">HDB Ownership</p>
+                            {hdbown && hdbown.length > 0 ? (
+                              hdbown.map((h: any, i: number) => {
+                                const hVal = (key: string) => {
+                                  const v = h[key];
+                                  if (v == null) return "—";
+                                  return typeof v === "object" ? (v.value ?? v.code ?? "—") : String(v);
+                                };
+                                return (
+                                  <div key={i} className="rounded border border-slate-200 bg-white p-2 text-[10px]">
+                                    <Row label="Type" value={rc("hdbtype", typeof h.hdbtype === "object" ? h.hdbtype?.code : h.hdbtype)} />
+                                    <Row label="Date of Purchase" value={hVal("dateofpurchase")} />
+                                    <Row label="Monthly Instalment" value={hVal("monthlyloaninstalment") !== "—" ? `$${Number(hVal("monthlyloaninstalment")).toLocaleString()}` : "—"} />
+                                    <Row label="Outstanding Loan" value={hVal("outstandingloanbalance") !== "—" ? `$${Number(hVal("outstandingloanbalance")).toLocaleString()}` : "—"} />
+                                  </div>
+                                );
+                              })
+                            ) : (
+                              <p className="text-[10px] text-slate-400">No HDB ownership records.</p>
+                            )}
+                          </div>
+                          <Row label="Owns Private Property" value={p.ownerprivate === true ? "Yes" : p.ownerprivate === false ? "No" : "—"} />
+                        </Section>
+
+                        {/* Employment */}
+                        <Section title="Employment">
+                          <Row label="Employment" value={p.employment ?? "—"} />
+                          <Row label="Sector" value={p.employmentsector ?? "—"} />
+                          <Row label="Occupation" value={p.occupation ?? "—"} />
+                        </Section>
+
+                        {/* Pass Info (applicable for foreigners / FIN holders) */}
+                        <Section title="Pass Information">
+                          <Row label="Pass Type" value={rc("passtype", p.passtype)} />
+                          <Row label="Pass Status" value={p.passstatus ?? "—"} />
+                          <Row label="Expiry Date" value={p.passexpirydate ?? "—"} />
+                          {!isForeigner && !p.passtype && (
+                            <p className="mt-0.5 text-[10px] text-slate-400">Not applicable for Citizens / PRs.</p>
+                          )}
+                        </Section>
+
+                        {/* NOA */}
+                        <Section title="Notice of Assessment">
+                          {noa ? (
+                            <>
+                              {Object.entries(noa).map(([key, val]) => {
+                                if (key === "source" || key === "classification" || key === "lastupdated") return null;
+                                const display = typeof val === "object" && val !== null && "value" in (val as any) ? String((val as any).value) : String(val ?? "—");
+                                const label = key === "amount" ? "Assessable Income" : key === "yearofassessment" ? "Year of Assessment" : key;
+                                return <Row key={key} label={label} value={key === "amount" ? `$${Number(display).toLocaleString()}` : display} />;
+                              })}
+                            </>
+                          ) : (
+                            <p className="text-[10px] text-slate-400">
+                              Not available. This may be due to a default assessment, pending tax filing, or foreign tax residency.
+                            </p>
+                          )}
+                        </Section>
+
+                        {/* CPF Contributions */}
+                        <Section title="CPF Contributions">
+                          {cpf && cpf.length > 0 ? (
+                            <div className="max-h-32 space-y-1 overflow-y-auto">
+                              {cpf.map((c: any, i: number) => {
+                                const month = c.month?.value ?? c.month ?? "—";
+                                const employer = c.employer?.value ?? c.employer ?? "—";
+                                const amount = c.amount?.value ?? c.amount ?? 0;
+                                return (
+                                  <div key={i} className="flex items-center justify-between gap-2 border-b border-slate-100 py-1 text-[10px] last:border-0">
+                                    <span className="text-slate-400">{month}</span>
+                                    <span className="flex-1 truncate px-1 text-slate-600">{employer}</span>
+                                    <span className="font-semibold text-slate-800">${Number(amount).toLocaleString()}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            <p className="text-[10px] text-slate-400">Not available for this profile.</p>
+                          )}
+                        </Section>
+
+                        {/* CPF Housing Withdrawal */}
+                        <Section title="CPF Housing Withdrawal">
+                          {(() => {
+                            const hw = p.cpf_housing_withdrawal as Record<string, unknown> | null;
+                            const details = (hw?.withdrawaldetails ?? []) as any[];
+                            if (!hw || details.length === 0)
+                              return <p className="text-[10px] text-slate-400">Not available for this profile.</p>;
+                            return (
+                              <div className="space-y-2">
+                                {details.map((d: any, i: number) => {
+                                  const addr = d.address;
+                                  const addrStr = addr
+                                    ? [addr.block?.value, addr.street?.value, addr.floor?.value ? `#${addr.floor?.value}-${addr.unit?.value ?? ""}` : null, `S(${addr.postal?.value})`].filter(Boolean).join(" ")
+                                    : "—";
+                                  return (
+                                    <div key={i} className="rounded border border-slate-200 bg-white p-2 text-[10px]">
+                                      <Row label="Property" value={addrStr} />
+                                      <Row label="Principal Withdrawn" value={`$${Number(d.principalwithdrawalamt?.value ?? 0).toLocaleString()}`} />
+                                      <Row label="Accrued Interest" value={`$${Number(d.accruedinterestamt?.value ?? 0).toLocaleString()}`} />
+                                      <Row label="Monthly Instalment" value={`$${Number(d.monthlyinstalmentamt?.value ?? 0).toLocaleString()}`} />
+                                      <Row label="Total CPF Allowed" value={`$${Number(d.totalamountofcpfallowedforproperty?.value ?? 0).toLocaleString()}`} />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          })()}
+                        </Section>
+
+                        {/* Vehicles */}
+                        <Section title="Vehicle Ownership">
+                          {vehicles && vehicles.length > 0 ? (
+                            vehicles.map((v: any, i: number) => {
+                              const make = v.make?.value ?? v.make ?? "—";
+                              const model = v.model?.value ?? v.model ?? "";
+                              const ownership = v.effectiveownership?.value ?? v.effectiveownership ?? "—";
+                              return (
+                                <div key={i} className="rounded border border-slate-200 bg-white p-2 text-[10px]">
+                                  <Row label="Vehicle" value={`${make} ${model}`.trim()} />
+                                  <Row label="Effective Ownership" value={String(ownership)} />
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <p className="text-[10px] text-slate-400">No registered vehicles.</p>
+                          )}
+                        </Section>
+
+                        {/* Raw Myinfo JSON (debug) — hidden for now
+                        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50/80 p-3">
+                          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Raw Myinfo Payload (from Singpass)</p>
+                          <pre className="max-h-48 overflow-auto rounded bg-slate-900/95 p-3 text-[10px] leading-snug text-slate-100">
+{JSON.stringify(p?.raw ?? null, null, 2)}
+                          </pre>
+                        </div> */}
+
+                        {/* Parsed customer profile (debug) — hidden for now
+                        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50/80 p-3">
+                          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Parsed Customer Profile (from DB)</p>
+                          <pre className="max-h-48 overflow-auto rounded bg-slate-900/95 p-3 text-[10px] leading-snug text-slate-100">
+{JSON.stringify(p, null, 2)}
+                          </pre>
+                        </div> */}
+                      </div>
+                    );
+                  })()}
+
+                  <input type="hidden" {...register("name")} />
+                  <input type="hidden" {...register("phone")} />
                   <input type="hidden" {...register("nationality")} />
 
                   <div>
@@ -587,43 +733,14 @@ export default function ApplyReviewPage() {
                       />
                       <span className="text-xs leading-relaxed text-slate-500">
                         By proceeding the application, I agree to LendKaki&apos;s{" "}
-                        <button
-                          type="button"
-                          className="font-medium text-primary hover:underline"
-                        >
-                          Terms of Use
-                        </button>{" "}
+                        <button type="button" className="font-medium text-primary hover:underline">Terms of Use</button>{" "}
                         and{" "}
-                        <button
-                          type="button"
-                          className="font-medium text-primary hover:underline"
-                        >
-                          Privacy Policy
-                        </button>
+                        <button type="button" className="font-medium text-primary hover:underline">Privacy Policy</button>
                         , and consent to receive marketing messages.
                       </span>
                     </label>
                     {errors.agreedToTerms && (
-                      <p className="mt-1 text-xs font-medium text-red-500">
-                        {errors.agreedToTerms.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/80 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Myinfo profile (from Singpass)
-                    </p>
-                    {!myinfo && (
-                      <p className="text-xs text-slate-500">
-                        We could not show your Myinfo payload. You can still submit, but we
-                        recommend re-starting the Singpass flow if this persists.
-                      </p>
-                    )}
-                    {myinfo && (
-                      <pre className="max-h-56 overflow-auto rounded bg-slate-900/95 p-3 text-[11px] leading-snug text-slate-100">
-{JSON.stringify((myinfo as any).person_info ?? myinfo, null, 2)}
-                      </pre>
+                      <p className="mt-1 text-xs font-medium text-red-500">{errors.agreedToTerms.message}</p>
                     )}
                   </div>
 
