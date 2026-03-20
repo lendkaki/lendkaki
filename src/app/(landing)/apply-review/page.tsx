@@ -533,6 +533,13 @@ export default function ApplyReviewPage() {
                     const rc = (cat: string, code: string | null) =>
                       MYINFO_CODE_LABELS[cat]?.[code ?? ""] ?? code ?? "—";
 
+                    const rawPerson = (p.raw as any)?.userinfo?.person_info ?? (p.raw as any)?.userinfo ?? {};
+                    const rawDesc = (field: string) => {
+                      const f = rawPerson[field];
+                      if (f?.desc) return String(f.desc);
+                      return null;
+                    };
+
                     const cpfObj = p.cpf_contributions as Record<string, unknown> | null;
                     const cpf = (cpfObj?.history ?? cpfObj) as any[] | null;
                     const noa = p.noa_basic as Record<string, unknown> | null;
@@ -580,9 +587,9 @@ export default function ApplyReviewPage() {
                           <Row label="Married Name" value={p.marriedname ?? "—"} />
                           <Row label="Date of Birth" value={p.dob ?? "—"} />
                           <Row label="Sex" value={rc("sex", p.sex)} />
-                          <Row label="Race" value={p.race ?? "—"} />
-                          <Row label="Nationality" value={p.nationality ?? "—"} />
-                          <Row label="Country of Birth" value={p.birthcountry ?? "—"} />
+                          <Row label="Race" value={rawDesc("race") ?? rc("race", p.race)} />
+                          <Row label="Nationality" value={rawDesc("nationality") ?? rc("nationality", p.nationality)} />
+                          <Row label="Country of Birth" value={rawDesc("birthcountry") ?? rc("country", p.birthcountry)} />
                           <Row label="Residential Status" value={rc("residential", p.residential_status)} />
                           <Row label="Marital Status" value={rc("marital", p.marital_status)} />
                         </Section>
