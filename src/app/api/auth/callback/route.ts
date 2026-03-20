@@ -143,7 +143,7 @@ export async function GET(req: NextRequest) {
         );
 
         const { data: profileRow, error: profileError } = await supabase
-          .from("customer_profiles" as const)
+          .from("customer_profiles")
           .insert(profileData as any)
           .select("id")
           .single();

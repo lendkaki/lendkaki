@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
 
     if (sub) {
       const { data: profile } = await supabase
-        .from("customer_profiles" as const)
+        .from("customer_profiles")
         .select("*")
         .eq("sub", sub)
         .order("created_at", { ascending: false })
