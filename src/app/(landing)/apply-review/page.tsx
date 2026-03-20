@@ -112,6 +112,7 @@ export default function ApplyReviewPage() {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [myinfo, setMyinfo] = useState<any | null>(null);
   const [customerProfileId, setCustomerProfileId] = useState<string | null>(null);
+  const [editedMarital, setEditedMarital] = useState<string | null>(null);
 
   const {
     register,
@@ -147,6 +148,7 @@ export default function ApplyReviewPage() {
             if (profile.name) setValue("name", profile.name);
             if (profile.email) setValue("email", profile.email);
             if (profile.mobileno) setValue("phone", profile.mobileno);
+            if (profile.marital_status) setEditedMarital(profile.marital_status);
 
             const res_status = (profile.residential_status ?? "").toUpperCase();
             const isForeigner = res_status === "A";
@@ -241,6 +243,22 @@ export default function ApplyReviewPage() {
         landingpage: typeof window !== "undefined" ? window.location.pathname : "",
       }),
     });
+
+    if (customerProfileId) {
+      const profile = (myinfo as any)?.profile;
+      const updates: Record<string, string> = { profile_id: customerProfileId };
+      if (data.email && data.email !== profile?.email) updates.email = data.email;
+      if (data.phone && data.phone !== profile?.mobileno) updates.mobileno = data.phone;
+      if (editedMarital && editedMarital !== profile?.marital_status) updates.marital_status = editedMarital;
+
+      if (Object.keys(updates).length > 1) {
+        fetch("/api/user", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updates),
+        }).catch((err) => console.error("Failed to update profile", err));
+      }
+    }
   };
 
   if (checkingAuth) {
@@ -591,7 +609,23 @@ export default function ApplyReviewPage() {
                           <Row label="Nationality" value={rawDesc("nationality") ?? rc("nationality", p.nationality)} />
                           <Row label="Country of Birth" value={rawDesc("birthcountry") ?? rc("country", p.birthcountry)} />
                           <Row label="Residential Status" value={rc("residential", p.residential_status)} />
-                          <Row label="Marital Status" value={rc("marital", p.marital_status)} />
+                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 py-1.5 last:border-0">
+                            <span className="shrink-0 text-[11px] font-medium text-slate-400">Marital Status</span>
+                            <div className="flex items-center gap-1.5">
+                              <select
+                                value={editedMarital ?? p.marital_status ?? ""}
+                                onChange={(e) => setEditedMarital(e.target.value)}
+                                className="w-36 appearance-none rounded-md border border-slate-200 bg-white px-2 py-1 text-right text-[11px] font-semibold text-slate-800 shadow-sm transition-colors hover:border-primary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:w-48"
+                              >
+                                <option value="">—</option>
+                                <option value="1">Single</option>
+                                <option value="2">Married</option>
+                                <option value="3">Widowed</option>
+                                <option value="5">Divorced</option>
+                              </select>
+                              <Pencil className="h-3 w-3 shrink-0 text-primary/40" />
+                            </div>
+                          </div>
                         </Section>
 
                         {/* Housing */}

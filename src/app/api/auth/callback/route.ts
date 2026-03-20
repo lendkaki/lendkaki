@@ -106,69 +106,41 @@ export async function GET(req: NextRequest) {
       `[CALLBACK ${requestId}] Userinfo received keys=${summarizeObjectKeys(userInfo).join(",")}`
     );
 
-    // Persist raw Myinfo payload for debugging/audit (separate from lead)
+    // Persist parsed Myinfo data into customer_profiles (raw included)
     try {
-      const flow = session.auth?.flow ?? null;
       const loan_amount = session.auth?.loan_amount ?? null;
       const loan_purpose = session.auth?.loan_purpose ?? null;
 
-      const uinfin =
-        typeof (userInfo as any)?.uinfin === "string" ? ((userInfo as any).uinfin as string) : null;
+      const rawPayload = {
+        id_token: idTokenClaims,
+        userinfo: userInfo,
+      } as Record<string, unknown>;
 
-      const insertPayload = {
-        flow,
-        sub: String(idTokenClaims.sub),
-        uinfin,
-        loan_amount,
-        loan_purpose,
-        raw: {
-          id_token: idTokenClaims,
-          userinfo: userInfo,
-        } as any,
-      };
+      const profileData = parseMyinfoPayload(
+        String(idTokenClaims.sub),
+        rawPayload,
+        {
+          loanAmount: loan_amount,
+          loanPurpose: loan_purpose,
+        }
+      );
 
-      const { data: myinfoRow, error: myinfoError } = await supabase
-        .from("myinfo_profiles" as const)
-        .insert(insertPayload)
+      const { data: profileRow, error: profileError } = await supabase
+        .from("customer_profiles")
+        .insert(profileData as any)
         .select("id")
         .single();
-      if (myinfoError) {
-        console.error(`[CALLBACK ${requestId}] Failed to insert myinfo_profiles`, myinfoError);
+
+      if (profileError) {
+        console.error(`[CALLBACK ${requestId}] Failed to insert customer_profiles`, profileError);
       } else {
-        console.log(`[CALLBACK ${requestId}] Stored myinfo_profiles row for sub=${redact(String(idTokenClaims.sub))}`);
-      }
-
-      // Parse raw payload into structured customer_profiles row
-      try {
-        const profileData = parseMyinfoPayload(
-          String(idTokenClaims.sub),
-          insertPayload.raw as Record<string, unknown>,
-          {
-            loanAmount: loan_amount,
-            loanPurpose: loan_purpose,
-          }
-        );
-
-        const { data: profileRow, error: profileError } = await supabase
-          .from("customer_profiles")
-          .insert(profileData as any)
-          .select("id")
-          .single();
-
-        if (profileError) {
-          console.error(`[CALLBACK ${requestId}] Failed to insert customer_profiles`, profileError);
-        } else {
-          console.log(`[CALLBACK ${requestId}] Stored customer_profiles row id=${profileRow?.id}`);
-        }
-      } catch (parseError) {
-        console.error(`[CALLBACK ${requestId}] Exception while parsing/saving customer_profiles`, parseError);
+        console.log(`[CALLBACK ${requestId}] Stored customer_profiles row id=${profileRow?.id}`);
       }
     } catch (saveError) {
-      console.error(`[CALLBACK ${requestId}] Exception while saving myinfo_profiles`, saveError);
+      console.error(`[CALLBACK ${requestId}] Exception while saving customer_profiles`, saveError);
     }
 
     // Extract only essential fields for the session cookie to stay under 4KB.
-    // Full payload is already persisted in myinfo_profiles.
     const person = (userInfo as any)?.person_info ?? userInfo;
     const slimUser: Record<string, unknown> = {
       sub: String(idTokenClaims.sub),
