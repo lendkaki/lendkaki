@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -200,6 +200,20 @@ export default function ApplyReviewPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMatching, setShowMatching] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showScrollBtn, setShowScrollBtn] = useState(true);
+  const submitRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (submitted || typeof window === "undefined") return;
+    const el = submitRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowScrollBtn(!entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [submitted, myinfo]);
 
   const onSubmit = (data: QuickLeadValues) => {
     setIsSubmitting(true);
@@ -269,7 +283,7 @@ export default function ApplyReviewPage() {
       <section className="hero-gradient relative overflow-hidden pt-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-start gap-8 pb-12 pt-10 sm:pb-16 sm:pt-14 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pb-12 lg:pt-10">
-            <div className="flex flex-col">
+            <div className="hidden flex-col lg:flex">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -495,6 +509,7 @@ export default function ApplyReviewPage() {
                     </p>
                   </div>
 
+
                   {(() => {
                     const p = (myinfo as any)?.profile;
                     if (!p) return (
@@ -526,11 +541,33 @@ export default function ApplyReviewPage() {
                     const isForeigner = (p.residential_status ?? "").toUpperCase() === "A";
 
                     return (
-                      <div className="max-h-[60vh] space-y-3 overflow-y-auto pr-1">
-                        {/* Loan Request */}
-                        <Section title="Loan Request">
-                          <Row label="Amount" value={`$${Number(p.loan_amount ?? 0).toLocaleString()}`} />
-                          <Row label="Purpose" value={loanPurposeOptions.find((o) => o.value === p.loan_purpose)?.label ?? p.loan_purpose ?? "—"} />
+                      <div className="space-y-3 lg:max-h-[60vh] lg:overflow-y-auto lg:pr-1">
+                        {/* Contact — editable fields first */}
+                        <Section title="Contact Details">
+                          <p className="mb-2 text-[10px] text-slate-400">Tap the fields below to update if needed.</p>
+                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 py-1.5">
+                            <span className="shrink-0 text-[11px] font-medium text-slate-400">Mobile</span>
+                            <div className="flex items-center gap-1.5">
+                              <input
+                                type="tel"
+                                className="w-36 rounded-md border border-slate-200 bg-white px-2 py-1 text-right text-[11px] font-semibold text-slate-800 shadow-sm transition-colors hover:border-primary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:w-48"
+                                {...register("phone")}
+                              />
+                              <Pencil className="h-3 w-3 shrink-0 text-primary/40" />
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 py-1.5">
+                            <span className="shrink-0 text-[11px] font-medium text-slate-400">Email</span>
+                            <div className="flex items-center gap-1.5">
+                              <input
+                                type="email"
+                                className="w-36 rounded-md border border-slate-200 bg-white px-2 py-1 text-right text-[11px] font-semibold text-slate-800 shadow-sm transition-colors hover:border-primary/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:w-48"
+                                {...register("email")}
+                              />
+                              <Pencil className="h-3 w-3 shrink-0 text-primary/40" />
+                            </div>
+                          </div>
+                          <Row label="Registered Address" value={formatAddress(p.regadd)} />
                         </Section>
 
                         {/* Identity */}
@@ -548,23 +585,6 @@ export default function ApplyReviewPage() {
                           <Row label="Country of Birth" value={p.birthcountry ?? "—"} />
                           <Row label="Residential Status" value={rc("residential", p.residential_status)} />
                           <Row label="Marital Status" value={rc("marital", p.marital_status)} />
-                        </Section>
-
-                        {/* Contact */}
-                        <Section title="Contact">
-                          <Row label="Mobile" value={p.mobileno ?? "—"} />
-                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 py-1.5 last:border-0">
-                            <span className="shrink-0 text-[11px] font-medium text-slate-400">Email</span>
-                            <div className="flex items-center gap-1.5">
-                              <input
-                                type="email"
-                                className="w-36 rounded border border-transparent bg-transparent text-right text-[11px] font-semibold text-slate-800 transition-colors hover:border-slate-200 focus:border-primary focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary/20 sm:w-48"
-                                {...register("email")}
-                              />
-                              <Pencil className="h-3 w-3 shrink-0 text-slate-300" />
-                            </div>
-                          </div>
-                          <Row label="Registered Address" value={formatAddress(p.regadd)} />
                         </Section>
 
                         {/* Housing */}
@@ -634,19 +654,30 @@ export default function ApplyReviewPage() {
                         {/* CPF Contributions */}
                         <Section title="CPF Contributions">
                           {cpf && cpf.length > 0 ? (
-                            <div className="max-h-32 space-y-1 overflow-y-auto">
-                              {cpf.map((c: any, i: number) => {
-                                const month = c.month?.value ?? c.month ?? "—";
-                                const employer = c.employer?.value ?? c.employer ?? "—";
-                                const amount = c.amount?.value ?? c.amount ?? 0;
-                                return (
-                                  <div key={i} className="flex items-center justify-between gap-2 border-b border-slate-100 py-1 text-[10px] last:border-0">
-                                    <span className="text-slate-400">{month}</span>
-                                    <span className="flex-1 truncate px-1 text-slate-600">{employer}</span>
-                                    <span className="font-semibold text-slate-800">${Number(amount).toLocaleString()}</span>
-                                  </div>
-                                );
-                              })}
+                            <div className="lg:max-h-32 lg:overflow-y-auto">
+                              <table className="w-full text-[10px]">
+                                <thead>
+                                  <tr className="border-b border-slate-200 text-left">
+                                    <th className="py-1 pr-2 font-semibold text-slate-500">Month</th>
+                                    <th className="py-1 pr-2 font-semibold text-slate-500">Employer</th>
+                                    <th className="py-1 text-right font-semibold text-slate-500">Amount</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {cpf.map((c: any, i: number) => {
+                                    const month = c.month?.value ?? c.month ?? "—";
+                                    const employer = c.employer?.value ?? c.employer ?? "—";
+                                    const amount = c.amount?.value ?? c.amount ?? 0;
+                                    return (
+                                      <tr key={i} className="border-b border-slate-100 last:border-0">
+                                        <td className="whitespace-nowrap py-1 pr-2 text-slate-400">{month}</td>
+                                        <td className="truncate py-1 pr-2 text-slate-600">{employer}</td>
+                                        <td className="whitespace-nowrap py-1 text-right font-semibold text-slate-800">${Number(amount).toLocaleString()}</td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
                             </div>
                           ) : (
                             <p className="text-[10px] text-slate-400">Not available for this profile.</p>
@@ -701,6 +732,12 @@ export default function ApplyReviewPage() {
                           )}
                         </Section>
 
+                        {/* Loan Request */}
+                        <Section title="Loan Request">
+                          <Row label="Amount" value={`$${Number(p.loan_amount ?? 0).toLocaleString()}`} />
+                          <Row label="Purpose" value={loanPurposeOptions.find((o) => o.value === p.loan_purpose)?.label ?? p.loan_purpose ?? "—"} />
+                        </Section>
+
                         {/* Raw Myinfo JSON (debug) — hidden for now
                         <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50/80 p-3">
                           <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Raw Myinfo Payload (from Singpass)</p>
@@ -721,10 +758,9 @@ export default function ApplyReviewPage() {
                   })()}
 
                   <input type="hidden" {...register("name")} />
-                  <input type="hidden" {...register("phone")} />
                   <input type="hidden" {...register("nationality")} />
 
-                  <div>
+                  <div ref={submitRef}>
                     <label className="flex items-start gap-2.5">
                       <input
                         type="checkbox"
@@ -742,26 +778,26 @@ export default function ApplyReviewPage() {
                     {errors.agreedToTerms && (
                       <p className="mt-1 text-xs font-medium text-red-500">{errors.agreedToTerms.message}</p>
                     )}
-                  </div>
 
-                  <div className="flex items-center justify-end gap-3 pt-2">
-                    <Button
-                      type="submit"
-                      className="gap-2 rounded-full px-6"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Submitting…
-                        </>
-                      ) : (
-                        <>
-                          Submit application
-                          <ArrowRight className="h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
+                    <div className="flex items-center justify-end gap-3 pt-4">
+                      <Button
+                        type="submit"
+                        className="gap-2 rounded-full px-6"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Submitting…
+                          </>
+                        ) : (
+                          <>
+                            Submit application
+                            <ArrowRight className="h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </form>
                 )}
@@ -770,6 +806,24 @@ export default function ApplyReviewPage() {
           </div>
         </div>
       </section>
+
+      {/* Floating scroll-to-submit button — mobile only, hides when submit area is visible */}
+      <AnimatePresence>
+        {!submitted && showScrollBtn && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.25 }}
+            type="button"
+            onClick={() => submitRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })}
+            className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg transition-transform active:scale-95 lg:hidden"
+          >
+            Confirm & Submit
+            <ChevronDown className="h-4 w-4" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       <section className="border-y border-border/50 bg-white py-8 sm:py-10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
