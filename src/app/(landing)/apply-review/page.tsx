@@ -635,20 +635,40 @@ export default function ApplyReviewPage() {
 
                         {/* NOA */}
                         <Section title="Notice of Assessment">
-                          {noa ? (
-                            <>
-                              {Object.entries(noa).map(([key, val]) => {
-                                if (key === "source" || key === "classification" || key === "lastupdated") return null;
-                                const display = typeof val === "object" && val !== null && "value" in (val as any) ? String((val as any).value) : String(val ?? "—");
-                                const label = key === "amount" ? "Assessable Income" : key === "yearofassessment" ? "Year of Assessment" : key;
-                                return <Row key={key} label={label} value={key === "amount" ? `$${Number(display).toLocaleString()}` : display} />;
-                              })}
-                            </>
-                          ) : (
-                            <p className="text-[10px] text-slate-400">
-                              Not available. This may be due to a default assessment, pending tax filing, or foreign tax residency.
-                            </p>
-                          )}
+                          {(() => {
+                            if (!noa) return (
+                              <p className="text-[10px] text-slate-400">
+                                Not available. This may be due to a default assessment, pending tax filing, or foreign tax residency.
+                              </p>
+                            );
+                            const noaList = (noa.noas ?? noa.noahistory) as any[] | undefined;
+                            if (noaList && Array.isArray(noaList) && noaList.length > 0) {
+                              return (
+                                <div className="space-y-2">
+                                  {noaList.map((entry: any, i: number) => {
+                                    const year = entry.yearofassessment?.value ?? entry.yearofassessment ?? "—";
+                                    const amount = entry.amount?.value ?? entry.amount ?? 0;
+                                    return (
+                                      <div key={i} className="rounded border border-slate-200 bg-white p-2 text-[10px]">
+                                        <Row label="Year of Assessment" value={String(year)} />
+                                        <Row label="Assessable Income" value={`$${Number(amount).toLocaleString()}`} />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            }
+                            return (
+                              <>
+                                {Object.entries(noa).map(([key, val]) => {
+                                  if (key === "source" || key === "classification" || key === "lastupdated") return null;
+                                  const display = typeof val === "object" && val !== null && "value" in (val as any) ? String((val as any).value) : String(val ?? "—");
+                                  const label = key === "amount" ? "Assessable Income" : key === "yearofassessment" ? "Year of Assessment" : key;
+                                  return <Row key={key} label={label} value={key === "amount" ? `$${Number(display).toLocaleString()}` : display} />;
+                                })}
+                              </>
+                            );
+                          })()}
                         </Section>
 
                         {/* CPF Contributions */}

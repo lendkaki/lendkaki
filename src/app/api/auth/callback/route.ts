@@ -25,7 +25,10 @@ export async function GET(req: NextRequest) {
     const session = await readSession();
     if (!session?.auth?.code_verifier || !session?.auth?.nonce || !session?.auth?.state) {
       console.error(`[CALLBACK ${requestId}] Missing session.auth (did you start at /login?)`);
-      const res = NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      const res = NextResponse.redirect(
+        new URL("/apply-error?reason=session_expired", req.url),
+        { status: 302 }
+      );
       res.headers.set("x-request-id", requestId);
       return withSecurityHeaders(res);
     }
@@ -39,7 +42,11 @@ export async function GET(req: NextRequest) {
       const err = currentUrl.searchParams.get("error");
       const desc = currentUrl.searchParams.get("error_description");
       console.error(`[CALLBACK ${requestId}] IdP error=${err} desc=${desc ?? "[none]"}`);
-      const res = NextResponse.json({ error: "Login failed" }, { status: 401 });
+      const reason = err === "access_denied" ? "cancelled" : "login_failed";
+      const res = NextResponse.redirect(
+        new URL(`/apply-error?reason=${reason}`, req.url),
+        { status: 302 }
+      );
       res.headers.set("x-request-id", requestId);
       return withSecurityHeaders(res);
     }
@@ -204,7 +211,10 @@ export async function GET(req: NextRequest) {
       return withSecurityHeaders(res);
     }
     console.error(`[CALLBACK ${requestId}] ERROR`, e);
-    const res = NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const res = NextResponse.redirect(
+      new URL("/apply-error?reason=server_error", req.url),
+      { status: 302 }
+    );
     res.headers.set("x-request-id", requestId);
     return withSecurityHeaders(res);
   }

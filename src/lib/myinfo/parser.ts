@@ -146,7 +146,7 @@ export function parseMyinfoPayload(
     cpfHousingWithdrawal = cpfHousingRaw as Record<string, unknown>;
   }
 
-  const noaRaw = p["noa-basic"] ?? p.noabsc ?? p.noa;
+  const noaRaw = p["noahistory-basic"] ?? p.noahistorybasic ?? p["noa-basic"] ?? p.noabsc ?? p.noa;
   let noaBasic: Record<string, unknown> | null = null;
   if (noaRaw && typeof noaRaw === "object") {
     noaBasic = noaRaw as Record<string, unknown>;
