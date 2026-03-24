@@ -8,6 +8,7 @@ export type SubmitLeadOptions = {
   utm_campaign?: string;
   utm_content?: string;
   utm_term?: string;
+  customer_profile_id?: string;
 };
 
 /**
@@ -38,6 +39,7 @@ export async function submitLead(
     utm_content:
       options?.utm_content ?? params?.get("utm_content") ?? undefined,
     utm_term: options?.utm_term ?? params?.get("utm_term") ?? undefined,
+    customer_profile_id: options?.customer_profile_id ?? undefined,
   };
 
   const headers: HeadersInit = { "Content-Type": "application/json" };

@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       landing_page,
       variant,
       agreedToTerms,
+      customer_profile_id,
       ...formFields
     } = body;
 
@@ -52,6 +53,8 @@ export async function POST(request: Request) {
       const { supabase } = await import("@/lib/supabase");
       let payload;
 
+      const profileId = customer_profile_id || null;
+
       if (fullParsed.success) {
         const data = fullParsed.data;
         payload = {
@@ -72,6 +75,7 @@ export async function POST(request: Request) {
           utm_term: utm_term || null,
           landing_page: landing_page || null,
           variant: variant || null,
+          customer_profile_id: profileId,
         };
       } else if (quickParsed.success) {
         const quickData = quickParsed.data;
@@ -89,6 +93,7 @@ export async function POST(request: Request) {
           utm_term: utm_term || null,
           landing_page: landing_page || null,
           variant: variant || null,
+          customer_profile_id: profileId,
         };
       }
 
