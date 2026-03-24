@@ -3,7 +3,7 @@
 import { useFormContext } from "react-hook-form";
 import { FormInput } from "@/components/ui/form-input";
 import { Label } from "@/components/ui/label";
-import { User, Mail, Phone, Globe } from "lucide-react";
+import { User, Phone, Globe } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -37,21 +37,6 @@ export function StepPersonal() {
         />
       </div>
 
-      {/* Email */}
-      <div className="space-y-2">
-        <Label htmlFor="email" className="text-sm font-medium">
-          Email Address
-        </Label>
-        <FormInput
-          id="email"
-          type="email"
-          placeholder="you@example.com"
-          icon={<Mail className="h-4 w-4" />}
-          error={errors.email?.message}
-          {...register("email")}
-        />
-      </div>
-
       {/* Phone */}
       <div className="space-y-2">
         <Label htmlFor="phone" className="text-sm font-medium">
@@ -63,6 +48,7 @@ export function StepPersonal() {
           </div>
           <FormInput
             id="phone"
+            type="tel"
             placeholder="9123 4567"
             icon={<Phone className="h-4 w-4" />}
             error={errors.phone?.message}

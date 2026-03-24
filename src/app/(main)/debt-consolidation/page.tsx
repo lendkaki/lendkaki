@@ -186,9 +186,14 @@ export default function DebtConsolidationPage() {
   const [showPrivacy, setShowPrivacy] = useState(false);
 
   const formRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
   const scrollToForm = useCallback(() => { formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, []);
 
-  useEffect(() => { if (isSuccess) window.scrollTo({ top: 0, behavior: "smooth" }); }, [isSuccess]);
+  useEffect(() => {
+    if (isSuccess && successRef.current) {
+      successRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [isSuccess]);
 
   const { register, handleSubmit, setValue, formState: { errors }, setError } = useForm<QuickLeadValues>({ resolver: zodResolver(quickLeadSchema), mode: "onTouched" });
 
@@ -206,7 +211,7 @@ export default function DebtConsolidationPage() {
       method: "POST", mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: data.name, phone: data.phone, email: data.email,
+        name: data.name, phone: data.phone, email: data.email ?? "",
         amount: String(data.amount),
         purpose: loanPurposeOptions.find((o) => o.value === data.purpose)?.label ?? data.purpose,
         nationality: data.nationality === "foreigner" ? "Foreigner" : data.nationality,
@@ -293,10 +298,11 @@ export default function DebtConsolidationPage() {
             <motion.div initial={{ opacity: 0, y: 20, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, delay: 0.15 }} className="w-full">
               {isSuccess ? (
                 <motion.div
+                  ref={successRef}
                   initial={{ opacity: 0, scale: 0.92 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative overflow-hidden rounded-2xl bg-[#0f1b3d] px-6 py-8 text-center shadow-2xl sm:px-10 sm:py-10"
+                  className="scroll-mt-14 relative overflow-hidden rounded-2xl bg-[#0f1b3d] px-6 py-8 text-center shadow-2xl sm:px-10 sm:py-10"
                 >
                   <motion.h3
                     initial={{ opacity: 0, scale: 0.8, y: 10 }}
@@ -372,13 +378,8 @@ export default function DebtConsolidationPage() {
                     </div>
                     <div>
                       <Label htmlFor="dc-phone" className="mb-1.5 block text-sm font-medium text-slate-700">Mobile Number</Label>
-                      <input id="dc-phone" placeholder="Enter your mobile number here" className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20" {...register("phone")} />
+                      <input id="dc-phone" type="tel" placeholder="Enter your mobile number here" className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20" {...register("phone")} />
                       {errors.phone && <p className="mt-1 text-xs font-medium text-red-500">{errors.phone.message}</p>}
-                    </div>
-                    <div>
-                      <Label htmlFor="dc-email" className="mb-1.5 block text-sm font-medium text-slate-700">Email Address</Label>
-                      <input id="dc-email" type="email" placeholder="Enter your email address here" className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20" {...register("email")} />
-                      {errors.email && <p className="mt-1 text-xs font-medium text-red-500">{errors.email.message}</p>}
                     </div>
                     <div>
                       <Label htmlFor="dc-amount" className="mb-1.5 block text-sm font-medium text-slate-700">Total Debt Amount</Label>
