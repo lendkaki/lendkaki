@@ -214,7 +214,7 @@ export function Hero() {
             className="hidden lg:flex lg:flex-col lg:items-center lg:gap-6"
           >
             <HeroMascot />
-            <SingpassBadge />
+            {/* <SingpassBadge /> */}
           </motion.div>
         </div>
 
