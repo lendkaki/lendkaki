@@ -136,16 +136,15 @@ export async function POST(request: Request) {
     }
 
     // Send email notification for /apply-now submissions
-    if (landing_page?.includes("/apply-now") && process.env.RESEND_API_KEY && process.env.LEAD_NOTIFICATION_EMAIL) {
+    if (landing_page?.includes("/apply-now") && process.env.RESEND_API_KEY) {
       const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
 
       const fields = fullParsed.success ? fullParsed.data : (quickParsed.data as QuickLeadValues);
-      const applicantName = "fullName" in fields ? fields.fullName : (fields as QuickLeadValues).name;
 
       await resend.emails.send({
         from: "onboarding@resend.dev",
-        to: process.env.LEAD_NOTIFICATION_EMAIL,
+        to: "smsappointment@crawfort.com.sg",
         subject: "Lendkaki Lead",
         html: buildLeadEmailHtml(fields),
       });
