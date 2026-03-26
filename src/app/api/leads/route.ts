@@ -144,7 +144,7 @@ export async function POST(request: Request) {
 
       await resend.emails.send({
         from: "onboarding@resend.dev",
-        to: "smsappointment@crawfort.com.sg",
+        to: "lendkaki@gmail.com",
         subject: "Lendkaki Lead",
         html: buildLeadEmailHtml(fields),
       });
