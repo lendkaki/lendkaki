@@ -202,8 +202,9 @@ export function MatchingModal({ isOpen, onComplete }: MatchingModalProps) {
                     className="mx-auto mt-5 max-w-sm text-sm leading-relaxed text-white/70 sm:text-base"
                   >
                     The lender will contact you to gather more info and discuss
-                    your loan details. Please expect a call and WhatsApp from
-                    them soon.
+                    your loan details.
+                    <br /><br />
+                    Please expect a call and WhatsApp from them soon.
                   </motion.p>
 
                   {/* Done button */}
