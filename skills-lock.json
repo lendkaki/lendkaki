@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "skills": {
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "computedHash": "6412eb4eb3b91595ebab937f0c69501240e7ba761b3d82510b5cf506ec5c7adc"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    "nextjs-shadcn": {
+      "source": "laguagu/claude-code-nextjs-skills",
+      "sourceType": "github",
+      "computedHash": "0ceeaa6f06fc3374a372e34a7348ebdc3a63882f3e41b6450025ea3fd3957245"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "e688fcd4c5693e14ebd00d48e982dbd2be060fbea89f5f60531e79c704a1bc28"
+    },
+    "web-design-patterns": {
+      "source": "jezweb/claude-skills",
+      "sourceType": "github",
+      "computedHash": "e0e003053224be2a95a504b50e455137eb8d78cfcebda263b4414b989014869a"
+    }
+  }
+}
