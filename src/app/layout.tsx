@@ -122,7 +122,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <WhatsAppFloat />
+          {/* <WhatsAppFloat /> */}
         </ThemeProvider>
       </body>
     </html>

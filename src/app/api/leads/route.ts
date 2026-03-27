@@ -1,7 +1,27 @@
 import { NextResponse } from "next/server";
-import { leadFormSchema, quickLeadSchema } from "@/lib/schemas";
+import { leadFormSchema, quickLeadSchema, type LeadFormValues, type QuickLeadValues } from "@/lib/schemas";
 
 const LEADS_API_KEY = process.env.NEXT_PUBLIC_LEADS_API_KEY;
+
+function buildLeadEmailHtml(fields: LeadFormValues | QuickLeadValues): string {
+  const isFullLead = "fullName" in fields;
+  const name = isFullLead ? (fields as LeadFormValues).fullName : (fields as QuickLeadValues).name;
+  const phone = fields.phone;
+  const amount = isFullLead
+    ? `$${((fields as LeadFormValues).loanAmount ?? 0).toLocaleString()}`
+    : `$${((fields as QuickLeadValues).amount ?? 0).toLocaleString()}`;
+  const nationality = fields.nationality === "foreigner" ? "Foreigner" : "Singaporean / PR";
+
+  return `<!DOCTYPE html>
+<html><body style="font-family:sans-serif;font-size:15px;color:#111;padding:32px;line-height:1.6">
+  <p>This is a new Lendkaki Lead</p>
+  <br/>
+  <p><strong>Full Name:</strong> ${name}</p>
+  <p><strong>Phone Number:</strong> ${phone}</p>
+  <p><strong>Nationality:</strong> ${nationality}</p>
+  <p><strong>Amount:</strong> ${amount}</p>
+</body></html>`;
+}
 
 export async function POST(request: Request) {
   try {
@@ -113,6 +133,21 @@ export async function POST(request: Request) {
           { status: 500 }
         );
       }
+    }
+
+    // Send email notification for /apply-now submissions
+    if (landing_page?.includes("/apply-now") && process.env.RESEND_API_KEY) {
+      const { Resend } = await import("resend");
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
+      const fields = fullParsed.success ? fullParsed.data : (quickParsed.data as QuickLeadValues);
+
+      await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: "lendkaki@gmail.com",
+        subject: "Lendkaki Lead",
+        html: buildLeadEmailHtml(fields),
+      });
     }
 
     return NextResponse.json(
